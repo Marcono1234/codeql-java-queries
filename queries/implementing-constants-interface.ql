@@ -10,8 +10,8 @@ import java
 
 predicate hasOnlyConstants(Interface i) {
     not exists (Method m | m.getDeclaringType() = i and not m.isStatic())
-  	and exists (Field f | f.getDeclaringType() = i and f.isStatic())
-  	and forall (RefType s | i.getASupertype() = s | s.hasQualifiedName("java.lang", "Object") or hasOnlyConstants(s))
+    and exists (Field f | f.getDeclaringType() = i and f.isStatic())
+    and forall (RefType s | i.getASupertype() = s | s.hasQualifiedName("java.lang", "Object") or hasOnlyConstants(s))
 }
 
 from Class c, Interface i
