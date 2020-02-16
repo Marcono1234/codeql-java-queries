@@ -6,25 +6,45 @@
 
 import java
 
-predicate isLoggingMethod(string signature) {
-    signature = "trace(java.lang.Object)"
-    or signature = "debug(java.lang.Object)"
-    or signature = "info(java.lang.Object)"
-    or signature = "warn(java.lang.Object)"
-    or signature = "error(java.lang.Object)"
-    or signature = "fatal(java.lang.Object)"
-}
+abstract class LoggerMethod extends Method {}
 
-class LoggerType extends RefType {
-    LoggerType() {
-        hasQualifiedName("org.apache.logging.log4j", "Logger")
+class Log4j1LoggerMethods extends LoggerMethod {
+    Log4j1LoggerMethods() {
+        (
+            getDeclaringType().hasQualifiedName("org.apache.log4j", "Category")
+            and exists (string s | getSignature() = s |
+                s = "debug(java.lang.Object)"
+                or s = "info(java.lang.Object)"
+                or s = "warn(java.lang.Object)"
+                or s = "error(java.lang.Object)"
+                or s = "fatal(java.lang.Object)"
+            )
+        )
+        or (
+            getDeclaringType().hasQualifiedName("org.apache.log4j", "Logger")
+            and exists (string s | getSignature() = s |
+                s = "trace(java.lang.Object)"
+            )
+        )
     }
 }
 
-from MethodAccess call, Method method
+class Log4j2LoggerMethods extends LoggerMethod {
+    Log4j2LoggerMethods() {
+        getDeclaringType().hasQualifiedName("org.apache.logging.log4j", "Logger")
+        and exists (string s | getSignature() = s |
+            s = "trace(java.lang.Object)"
+            or s = "debug(java.lang.Object)"
+            or s = "info(java.lang.Object)"
+            or s = "warn(java.lang.Object)"
+            or s = "error(java.lang.Object)"
+            or s = "fatal(java.lang.Object)"
+        )
+    }
+}
+
+from MethodAccess call
 where
-    call.getMethod() = method
-    and method.getDeclaringType() instanceof LoggerType
-    and isLoggingMethod(method.getSignature())
+    call.getMethod() instanceof Log4j1LoggerMethods
     and call.getAnArgument().getType() instanceof ThrowableType
 select call
