@@ -43,8 +43,13 @@ class Log4j2LoggerMethods extends LoggerMethod {
     }
 }
 
+predicate isLoggerMethodOrOverrides(Method m) {
+    m instanceof LoggerMethod
+    or exists (LoggerMethod logM | m.overrides(logM))
+}
+
 from MethodAccess call
 where
-    call.getMethod() instanceof Log4j1LoggerMethods
+    isLoggerMethodOrOverrides(call.getMethod())
     and call.getAnArgument().getType() instanceof ThrowableType
 select call
