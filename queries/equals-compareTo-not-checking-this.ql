@@ -5,6 +5,7 @@
  */
 
 import java
+import semmle.code.java.dataflow.DataFlow
 
 /// From https://github.com/Semmle/ql/blob/9ec52a43eef0aeca4e39fa9021d196e5589cfb9e/java/ql/src/Likely%20Bugs/Comparison/InconsistentCompareTo.ql
 predicate implementsComparableOn(RefType t, RefType typeArg) {
@@ -36,7 +37,7 @@ predicate isEqualityMethod(Method m) {
 
 predicate delegatesCheck(Method m) {
     exists (MethodAccess call | 
-        call.getAnArgument().(RValue).getVariable() = m.getAParameter()
+        DataFlow::localFlow(DataFlow::parameterNode(m.getAParameter()), DataFlow::exprNode(call.getAnArgument()))
     )
 }
 
