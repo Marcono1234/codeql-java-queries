@@ -1,7 +1,7 @@
 /**
- * Finds classes whose `equals(Object)` and `compareTo(T)` implementations
- * do not check the same fields. This is allowed by the contract of
- * `compareTo`, but should be documented.
+ * Finds classes whose `compareTo(T)` implementation checks fields which
+ * are not considered by `equals(Object)`. While this is allowed by the
+ * contract of `compareTo`, this behavior might not be intended.
  */
 
 import java
@@ -49,11 +49,8 @@ where
     and equalsM.getDeclaringType().getAnAncestor() = f.getDeclaringType()
     // Ignore static fields because they likely do not influence equality check
     and not f.isStatic()
-    // Check if field is only read by one of the methods
-    and (
-        (equalsM.reads(f) and not compareToM.reads(f))
-        or (not equalsM.reads(f) and compareToM.reads(f))
-	)
+    // Check if field is only read by compareTo
+    and not equalsM.reads(f) and compareToM.reads(f)
     // Verify that equality check is not delegated
     and not (delegatesCheck(equalsM) or delegatesCheck(compareToM))
 select equalsM, compareToM, f
