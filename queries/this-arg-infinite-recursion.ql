@@ -1,13 +1,15 @@
 /**
- * Finds cases of (potential) infinite recursion where a method calls
- * the same method on one of its args with the same arguments, except
- * `this` instead of the argument on which it calls the method, e.g.:
+ * Finds methods which call the same method (or its parent implementation)
+ * on one of its arguments, passing the same arguments as parameters,
+ * except the argument on which the method is called being replaced with
+ * `this`. E.g.:
  * ```
  * public boolean equals(Object obj) {
  *     return obj.equals(this);
  * }
  * ```
- * This can lead to infinite recursing when `this` is passed as argument.
+ * This can lead to infinite recursion when the method is called with
+ * `this` as argument.
  */
 
 import java
