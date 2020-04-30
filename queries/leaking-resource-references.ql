@@ -62,7 +62,7 @@ predicate isCleaned(Variable var) {
 from Method method, ReturnStmt returnStmt, Field field
 where 
     returnStmt.getEnclosingCallable() = method
-    and method.isPrivate()
+    and method.isPublic()
     and field.getAnAccess() = returnStmt.getResult()
     and isCleaned(field)
 select returnStmt
