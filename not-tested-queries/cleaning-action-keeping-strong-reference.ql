@@ -20,21 +20,22 @@ class RunMethod extends Method {
     }
 }
 
+// TODO: Currently missing the case where constructor of inner
+// (non-static nested) class is called
 Expr referenceToClassInstance(Class referenced) {
     // Reference to class via `this`, e.g. `Enclosing.this`
     result.(ThisAccess).getType() = referenced
     // Reference to class via non-static method access
     or exists (MethodAccess methodAccess |
         result = methodAccess
-        and methodAccess.getReceiverType() = referenced
         and not methodAccess.getMethod().isStatic()
+        and methodAccess.isEnclosingMethodAccess(referenced)
     )
     // Reference to class via non-static field access
-    or exists (FieldAccess fieldAccess, Field field |
+    or exists (FieldAccess fieldAccess |
         result = fieldAccess
-        and field = fieldAccess.getField()
-        and not field.isStatic()
-        and referenced.getAnAncestor() = field.getDeclaringType()
+        and not fieldAccess.getField().isStatic()
+        and fieldAccess.isEnclosingFieldAccess(referenced)
     )
 }
 
@@ -72,7 +73,7 @@ Expr getRunnableCreationReferencingInstance(Class referenced, string reason) {
         and memberRefExpr.asMethod().getAnOverride() instanceof RunMethod
         and referencedCallable = memberRefExpr.getReferencedCallable()
         and not referencedCallable.isStatic()
-        and referenced.getAnAncestor*() = referencedCallable.getDeclaringType()
+        and referenced.getAnAncestor() = referencedCallable.getDeclaringType()
         and reason = "Cleaning action is method reference to non-static method of enclosing instance"
     )
 }
