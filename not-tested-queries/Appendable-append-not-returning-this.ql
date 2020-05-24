@@ -22,9 +22,19 @@ class AppendMethod extends Method {
 from ReturnStmt return
 where
     return.getEnclosingCallable().(Method).getAnOverride() instanceof AppendMethod
+    // Not returning `this`
     and not exists (ThisAccess thisAccess |
         thisAccess = return.getResult()
-        // `this` should be unqualified, otherwise it might return enclosing instance
-        and not exists (thisAccess.getQualifier())
+        // `this` should refer to own instance
+        and thisAccess.isOwnInstanceAccess()
+    )
+    // And not returning result of delegate call, e.g. `return append(csq, 0, csq.length())`
+    and not exists (MethodAccess delegateCall |
+        (
+            delegateCall.getMethod() instanceof AppendMethod
+            or delegateCall.getMethod().getAnOverride() instanceof AppendMethod
+        )
+        and delegateCall.isOwnMethodAccess()
+        and delegateCall = return.getResult()
     )
 select return
