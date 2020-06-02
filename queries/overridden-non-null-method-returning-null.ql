@@ -7,11 +7,6 @@
 import java
 import semmle.code.java.dataflow.Nullness
 
-Method overrideOrSelf(Method m) {
-    result = m
-    or result = m.getAnOverride()
-}
-
 class NonNullAnnotation extends Annotation {
     NonNullAnnotation() {
         // Ignore case due to the different existing annotations
@@ -66,5 +61,5 @@ class NullableMethod extends Method {
 
 from RequiredNonNullMethod requiredNonNull, NullableMethod nullableMethod
 where
-    overrideOrSelf(nullableMethod) = requiredNonNull
+    nullableMethod.getAnOverride*() = requiredNonNull
 select requiredNonNull, nullableMethod

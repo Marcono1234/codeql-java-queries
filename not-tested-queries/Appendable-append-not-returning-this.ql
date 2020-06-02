@@ -30,10 +30,7 @@ where
     )
     // And not returning result of delegate call, e.g. `return append(csq, 0, csq.length())`
     and not exists (MethodAccess delegateCall |
-        (
-            delegateCall.getMethod() instanceof AppendMethod
-            or delegateCall.getMethod().getAnOverride() instanceof AppendMethod
-        )
+        delegateCall.getMethod().getAnOverride*() instanceof AppendMethod
         and delegateCall.isOwnMethodAccess()
         and delegateCall = return.getResult()
     )

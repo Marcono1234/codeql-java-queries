@@ -36,10 +36,7 @@ where
     or (
         exists (MethodAccess call, Method method |
             method = call.getMethod()
-            and (
-                method instanceof WriteObjectMethod
-                or method.getAnOverride() instanceof WriteObjectMethod
-            )
+            and method.getAnOverride*() instanceof WriteObjectMethod
             and call.getArgument(0).getType().(RefType).getAnAncestor() = capturingClass
             and reason = call
         )

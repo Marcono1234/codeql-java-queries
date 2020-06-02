@@ -28,10 +28,7 @@ class NullStringLiteral extends CompileTimeConstantExpr {
 
 predicate callsAppendDelegate(Method appendMethod) {
     exists (Method delegateMethod |
-        (
-            delegateMethod instanceof AppendMethod
-            or delegateMethod.getAnOverride() instanceof AppendMethod
-        )
+        delegateMethod.getAnOverride*() instanceof AppendMethod
         and appendMethod.calls(delegateMethod)
     )
 }
@@ -49,10 +46,7 @@ predicate considersIndices(Method appendIndicesMethod, NullStringLiteral nullStr
 
 predicate callsAppendIndicesDelegate(Method appendMethod) {
     exists (Method delegateMethod |
-        (
-            delegateMethod instanceof AppendIndicesMethod
-            or delegateMethod.getAnOverride() instanceof AppendIndicesMethod
-        )
+        delegateMethod.getAnOverride*() instanceof AppendIndicesMethod
         and appendMethod.calls(delegateMethod)
     )
 }
