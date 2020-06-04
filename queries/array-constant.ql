@@ -1,5 +1,7 @@
 /**
  * Arrays (unless empty) are mutable and should not be used as constants.
+ *
+ * See also CodeQL's java/static-array
  */
 
 import java
