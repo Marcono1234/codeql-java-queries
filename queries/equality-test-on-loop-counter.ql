@@ -39,4 +39,8 @@ where
     var.getType() instanceof NumericType
     and var.getAnAccess().(RValue) = eqTest.getAnOperand()
     and isEqTestOnCounterVar(eqTest, var)
+    // Reduce false positives by ignoring comparison with -1
+    // Often an index search method (e.g. String.indexOf) is called within the loop
+    // and then an increment expr is used to continue searching at a different index
+    and not eqTest.getAnOperand().(CompileTimeConstantExpr).getIntValue() = -1
 select eqTest
