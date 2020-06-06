@@ -21,27 +21,16 @@ predicate incrOrDecr(Variable var, Expr expr) {
     )
 }
 
-predicate containsIncrOrDecr(ExprParent parent, Variable var) {
+predicate containsIncrOrDecr(Stmt enclosing, Variable var) {
     exists (Expr incrOrDecrExpr | incrOrDecr(var, incrOrDecrExpr) |
-        incrOrDecrExpr.getParent*() = parent
+        incrOrDecrExpr.getEnclosingStmt().getEnclosingStmt*() = enclosing
     )
 }
 
 predicate isEqTestOnCounterVar(EqualityTest eqTest, Variable var) {
-    exists (ForStmt for |
-        eqTest = for.getCondition()
-        and (
-            containsIncrOrDecr(for.getAnUpdate(), var)
-            or containsIncrOrDecr(for.getStmt(), var)
-        )
-    )
-    or exists (WhileStmt while |
-        eqTest = while.getCondition()
-        and containsIncrOrDecr(while.getStmt(), var)
-    )
-    or exists (DoStmt doWhile |
-        eqTest = doWhile.getCondition()
-        and containsIncrOrDecr(doWhile.getStmt(), var)
+    exists (LoopStmt loopStmt |
+        eqTest = loopStmt.getCondition()
+        and containsIncrOrDecr(loopStmt, var)
     )
 }
 
