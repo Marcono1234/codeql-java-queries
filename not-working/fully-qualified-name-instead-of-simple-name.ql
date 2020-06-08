@@ -48,7 +48,8 @@ int getExpectedTypeLength(TypeAccess typeAccess) {
         + getExpectedQualifierLength(typeAccess)
         + getExpectedTypeParametersLength(typeAccess)
         // Increase length for annotations (consider 1 space for each annotation)
-        + count(typeAccess.getAnAnnotation()) + sum(typeAccess.getAnAnnotation().toString().length())
+        + count(typeAccess.getAnAnnotation())
+        + sum(Annotation annotation | annotation = typeAccess.getAnAnnotation() | getSourceLength(annotation))
     )
 }
 
