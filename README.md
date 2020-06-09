@@ -8,4 +8,5 @@ might not exist in existing code scanning products. If you think this
 repository infringes your rights, please let me know and I will make the 
 reporitory private.
 
-I will not submit these queries to https://github.com/semmle/ql.
+I might submit these queries to https://github.com/github/codeql in case they are
+interested.
