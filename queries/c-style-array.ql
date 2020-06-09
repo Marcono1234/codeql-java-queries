@@ -3,8 +3,9 @@
  * the variable name or for a method return type behind the parameter list.
  * E.g.:
  * ```
+ * // C-style array declaration:
  * int a[];
- * // instead of
+ * // Recommended (brackets behind component type):
  * int[] a;
  * ```
  * C-style array declarations can be confusing because the brackets logically

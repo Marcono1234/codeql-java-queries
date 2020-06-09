@@ -2,8 +2,9 @@
  * Finds fully qualified names of types where the simple name could be
  * used instead:
  * ```
+ * // Fully qualified name:
  * java.util.List<String> list = new java.util.ArrayList<>();
- * // instead of
+ * // Simple name (and respective import):
  * List<String> list = new ArrayList<>();
  * ```
  */
