@@ -55,7 +55,7 @@ predicate handlesUnknownEnumConstant(ThrowStmt throwStmt) {
             or exists (StringLiteral stringLiteral |
                 stringLiteral.getParent*() = newExpr
                 // "unknown" or "unrecognized"
-                and stringLiteral.getValue().regexpMatch(".*[uU](?:nknown|nrecognized).*")
+                and stringLiteral.getValue().regexpMatch("(?s).*[uU](?:nknown|nrecognized).*")
             )
         )
     )

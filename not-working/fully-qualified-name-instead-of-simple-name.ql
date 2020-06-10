@@ -80,7 +80,7 @@ string canUseImportForType(CompilationUnit source, RefType type) {
         // Make sure javadoc inline tag does not reference type
         and not exists (JavadocText javadocText |
             javadocText.getLocation().getFile() = source
-            and javadocText.getText().regexpMatch(".*\\{@.* .*" + type.getName() + ".*\\}.*")
+            and javadocText.getText().regexpMatch("(?s).*\\{@.* .*" + type.getName() + ".*\\}.*")
         )
         and result = "Can add import for " + type.getQualifiedName()
     )
