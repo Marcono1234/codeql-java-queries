@@ -35,11 +35,24 @@ where
     and indexCall.getMethod() instanceof IndexMethod
     and indexCall.getQualifier() = var.getAnAccess()
     // Verify that there is no re-assignment to var between contains and index
-    // Apparently causes some false negatives, see https://github.com/github/codeql/issues/3688
-    and not exists (Assignment assignment |
+    and not exists (Assignment assignment, ControlFlowNode assignNode |
         assignment.getDest() = var.getAnAccess()
-        and assignment.getControlFlowNode().getAPredecessor*() = containsCall
-        and assignment.getControlFlowNode().getASuccessor*() = indexCall
+        and assignNode = assignment.getControlFlowNode()
+        and assignNode.getAPredecessor*() = containsCall
+        and assignNode.getASuccessor*() = indexCall
+        /*
+         * In a loop where the variable is re-assigned, the assignment is after
+         * the call (first iteration) and before the call (subsequent iteration)
+         * See also https://github.com/github/codeql/issues/3688
+         *
+         * There is already code duplication for contains and index (both use the
+         * same string literal), so it is probably acceptable to refactor the code
+         * and duplicate the index call instead
+         *
+         * Therefore only consider cases where the assignment only happens
+         * before the call
+         */
+        and not assignNode.getAPredecessor*() = indexCall
     )
     and indexCall.getBasicBlock() = conditionNode.getATrueSuccessor()
     and containsCall.getArgument(0).(CompileTimeConstantExpr).getStringValue() = indexCall.getArgument(0).(CompileTimeConstantExpr).getStringValue()
