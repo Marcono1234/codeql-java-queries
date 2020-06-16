@@ -1,6 +1,7 @@
 /**
- * Finds calls to `java.util.Set.add(E)` or to the `java.util.List` index methods
- * (e.g. `List.indexOf(Object)`) which are only performed conditionally after a
+ * Finds calls to modifying `java.util.Collection` methods which return as result whether an
+ * element was present in the collection (e.g. `java.util.Set.add(E)`) or to the `java.util.List`
+ * index methods (e.g. `List.indexOf(Object)`) which are only performed conditionally after a 
  * `contains(Object)` call, e.g.:
  * ```
  * if (!set.contains("a")) {
@@ -14,9 +15,8 @@
  * }
  * ```
  * In both cases the call to `contains` is not necessary and performance can be
- * increased by omitting it and instead evaluating the return value of `Set.add`
- * (which returns `false` if the element was already contained) or the List
- * index methods (which return -1 if the element is not contained).
+ * increased by omitting it and instead evaluating the return value of the modifying
+ * method or the List index method (which returns -1 if the element is not contained).
  */
 
 import java
@@ -28,13 +28,34 @@ class ContainsMethod extends Method {
     }
 }
 
-class SetAddMethod extends Method {
+abstract class ModifyingMethod extends Method {
+    abstract boolean expectedContainsResult();
+}
+
+class RemoveMethod extends ModifyingMethod {
+    RemoveMethod() {
+        getDeclaringType().getErasure().(RefType).hasQualifiedName("java.util", "Collection")
+        and hasStringSignature("remove(Object)")
+    }
+    
+    override
+    boolean expectedContainsResult() {
+        result = true
+    }
+}
+
+class SetAddMethod extends ModifyingMethod {
     SetAddMethod() {
         getDeclaringType().getErasure().(RefType).hasQualifiedName("java.util", "Set")
         // Checking string signature does not work reliably because type of parameter is
         // type parameter E, so check name and number of parameters instead
         and hasName("add")
         and getNumberOfParameters() = 1
+    }
+    
+    override
+    boolean expectedContainsResult() {
+        result = false
     }
 }
 
@@ -73,14 +94,15 @@ where
     and addOrIndexCall.getQualifier() = var.getAnAccess()
     and areSameArguments(containsCall.getArgument(0), addOrIndexCall.getArgument(0))
     and (
-        (
-            addOrIndexCall.getMethod().getAnOverride*() instanceof SetAddMethod
-            // Performs contains check and only if not contained adds element
-            // Caller could just call `add` instead and check for return value `true`
-            and condition.getAFalseSuccessor+() = addOrIndexCall.getBasicBlock()
-            // Make sure that `add` call does not happen in catch or similar
+        exists (ModifyingMethod modifyingMethod |
+            modifyingMethod = addOrIndexCall.getMethod().getAnOverride*()
+            // Performs contains check and then conditionally calls modifying method
+            // Caller could just call modifying method instead and check its return value
+            and condition.getABranchSuccessor(modifyingMethod.expectedContainsResult()) = addOrIndexCall.getBasicBlock()
+            // Make sure that modifying method call does not happen in catch or similar
             and condition.getANormalSuccessor+() = addOrIndexCall.getBasicBlock()
-            // Make sure that `add` happens unconditionally, i.e. there is not another ConditionNode in between
+            // Make sure that modifying method call happens unconditionally, i.e. there
+            // is not another ConditionNode in between
             and not exists (ConditionNode otherCondition |
                 otherCondition.getAPredecessor+() = condition
                 and otherCondition.getABranchSuccessor(_).getASuccessor*() = addOrIndexCall.getBasicBlock()
