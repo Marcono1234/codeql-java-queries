@@ -19,6 +19,8 @@ string getMessageForUsage(Annotatable annotatable, CompilationUnit accessingComp
     exists (string apiStatus |
         apiStatus = annotatable.getAnAnnotation().(ApiAnnotation).getValue("status").(FieldAccess).getField().(EnumConstant).getName()
         and (
+            // TODO: Should ignore INTERNAL and EXPERIMENTAL if used within same
+            // project (though only if `consumers` matches)
             (apiStatus = "INTERNAL" and result = "API is internal")
             or (apiStatus = "DEPRECATED" and result = "API is deprecated")
             or (
