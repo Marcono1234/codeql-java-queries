@@ -52,6 +52,7 @@ string getMessageForUsage(Annotatable annotatable, CompilationUnit accessingComp
     )
 }
 
+// TODO: Improve message and link if type or declaring type of member is parameterized
 string getDescription(Annotatable annotatable) {
     if annotatable instanceof Callable then (
         result = "callable " + annotatable.(Callable).getDeclaringType().getQualifiedName() + "." + annotatable.(Callable).getStringSignature()
@@ -81,6 +82,7 @@ RefType getDeclaringType(Annotatable annotatable) {
 from Expr expr, CompilationUnit compilationUnit, Annotatable annotatable, string message
 where
     compilationUnit = expr.getCompilationUnit()
+    // TODO: Ignore if usage happens due to supertype, e.g. type of parameter of overriden method
     and annotatable = getDeclaringType*([
         expr.(Call).getCallee(),
         expr.(MemberRefExpr).getReferencedCallable(),
