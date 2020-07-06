@@ -97,14 +97,7 @@ class ExplicitlyWideningExpr extends Expr {
     ExplicitlyWideningExpr() {
         // `long` literal whose value fits in `int` range suggests an intended widening
         // conversion
-        exists (string longLiteral |
-            longLiteral = this.(BinaryExpr).getAnOperand().(LongLiteral).getLiteral()
-            // Use prefix(length - 1) to remove trailing `L`
-            // Remove `_` because QL cannot parse as int otherwise
-            // Binary, octal and hexadecimal cannot be parsed either, but normally they are
-            // used for bitmasks and not numbers for arithmetic expressions
-            and exists (longLiteral.prefix(longLiteral.length() - 1).replaceAll("_", "").toInt())
-        )
+        exists (this.(BinaryExpr).getAnOperand().(LongLiteral).getValue().toInt())
         // Or cast to `long`; do not consider casts to other types (e.g. `int` or `short`)
         // since result of arithmetic expression in Java is `int`
         or (
