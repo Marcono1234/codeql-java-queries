@@ -3,11 +3,9 @@
  * or constructors which allow creating an operating system process.
  * In contrast to QL's built-in query this query checks for flow to any of
  * the arguments (and not only the program name).
- * Some programs such as `CMD.exe` might join arguments and re-parse them
- * again which can be vulnerable to command injection.
- * Additionally under Windows the System property
- * `jdk.lang.Process.allowAmbiguousCommands` has to be set to `false`.
- * Otherwise Windows pre-processing of arguments (https://docs.microsoft.com/en-us/cpp/cpp/main-function-command-line-args?view=vs-2019#parsing-c-command-line-arguments)
+ * Under Windows the System property `jdk.lang.Process.allowAmbiguousCommands`
+ * has to be set to `false`. Otherwise Windows' pre-processing of arguments
+ * (https://docs.microsoft.com/en-us/cpp/cpp/main-function-command-line-args?view=vs-2019#parsing-c-command-line-arguments)
  * will split and merge arguments containing double quotes which can allow
  * command injection. However, this System property is not that well-known
  * and is likely often not set, making the application vulnerable.
