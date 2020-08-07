@@ -22,8 +22,10 @@
  * }
  * ```
  *
- * While these bounds are (for some reason) permitted by the compiler, they
- * have no effect and are likely confusing to another person reading the code.
+ * While these bounds are permitted by the compiler, they have no effect
+ * and are likely confusing to another person reading the code.
+ *
+ * See also https://bugs.openjdk.java.net/browse/JDK-8250936
  */
 
 import java
