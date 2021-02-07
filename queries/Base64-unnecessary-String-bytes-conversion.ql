@@ -50,12 +50,15 @@ class ComplicatedBase64DecoderCall extends ComplicatedBase64Call {
 
 class ComplicatedBase64EncoderCall extends ComplicatedBase64Call {
     ComplicatedBase64EncoderCall() {
-        exists (Method m | m = getMethod() |
+        exists (Method m, ClassInstanceExpr newString |
+            m = getMethod()
+            and newString.getConstructedType() instanceof TypeString
+        |
             m.getDeclaringType() instanceof Base64Encoder
             and m.hasStringSignature("encode(byte[])")
+            // Creates String from byte[] result
+            and newString.getAnArgument() = this
         )
-        // Creates String from byte[] result
-        and getParent().(ClassInstanceExpr).getConstructedType() instanceof TypeString
     }
     
     override
