@@ -43,5 +43,10 @@ class StringRegexMethod extends RegexMethod {
 from RegexMethod regexMethod, MethodAccess call
 where
     call.getMethod() = regexMethod
-    and call.getArgument(regexMethod.regexParamIndex()).(CompileTimeConstantExpr).getStringValue().regexpMatch(".*\\[.*A-z.*\\].*")
+    and call.getArgument(regexMethod.regexParamIndex()).(CompileTimeConstantExpr).getStringValue().regexpMatch(
+        "(?s)" // Make `.` match line breaks
+        + ".*?(?:^|[^\\\\])(?:\\\\\\\\)*" // Any number of escaped back slashes -> `[` is not escaped
+        + "\\[.*A-z" // Wrong alphabetic range
+        + ".*"
+    )
 select call, "Uses wrong regex range `A-z`, use `a-zA-Z` instead"
