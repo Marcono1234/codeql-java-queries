@@ -32,16 +32,8 @@
  */
 
 import java
+import semmle.code.java.frameworks.Lombok
 import semmle.code.java.dataflow.DataFlow
-
-/**
- * Project Lombok's annotation type `SneakyThrows`.
- */
-class TypeLombokSneakyThrows extends AnnotationType {
-    TypeLombokSneakyThrows() {
-        hasQualifiedName("lombok", "SneakyThrows")
-    }
-}
 
 /**
  * Method which exploits Java type inference quirks to allow throwing any
@@ -109,7 +101,7 @@ private predicate isSneakilyThrowing(Method m) {
 
 from Expr sneakilyThrowing
 where
-    sneakilyThrowing.(Annotation).getType() instanceof TypeLombokSneakyThrows
+    sneakilyThrowing instanceof LombokSneakyThrowsAnnotation
     or (
         isSneakilyThrowing(sneakilyThrowing.(MethodAccess).getMethod())
         // Don't report intermediate methods
