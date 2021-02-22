@@ -27,7 +27,7 @@ class TypeCharSequence extends Interface {
     }
 }
 
-private Expr getStringJoiningExpr(Variable localVar) {
+private Expr getAStringJoiningExpr(Variable localVar) {
     exists(VarAccess varRead | varRead = localVar.getAnAccess() |
         // var = var + localVar
         exists(Variable resultVar, AssignExpr assign, AddExpr concatExpr |
@@ -78,5 +78,5 @@ where
             and forBody.(BlockStmt).getNumStmt() <= 2
         )
     )
-    and joiningExpr = getStringJoiningExpr(joinedVar)
+    and joiningExpr = getAStringJoiningExpr(joinedVar)
 select joiningExpr, "Joins CharSequences manually"
