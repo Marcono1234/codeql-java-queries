@@ -49,8 +49,8 @@ class CharsetDecoderFlushMethod extends Method {
     }
 }
 
-private string getSimpleMethodSignature(Method m) {
-    result = m.getDeclaringType().getName() + "." + m.getStringSignature()
+private string getSimpleMethodName(Method m) {
+    result = m.getDeclaringType().getName() + "." + m.getName()
 }
 
 from Class c, Method encodeDecodeMethod, MethodAccess encodeDecodeCall, Method flushMethod
@@ -73,4 +73,4 @@ where
             and flushMethod instanceof CharsetDecoderFlushMethod
         )
     )
-select c, "Calls " + getSimpleMethodSignature(encodeDecodeMethod) + " $@ but does not call flush(...)", encodeDecodeCall, "here"
+select c, "Calls " + getSimpleMethodName(encodeDecodeMethod) + " $@ but does not call flush(...)", encodeDecodeCall, "here"
