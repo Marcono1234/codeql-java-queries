@@ -111,7 +111,7 @@ class SystemPropertiesFlowReplacingCall extends SystemPropertiesChangingCall, Pr
 }
 
 // TODO: Model call flow from user triggered method (e.g. HTTP POST) to Properties modifying method,
-//       e.g. `Properties.clear()`; currently not possible with CodeQL only supports data / taint flow?
+//       e.g. `Properties.clear()`; see https://github.com/github/codeql/discussions/5353#discussioncomment-439461
 
 class SystemPropertyDataFlowConfiguration extends DataFlow::Configuration {
     SystemPropertyDataFlowConfiguration() { this = "SystemPropertyDataFlowConfiguration" }
