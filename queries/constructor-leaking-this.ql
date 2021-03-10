@@ -31,6 +31,7 @@ private predicate isParameterMemberAccess(Constructor c, Expr e) {
 }
 
 private ThisAccess getThisStoredExternally(Constructor c, Expr leakingExpr) {
+    // TODO: Also consider argument to constructor call, where constructed object is then leaked externally
     // Leaks by calling external method
     (
         result = leakingExpr.(MethodAccess).getAnArgument()
@@ -56,6 +57,7 @@ private ThisAccess getThisStoredExternally(Constructor c, Expr leakingExpr) {
             or isParameterMemberAccess(c, arraySource)
         )
     )
+    // TODO: Might also have to consider `this` being used in ArrayInit
 }
 
 from Constructor c, Expr leakingExpr, ThisAccess thisAccess
