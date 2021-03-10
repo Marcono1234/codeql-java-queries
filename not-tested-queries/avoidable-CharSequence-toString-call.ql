@@ -43,10 +43,6 @@ class LeakingExpr extends Expr {
     }
 }
 
-predicate isLeaked(Expr leaked) {
-    DataFlow::localFlow(DataFlow::exprNode(leaked), DataFlow::exprNode(any(LeakingExpr e)))
-}
-
 class TypeWithStringAlternatives extends RefType {
     TypeWithStringAlternatives() {
         hasQualifiedName("java.lang", [
@@ -64,11 +60,31 @@ class ObjectMethod extends Method {
 }
 
 /**
+ * Holds if `sinkExpr`, to which a dataflow from `t.toString()` exists (where `t`'s
+ * type is `toStringReceiverType`), does not have to be a `String`.
+ */
+private predicate doesNotHaveToBeString(Expr sinkExpr, RefType toStringReceiverType) {
+    // If used as qualifier to method call, an alternative has to exist
+    if any(MethodAccess c).getQualifier() = sinkExpr
+    then exists(MethodAccess call | call.getQualifier() = sinkExpr |
+        hasNonStringAlternative(call, toStringReceiverType)
+    )
+    else (
+        // Result is not leaked outside of callable
+        not sinkExpr instanceof LeakingExpr
+        // And not part of String concatenation (because that only works for String)
+        and not isConcatPiece(sinkExpr)
+        // And result is not used in `switch` (because that only supports String)
+        and not any(Switch s).getExpr() = sinkExpr
+    )
+}
+
+/**
  * Holds if `call` performed (indirectly) on `t.toString()` (where `t`'s type is
  * `toStringReceiverType`), has an alternative which would not require calling
  * `toString()`, but instead directly calling a method on `t`.
  */
-predicate hasNonStringAlternative(MethodAccess call, RefType toStringReceiverType) {
+private predicate hasNonStringAlternative(MethodAccess call, RefType toStringReceiverType) {
     exists(Method m, Method alternative | m = call.getMethod() |
         toStringReceiverType.getASourceSupertype*() = alternative.getDeclaringType()
         // Don't consider methods of custom subclasses because they might behave differently
@@ -80,17 +96,25 @@ predicate hasNonStringAlternative(MethodAccess call, RefType toStringReceiverTyp
             // Or could switch to alternative because its return type would work as well
             or (
                 m.getReturnType() instanceof TypeString
-                // Result is not leaked
-                and not isLeaked(call)
-                and forall(MethodAccess callOnReturned |
-                    DataFlow::localFlow(DataFlow::exprNode(call), DataFlow::exprNode(callOnReturned.getQualifier()))
+                and forall(Expr sinkExpr |
+                    DataFlow::localFlow(DataFlow::exprNode(call), DataFlow::exprNode(sinkExpr))
                 |
-                    hasNonStringAlternative(callOnReturned, alternative.getReturnType())
+                    doesNotHaveToBeString(sinkExpr, alternative.getReturnType())
                 )
             )
         )
         // Ignore methods inherited from Object; they are likely not an alternative
         and not alternative.getSourceDeclaration().overridesOrInstantiates(any(ObjectMethod o))
+    )
+}
+
+private predicate isConcatPiece(Expr e) {
+    any(AddExpr concatExpr).getAnOperand() = e
+    or any(AssignAddExpr concatExpr).getRhs() = e
+    // As destination and source of a compound concatentation expression `var += ...`
+    or exists(Variable var |
+        e = var.getAnAssignedValue()
+        and any(AssignAddExpr concatExpr).getDest() = var.getAnAccess()
     )
 }
 
@@ -106,31 +130,13 @@ where
     toStringCall.getMethod().hasStringSignature("toString()")
     and receiverType = toStringCall.getReceiverType()
     and receiverType.getASourceSupertype*() instanceof TypeWithStringAlternatives
-    // Result is not leaked
-    and not isLeaked(toStringCall)
-    // And not part of String concatenation (because that only works for String)
-    and not exists(Expr concatPiece |
-        DataFlow::localFlow(DataFlow::exprNode(toStringCall), DataFlow::exprNode(concatPiece))
-    |
-        any(AddExpr concatExpr).getAnOperand() = concatPiece
-        or any(AssignAddExpr concatExpr).getRhs() = concatPiece
-        // As destination and source of a compound concatentation expression `var += ...`
-        or exists(Variable var |
-            concatPiece = var.getAnAssignedValue()
-            and any(AssignAddExpr concatExpr).getDest() = var.getAnAccess()
-        )
-    )
-    // And result is not used in `switch` (because that only supports String)
-    and not DataFlow::localFlow(DataFlow::exprNode(toStringCall), DataFlow::exprNode(any(Switch s).getExpr()))
     // TODO: Will yield some false positives for StringBuilder and StringBuffer in case they
     //       are modified after `toString()` but before other calls on result of `toString()`
     // TODO: Have to verify that `toString()` result is used at all, though this will likely decrease
     //       performance of this query even further
-    and forall(MethodAccess call |
-        DataFlow::localFlow(DataFlow::exprNode(toStringCall), DataFlow::exprNode(call.getQualifier()))
+    and forall(Expr sinkExpr |
+        DataFlow::localFlow(DataFlow::exprNode(toStringCall), DataFlow::exprNode(sinkExpr))
     |
-        hasNonStringAlternative(call, toStringCall.getReceiverType())
+        doesNotHaveToBeString(sinkExpr, toStringCall.getReceiverType())
     )
-    // And there is no access on fields (might be the case for custom subtypes)
-    and not DataFlow::localFlow(DataFlow::exprNode(toStringCall), DataFlow::exprNode(any(FieldAccess f).getQualifier()))
 select toStringCall, "toString() call can be avoided; all methods on result can directly be called"
