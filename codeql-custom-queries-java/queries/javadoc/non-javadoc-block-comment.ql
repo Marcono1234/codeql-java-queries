@@ -42,4 +42,4 @@ where
         javadocText = javadoc.getAChild()
         and containsJavadocTag(javadocText.getText())
     )
-select javadoc
+select javadoc, "Regular block comment which might supposed to be a javadoc comment"
