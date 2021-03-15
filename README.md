@@ -11,8 +11,13 @@ This repository is therefore not recommended if you want to learn CodeQL; instea
 at the [CodeQL documentation](https://codeql.github.com/docs/) and the [CodeQL repository](https://github.com/github/codeql).
 
 ## Running the queries
-Most or all queries can directly be run in the [LGTM Query Console](https://lgtm.com/query/lang:java/)
-or from within the [Visual Studio Code extension](https://codeql.github.com/docs/codeql-for-visual-studio-code/).
+The queries of this repository are inside the [`codeql-custom-queries-java/queries` folder](./codeql-custom-queries-java/queries).
+Most of them can be copied to clipboard and directly be run in the [LGTM Query Console](https://lgtm.com/query/lang:java/).
+Please ignore the `codeql` folder, it is a Git submodule representing the upstream [CodeQL repository](https://github.com/github/codeql)
+which contains the language libraries needed for these queries.
+
+Alternatively this repository can be opened in [Visual Studio Code](https://code.visualstudio.com/)
+and the queries can then be run using the [CodeQL Visual Studio Code extension](https://codeql.github.com/docs/codeql-for-visual-studio-code/).
 
 Please be aware that, as with all code scanning tools, results might be false positives.
 Carefully examine all findings and don't blindly follow the given advice.

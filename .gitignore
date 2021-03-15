@@ -1,0 +1,6 @@
+# CodeQL query compilation caches
+.cache
+
+# CodeQL test projects and artifacts
+**/tests/**/*.testproj
+**/tests/**/*.actual

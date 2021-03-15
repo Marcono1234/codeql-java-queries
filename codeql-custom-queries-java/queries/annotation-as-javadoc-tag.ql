@@ -16,4 +16,4 @@ where
         potentialAnnotationName = annotationType.getName()
         or potentialAnnotationName = annotationType.getQualifiedName()
     )
-select javadocTag, javadocTag.getTagName()
+select javadocTag, "Annotation being mistaken for javadoc tag"

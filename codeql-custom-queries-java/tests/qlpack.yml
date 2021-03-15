@@ -1,0 +1,5 @@
+name: codeql-custom-queries-java-tests
+version: 0.0.0
+libraryPathDependencies: codeql-custom-queries-java
+extractor: java
+tests: .
