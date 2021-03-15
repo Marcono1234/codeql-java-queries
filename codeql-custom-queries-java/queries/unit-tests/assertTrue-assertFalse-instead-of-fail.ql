@@ -1,41 +1,16 @@
 /**
- * Finds assertion method calls in the form `assertTrue(false)` or `assertFalse(true)`
- * despite there being a `fail` method offered by the assertion class.
- * The `fail` method should be preferred because the desired outcome for it is clearer.
+ * Finds assertion method calls in the form `assertTrue(false)` or `assertFalse(true)`.
+ * Many assertion libraries provide a method for explicitly failing a test (e.g. `fail(...)`).
+ * Such a method should be preferred because the desired outcome for it is clearer.
  */
 
 import java
+import lib.AssertLib
 
-class AssertClass extends Class {
-    AssertClass() {
-        getQualifiedName() in [
-            "org.junit.Assert", // JUnit 4
-            "org.junit.jupiter.api.Assertions", // JUnit 5
-            "org.testng.Assert" // TestNG
-        ]
-    }
-}
-
-class AssertTrueMethod extends Method {
-    AssertTrueMethod() {
-        hasStringSignature("assertTrue(boolean)")
-        and getDeclaringType() instanceof AssertClass
-    }
-}
-
-class AssertFalseMethod extends Method {
-    AssertFalseMethod() {
-        hasStringSignature("assertFalse(boolean)")
-        and getDeclaringType() instanceof AssertClass
-    }
-}
-
-from MethodAccess assertCall, Method assertMethod, boolean firstArgumentValue
+from MethodAccess assertCall, AssertBooleanMethod assertMethod, boolean booleanArg
 where
     assertMethod = assertCall.getMethod()
-    and firstArgumentValue = assertCall.getArgument(0).(BooleanLiteral).getBooleanValue()
-    and (
-        firstArgumentValue = false and assertMethod instanceof AssertTrueMethod
-        or firstArgumentValue = true and assertMethod instanceof AssertFalseMethod
-    )
-select assertCall
+    and booleanArg = assertCall.getArgument(assertMethod.getAssertionParamIndex()).(BooleanLiteral).getBooleanValue()
+    // And boolean constant is not the expected one
+    and booleanArg = assertMethod.polarity().booleanNot()
+select assertCall, "Should use assertion method for explicitly failing a test, e.g. `fail(...)`"
