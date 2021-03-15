@@ -1,2 +1,2 @@
-| Test.java:2:3:2:14 | @Deprecated | Annotation being mistaken for javadoc tag |
-| Test.java:8:5:8:14 | @Override | Annotation being mistaken for javadoc tag |
+| Test.java:2:4:2:15 | @Deprecated | Annotation being mistaken for javadoc tag |
+| Test.java:8:8:8:17 | @Override | Annotation being mistaken for javadoc tag |
