@@ -1,0 +1,49 @@
+| Test.java:3:9:3:17 | ...=... | Should use += |
+| Test.java:4:9:4:17 | ...=... | Should use post increment ++ |
+| Test.java:5:9:5:25 | ...=... | Should use += |
+| Test.java:6:9:6:17 | ...=... | Should use += |
+| Test.java:7:9:7:17 | ...=... | Should use post increment ++ |
+| Test.java:9:9:9:17 | ...=... | Should use += |
+| Test.java:10:9:10:17 | ...=... | Should use post decrement -- |
+| Test.java:11:9:11:17 | ...=... | Should use -= |
+| Test.java:18:9:18:17 | ...=... | Should use post increment ++ |
+| Test.java:19:14:19:22 | ...=... | Should use pre increment ++ |
+| Test.java:20:9:20:17 | ...=... | Should use post decrement -- |
+| Test.java:21:14:21:22 | ...=... | Should use pre decrement -- |
+| Test.java:25:9:25:17 | ...=... | Should use += |
+| Test.java:26:9:26:17 | ...=... | Should use += |
+| Test.java:27:9:27:17 | ...=... | Should use -= |
+| Test.java:29:9:29:17 | ...=... | Should use *= |
+| Test.java:30:9:30:17 | ...=... | Should use *= |
+| Test.java:31:9:31:17 | ...=... | Should use /= |
+| Test.java:33:9:33:17 | ...=... | Should use %= |
+| Test.java:35:9:35:17 | ...=... | Should use &= |
+| Test.java:36:9:36:17 | ...=... | Should use &= |
+| Test.java:37:9:37:17 | ...=... | Should use ^= |
+| Test.java:38:9:38:17 | ...=... | Should use ^= |
+| Test.java:39:9:39:17 | ...=... | Should use \|= |
+| Test.java:40:9:40:17 | ...=... | Should use \|= |
+| Test.java:41:9:41:18 | ...=... | Should use <<= |
+| Test.java:43:9:43:18 | ...=... | Should use >>= |
+| Test.java:45:9:45:19 | ...=... | Should use >>>= |
+| Test.java:55:9:55:22 | ...=... | Should use += |
+| Test.java:57:9:57:17 | ...=... | Should use += |
+| Test.java:59:9:59:17 | ...=... | Should use += |
+| Test.java:60:9:60:17 | ...=... | Should use += |
+| Test.java:64:9:64:23 | ...=... | Should use post increment ++ |
+| Test.java:65:9:65:23 | ...=... | Should use post increment ++ |
+| Test.java:66:9:66:23 | ...=... | Should use post decrement -- |
+| Test.java:72:9:72:17 | ...=... | Should use += |
+| Test.java:73:9:73:17 | ...=... | Should use += |
+| Test.java:74:9:74:17 | ...=... | Should use += |
+| Test.java:75:9:75:17 | ...=... | Should use += |
+| Test.java:79:9:79:17 | ...=... | Should use post increment ++ |
+| Test.java:81:9:81:17 | ...=... | Should use post increment ++ |
+| Test.java:82:9:82:18 | ...=... | Should use post increment ++ |
+| Test.java:84:9:84:17 | ...=... | Should use post increment ++ |
+| Test.java:85:9:85:18 | ...=... | Should use post increment ++ |
+| Test.java:86:9:86:18 | ...=... | Should use post increment ++ |
+| Test.java:88:9:88:17 | ...=... | Should use post increment ++ |
+| Test.java:89:9:89:18 | ...=... | Should use post increment ++ |
+| Test.java:90:9:90:18 | ...=... | Should use post increment ++ |
+| Test.java:91:9:91:18 | ...=... | Should use post increment ++ |

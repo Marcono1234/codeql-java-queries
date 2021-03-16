@@ -29,23 +29,24 @@ private predicate isCommutative(BinaryExpr e) {
  * binary expression which remains after simplification.
  */
 private BinaryExpr getSimplifiableAssignOperation(AssignExpr assignExpr, Expr otherOperand) {
-    exists(Variable var, VarAccess assignVarAccess, VarAccess updateVarAccess |
-        assignVarAccess = var.getAnAccess()
-        and updateVarAccess = var.getAnAccess()
-        // Verify that both access same variable; ignore something like `var = other.var + ...`
-        and accessSameVarOfSameOwner(assignVarAccess, updateVarAccess)
-        and assignExpr.getDest() = assignVarAccess
+    exists(Expr assignDestExpr, Expr updateOperandExpr |
+        assignExpr.getDest() = assignDestExpr
         and assignExpr.getRhs() = result
         and otherOperand = result.getAnOperand()
         and exists(Expr assignDest, Expr varReadOperand |
             assignDest = assignExpr.getDest()
-            and if isCommutative(result) then varReadOperand = result.getAnOperand()
-            // If not commutative only allow var read as left operand
-            else varReadOperand = result.getLeftOperand()
+            and (
+                if isCommutative(result) then varReadOperand = result.getAnOperand()
+                // If not commutative only allow var read as left operand
+                else varReadOperand = result.getLeftOperand()
+            )
+            // Don't select the same operand
             and varReadOperand != otherOperand
         |
-            varReadOperand = updateVarAccess
+            varReadOperand = updateOperandExpr
         )
+        // Verify that both access same variable; ignore something like `var = other.var + ...`
+        and accessSameVarOfSameOwner(assignDestExpr, updateOperandExpr)
     )
 }
 
@@ -79,8 +80,8 @@ where
     binaryExpr = getSimplifiableAssignOperation(assignExpr, otherOperand)
     and(
         // Use `if-else` to prevent duplicate message for unary increment / decrement
-        if (alternative = getUnaryIncrementOrDecrementMessage(assignExpr, binaryExpr, otherOperand)) then (
-            any() // alternative is already bound
+        if exists(getUnaryIncrementOrDecrementMessage(assignExpr, binaryExpr, otherOperand)) then (
+            alternative = getUnaryIncrementOrDecrementMessage(assignExpr, binaryExpr, otherOperand)
         ) else (
             // Get compound op; some operators (&& and ||) do not have one
             // Use getOp().trim() because it had leading and trailing spaces
