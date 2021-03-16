@@ -509,6 +509,56 @@ class JUnit5AssertNotSame extends AssertNotSameMethod {
   }
 }
 
+// Consider JUnit 5 Assumptions as well; they are not exactly the same
+// as Assertions, but similar enough to be relevant for most queries
+class TypeJUnit5Assumptions extends Class {
+  TypeJUnit5Assumptions() {
+    hasQualifiedName("org.junit.jupiter.api", "Assumptions")
+  }
+}
+
+class JUnit5AssumeTrue extends AssertTrueMethod {
+  JUnit5AssumeTrue() {
+    getDeclaringType() instanceof TypeJUnit5Assumptions
+    and hasName("assumeTrue")
+    // Ignore assumeTrue with BooleanSupplier
+    and getParameterType(0) instanceof BooleanType
+  }
+
+  override
+  int getAssertionParamIndex() {
+    result = 0
+  }
+}
+
+class JUnit5AssumingThat extends AssertTrueMethod {
+  JUnit5AssumingThat() {
+    getDeclaringType() instanceof TypeJUnit5Assumptions
+    and hasName("assumingThat")
+    // Ignore assumingThat with BooleanSupplier
+    and getParameterType(0) instanceof BooleanType
+  }
+
+  override
+  int getAssertionParamIndex() {
+    result = 0
+  }
+}
+
+class JUnit5AssumeFalse extends AssertFalseMethod {
+  JUnit5AssumeFalse() {
+    getDeclaringType() instanceof TypeJUnit5Assumptions
+    and hasName("assumeFalse")
+    // Ignore assumeFalse with BooleanSupplier
+     and getParameterType(0) instanceof BooleanType
+  }
+
+  override
+  int getAssertionParamIndex() {
+    result = 0
+  }
+}
+
 class TypeTestNgAssert extends Class {
   TypeTestNgAssert() {
     hasQualifiedName("org.testng", "Assert")
