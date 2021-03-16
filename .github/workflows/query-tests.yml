@@ -29,5 +29,8 @@ jobs:
         # -q to run quietly
         run: unzip -q -d codeql-cli codeql-linux64.zip
 
+      - name: Print CodeQL CLI version
+        run: ./codeql-cli/codeql/codeql version --format=terse
+
       - name: Run query tests
         run: ./codeql-cli/codeql/codeql test run "--search-path=codeql:./codeql-custom-queries-java/queries" ./codeql-custom-queries-java/tests
