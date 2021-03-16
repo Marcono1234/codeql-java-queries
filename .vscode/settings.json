@@ -1,4 +1,11 @@
 {
     "files.eol": "\n",
+    "search.exclude": {
+        "**/node_modules": true,
+        "**/bower_components": true,
+        "**/*.code-search": true,
+        // Exclude upstream CodeQL submodule by default
+        "/codeql/**": true
+    },
     "omnisharp.autoStart": false
 }
