@@ -756,27 +756,6 @@ class TestNgAssertNotSame extends AssertNotSameMethod {
   }
 }
 
-private predicate accessSameField(FieldAccess a, FieldAccess b) {
-  a.isOwnFieldAccess() and b.isOwnFieldAccess()
-  or exists (RefType enclosing |
-    a.isEnclosingFieldAccess(enclosing)
-    and b.isEnclosingFieldAccess(enclosing)
-  )
-  or accessSameVariable(a.getQualifier(), b.getQualifier())
-}
-
-// TODO: Already declared in other queries, reduce code duplication
-predicate accessSameVariable(VarAccess a, VarAccess b) {
-  exists (Variable var | var = a.getVariable() |
-    var = b.getVariable()
-    and (
-      var instanceof LocalScopeVariable
-      or var.(Field).isStatic()
-      or accessSameField(a, b)
-    )
-  )
-}
-
 /**
  * A compile time constant expression or any literal.
  */

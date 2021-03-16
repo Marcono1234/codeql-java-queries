@@ -19,6 +19,7 @@ private predicate accessSameField(FieldAccess a, FieldAccess b) {
     or accessSameVariable(a.getQualifier(), b.getQualifier())
 }
 
+// TODO: Already declared in other queries, reduce code duplication
 predicate accessSameVariable(VarAccess a, VarAccess b) {
     exists (Variable var | var = a.getVariable() |
         var = b.getVariable()

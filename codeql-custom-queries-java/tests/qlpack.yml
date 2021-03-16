@@ -1,5 +1,9 @@
 name: codeql-custom-queries-java-tests
 version: 0.0.0
-libraryPathDependencies: codeql-custom-queries-java
+libraryPathDependencies:
+  # CodeQL test query pack; needed to be able to use InlineExpectationsTest
+  - codeql-java-tests
+  # Own custom queries
+  - codeql-custom-queries-java
 extractor: java
 tests: .

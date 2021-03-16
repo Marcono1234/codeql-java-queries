@@ -15,11 +15,12 @@
 
 import java
 import lib.AssertLib
+import lib.VarAccess
 
 from MethodAccess assertCall, AssertTwoArgumentsMethod assertMethod
 where
     assertMethod = assertCall.getMethod()
-    and accessSameVariable(
+    and accessSameVarOfSameOwner(
         assertCall.getArgument(assertMethod.getFixedParamIndex()),
         assertCall.getArgument(assertMethod.getAssertionParamIndex())
     )

@@ -10,27 +10,7 @@
  */
 
 import java
-
-private predicate accessSameField(FieldAccess a, FieldAccess b) {
-    a.isOwnFieldAccess() and b.isOwnFieldAccess()
-    or exists (RefType enclosing |
-        a.isEnclosingFieldAccess(enclosing)
-        and b.isEnclosingFieldAccess(enclosing)
-    )
-    or accessSameVariable(a.getQualifier(), b.getQualifier())
-}
-
-// TODO: Reduce code duplication; already declared in redundant-value-or-type-check.ql
-predicate accessSameVariable(VarAccess a, VarAccess b) {
-    exists (Variable var | var = a.getVariable() |
-        var = b.getVariable()
-        and (
-            var instanceof LocalScopeVariable
-            or var.(Field).isStatic()
-            or accessSameField(a, b)
-        )
-    )
-}
+import lib.VarAccess
 
 private predicate isCommutative(BinaryExpr e) {
     e instanceof AddExpr
@@ -53,7 +33,8 @@ private BinaryExpr getSimplifiableAssignOperation(AssignExpr assignExpr, Expr ot
         assignVarAccess = var.getAnAccess()
         and updateVarAccess = var.getAnAccess()
         // Verify that both access same variable; ignore something like `var = other.var + ...`
-        and accessSameVariable(assignVarAccess, updateVarAccess)
+        and accessSameVarOfSameOwner(assignVarAccess, updateVarAccess)
+        and assignExpr.getDest() = assignVarAccess
         and assignExpr.getRhs() = result
         and otherOperand = result.getAnOperand()
         and exists(Expr assignDest, Expr varReadOperand |
@@ -63,22 +44,7 @@ private BinaryExpr getSimplifiableAssignOperation(AssignExpr assignExpr, Expr ot
             else varReadOperand = result.getLeftOperand()
             and varReadOperand != otherOperand
         |
-            // Assignment of variable
-            (
-                assignDest = assignVarAccess
-                and varReadOperand = updateVarAccess
-            )
-            // Or assignment of array element, where same variable is used as index expression
-            or exists(Variable indexVar, VarAccess indexReadAssign, VarAccess indexReadOperand |
-                indexReadAssign = indexVar.getAnAccess()
-                and indexReadOperand = indexVar.getAnAccess()
-                and accessSameVariable(indexReadAssign, indexReadOperand)
-            |
-                assignDest.(ArrayAccess).getArray() = assignVarAccess
-                and assignDest.(ArrayAccess).getIndexExpr() = indexReadAssign
-                and varReadOperand.(ArrayAccess).getArray() = updateVarAccess
-                and varReadOperand.(ArrayAccess).getIndexExpr() = indexReadOperand
-            )
+            varReadOperand = updateVarAccess
         )
     )
 }
