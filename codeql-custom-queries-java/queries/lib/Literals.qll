@@ -11,7 +11,6 @@ float getNumericValue(Literal l) {
         l.(IntegerLiteral).getIntValue(),
         // Has no predicate for getting long value; therefore parse as CodeQL float
         l.(LongLiteral).getValue().toFloat(),
-        // TODO: getValue() causes precision loss, see https://github.com/github/codeql/issues/5418
         l.(FloatingPointLiteral).getValue().toFloat(),
         l.(DoubleLiteral).getValue().toFloat()
     ]

@@ -39,7 +39,14 @@ private class NumericOrCharTypeWithBounds extends Type {
     }
 }
 
-class NumericOrCharLiteral extends Expr {
+bindingset[f, other]
+private predicate lessThan(float f, float other) {
+    f < other
+    // CodeQL considers -0f < 0f
+    and not (f = -0.0 and other = 0.0)
+}
+
+private class NumericOrCharLiteral extends Expr {
     float value;
 
     NumericOrCharLiteral() {
@@ -48,8 +55,41 @@ class NumericOrCharLiteral extends Expr {
         or value = -getNumericValue(this.(MinusExpr).getExpr())
     }
 
-    float getNumericValue() {
-        result = value
+    /**
+     * Holds if the value of this literal is outside the range from `minValue`
+     * to `maxValue` (both inclusive), considering precision loss of floating
+     * point literals if necessary.
+     */
+    bindingset[minValue, maxValue]
+    predicate isOutsideRange(float minValue, float maxValue) {
+        /*
+         * Java `float` cannot represent Integer.MAX_VALUE and abs(Integer.MIN_VALUE)
+         * exactly, will round up. Therefore ignore if literal in source might
+         * actually be <= Integer.MAX_VALUE, respectively <= abs(Integer.MIN_VALUE).
+         *
+         * This also affects Long.MAX_VALUE and Long.MIN_VALUE, however Java `double`
+         * is affected there as well and since CodeQL's float is the same as double,
+         * there won't be false positives because `minValue` and `maxValue` are
+         * rounded in the same way
+         */
+        
+
+        (
+            lessThan(value, minValue)
+            and not (
+                minValue = -2147483648.0
+                and value = -2147483650.0
+                and getType().hasName("float")
+            )
+        )
+        or (
+            value > maxValue
+            and not (
+                maxValue = 2147483647.0
+                and value = 2147483650.0
+                and getType().hasName("float")
+            )
+        )
     }
 }
 
@@ -78,18 +118,10 @@ private class ConversionExpr extends Expr {
     }
 }
 
-bindingset[f, other]
-private predicate lessThan(float f, float other) {
-    f < other
-    // CodeQL considers -0f < 0f
-    and not (f = -0.0 and other = 0.0)
-}
-
-from ConversionExpr conv, NumericOrCharTypeWithBounds destType, NumericOrCharLiteral literal, float literalValue
+from ConversionExpr conv, NumericOrCharTypeWithBounds destType, NumericOrCharLiteral literal
 where
     destType = conv.getDestType()
     and literal = conv.getConverted()
-    and literalValue = literal.getNumericValue()
-    and (lessThan(literalValue, destType.getMinValue()) or literalValue > destType.getMaxValue())
+    and literal.isOutsideRange(destType.getMinValue(), destType.getMaxValue())
 select conv, "Performs lossy conversion of $@ to smaller type " + destType.getName(),
     literal, "this literal"

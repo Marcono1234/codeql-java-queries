@@ -24,8 +24,8 @@
 | Test.java:33:13:33:27 | (...)... | Performs lossy conversion of $@ to smaller type char | Test.java:33:20:33:27 | 65535.1d | this literal |
 | Test.java:35:13:35:30 | (...)... | Performs lossy conversion of $@ to smaller type int | Test.java:35:19:35:30 | -... | this literal |
 | Test.java:36:13:36:29 | (...)... | Performs lossy conversion of $@ to smaller type int | Test.java:36:19:36:29 | 2147483648L | this literal |
-| Test.java:37:13:37:32 | (...)... | Performs lossy conversion of $@ to smaller type int | Test.java:37:19:37:32 | -... | this literal |
-| Test.java:38:13:38:31 | (...)... | Performs lossy conversion of $@ to smaller type int | Test.java:38:19:38:31 | 2147483647.1f | this literal |
+| Test.java:37:13:37:30 | (...)... | Performs lossy conversion of $@ to smaller type int | Test.java:37:19:37:30 | -... | this literal |
+| Test.java:38:13:38:29 | (...)... | Performs lossy conversion of $@ to smaller type int | Test.java:38:19:38:29 | 2147483800f | this literal |
 | Test.java:39:13:39:32 | (...)... | Performs lossy conversion of $@ to smaller type int | Test.java:39:19:39:32 | -... | this literal |
 | Test.java:40:13:40:31 | (...)... | Performs lossy conversion of $@ to smaller type int | Test.java:40:19:40:31 | 2147483647.1d | this literal |
 | Test.java:42:13:42:43 | (...)... | Performs lossy conversion of $@ to smaller type long | Test.java:42:20:42:43 | -... | this literal |
@@ -34,8 +34,6 @@
 | Test.java:45:13:45:42 | (...)... | Performs lossy conversion of $@ to smaller type long | Test.java:45:20:45:42 | 19223372036854775808.0d | this literal |
 | Test.java:47:13:47:34 | (...)... | Performs lossy conversion of $@ to smaller type float | Test.java:47:21:47:34 | -... | this literal |
 | Test.java:48:13:48:33 | (...)... | Performs lossy conversion of $@ to smaller type float | Test.java:48:21:48:33 | 3.4028235E40d | this literal |
-| Test.java:87:13:87:30 | (...)... | Performs lossy conversion of $@ to smaller type int | Test.java:87:19:87:30 | -... | this literal |
-| Test.java:88:13:88:29 | (...)... | Performs lossy conversion of $@ to smaller type int | Test.java:88:19:88:29 | 2147483647f | this literal |
 | Test.java:104:9:104:17 | ...+=... | Performs lossy conversion of $@ to smaller type byte | Test.java:104:14:104:17 | -... | this literal |
 | Test.java:105:9:105:16 | ...+=... | Performs lossy conversion of $@ to smaller type byte | Test.java:105:14:105:16 | 256 | this literal |
 | Test.java:106:9:106:18 | ...+=... | Performs lossy conversion of $@ to smaller type byte | Test.java:106:14:106:18 | -... | this literal |
@@ -62,8 +60,8 @@
 | Test.java:131:9:131:21 | ...+=... | Performs lossy conversion of $@ to smaller type char | Test.java:131:14:131:21 | 65535.1d | this literal |
 | Test.java:134:9:134:25 | ...+=... | Performs lossy conversion of $@ to smaller type int | Test.java:134:14:134:25 | -... | this literal |
 | Test.java:135:9:135:24 | ...+=... | Performs lossy conversion of $@ to smaller type int | Test.java:135:14:135:24 | 2147483648L | this literal |
-| Test.java:136:9:136:27 | ...+=... | Performs lossy conversion of $@ to smaller type int | Test.java:136:14:136:27 | -... | this literal |
-| Test.java:137:9:137:26 | ...+=... | Performs lossy conversion of $@ to smaller type int | Test.java:137:14:137:26 | 2147483647.1f | this literal |
+| Test.java:136:9:136:25 | ...+=... | Performs lossy conversion of $@ to smaller type int | Test.java:136:14:136:25 | -... | this literal |
+| Test.java:137:9:137:24 | ...+=... | Performs lossy conversion of $@ to smaller type int | Test.java:137:14:137:24 | 2147483800f | this literal |
 | Test.java:138:9:138:27 | ...+=... | Performs lossy conversion of $@ to smaller type int | Test.java:138:14:138:27 | -... | this literal |
 | Test.java:139:9:139:26 | ...+=... | Performs lossy conversion of $@ to smaller type int | Test.java:139:14:139:26 | 2147483647.1d | this literal |
 | Test.java:142:9:142:37 | ...+=... | Performs lossy conversion of $@ to smaller type long | Test.java:142:14:142:37 | -... | this literal |
@@ -72,5 +70,3 @@
 | Test.java:145:9:145:36 | ...+=... | Performs lossy conversion of $@ to smaller type long | Test.java:145:14:145:36 | 19223372036854775808.0d | this literal |
 | Test.java:148:9:148:27 | ...+=... | Performs lossy conversion of $@ to smaller type float | Test.java:148:14:148:27 | -... | this literal |
 | Test.java:149:9:149:26 | ...+=... | Performs lossy conversion of $@ to smaller type float | Test.java:149:14:149:26 | 3.4028235E40d | this literal |
-| Test.java:191:9:191:25 | ...+=... | Performs lossy conversion of $@ to smaller type int | Test.java:191:14:191:25 | -... | this literal |
-| Test.java:192:9:192:24 | ...+=... | Performs lossy conversion of $@ to smaller type int | Test.java:192:14:192:24 | 2147483647f | this literal |
