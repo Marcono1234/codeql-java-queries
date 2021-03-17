@@ -1,0 +1,5 @@
+| Test.java:3:9:3:19 | 2147483647f | Literal value cannot be exactly represented as float, will be rounded to 2.14748365E9 |
+| Test.java:4:9:4:28 | 9223372036854775807f | Literal value cannot be exactly represented as float, will be rounded to 9.223372E18 |
+| Test.java:5:9:5:21 | 123456789E25f | Literal value cannot be exactly represented as float, will be rounded to 1.2345679E33 |
+| Test.java:6:9:6:28 | 1.55555555555555555f | Literal value cannot be exactly represented as float, will be rounded to 1.5555556 |
+| Test.java:8:9:8:16 | 1.0E-45f | Literal value cannot be exactly represented as float, will be rounded to 1.4E-45 |
