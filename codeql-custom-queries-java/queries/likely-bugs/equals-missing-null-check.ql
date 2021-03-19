@@ -6,6 +6,7 @@
 
 import java
 import semmle.code.java.dataflow.DataFlow
+import lib.Expressions
 
 class NpeExpr extends Expr {
     NpeExpr() {
@@ -26,7 +27,7 @@ class NullCheckExpr extends Expr {
         or exists (MethodAccess checkCall |
             this = checkCall.getAnArgument()
             // Verify that result of method is actually used
-            and not checkCall.getParent() instanceof ExprStmt
+            and not checkCall instanceof StmtExpr
         )
     }
 }

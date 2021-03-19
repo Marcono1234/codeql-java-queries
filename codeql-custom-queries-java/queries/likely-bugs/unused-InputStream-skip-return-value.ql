@@ -12,6 +12,7 @@
 // Partially covered by QL's java/ignored-error-status-of-call query
 
 import java
+import lib.Expressions
 
 class SkipMethod extends Method {
     SkipMethod() {
@@ -24,7 +25,7 @@ from MethodAccess skipCall
 where
     skipCall.getMethod() instanceof SkipMethod
     and (
-        skipCall.getParent() instanceof ExprStmt // Ignores return value
+        skipCall instanceof StmtExpr // Ignores return value
         or skipCall.getParent() instanceof ComparisonExpr
         or skipCall.getParent() instanceof EqualityTest
     )

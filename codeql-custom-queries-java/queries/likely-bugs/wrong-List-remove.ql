@@ -12,6 +12,7 @@
  */
 
 import java
+import lib.Expressions
 
 class RemoveElementMethod extends Method {
     RemoveElementMethod() {
@@ -30,8 +31,8 @@ class RemoveAtIndexMethod extends Method {
 from MethodAccess call, Expr argument
 where
     argument = call.getAnArgument()
-    // Make sure that return value of call is not used, i.e. call is a statement
-    and call.getParent() instanceof ExprStmt
+    // Make sure that return value of call is ignored
+    and call instanceof StmtExpr
     and (
         // Calling remove(Object) with Integer
         (

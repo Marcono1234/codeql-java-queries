@@ -11,10 +11,11 @@
  */
 
 import java
+import lib.Expressions
 
 from ClassInstanceExpr newExpr
 where
-    newExpr.getParent() instanceof ExprStmt
+    newExpr instanceof StmtExpr
     // Verify that instance creation does not happen in test method
     // Might be used there to test error handling
     and not newExpr.getEnclosingCallable() instanceof TestMethod

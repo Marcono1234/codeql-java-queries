@@ -31,7 +31,7 @@ predicate isLambdaCallingOnly(LambdaExpr lambda, MethodAccess call) {
     // Either lambda is expression
     lambda.getExprBody() = call
     // Or lambda has block, in that case check call is only statement
-    or exists(Block lambdaBlock |
+    or exists(BlockStmt lambdaBlock |
         lambdaBlock = lambda.getStmtBody()
         and lambdaBlock.getNumStmt() = 1
         and exists (Stmt stmt |

@@ -21,6 +21,7 @@
 
 import java
 import semmle.code.java.dataflow.DataFlow
+import lib.Expressions
 
 class Import_ extends Import {
     predicate isImporting(RefType type) {
@@ -80,7 +81,7 @@ class ReturningMethod extends Method {
 from MethodAccess call, ReturningMethod returningMethod
 where
     returningMethod.getSourceDeclaration().overridesOrInstantiates*(call.getMethod())
-    and call.getParent() instanceof ExprStmt // Result is unused
+    and call instanceof StmtExpr // Result is unused
     // Ignore if call happens in try stmt which appears to catch exception of call
     // Call might be used for validation purposes then
     and not exists (TryStmt tryStmt |
