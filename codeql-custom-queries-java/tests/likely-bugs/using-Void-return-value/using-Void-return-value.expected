@@ -1,0 +1,6 @@
+| Test.java:11:13:11:21 | getVoid(...) | Uses Void result |
+| Test.java:14:28:14:34 | get(...) | Uses Void result |
+| Test.java:19:25:19:33 | getVoid(...) | Uses Void result |
+| Test.java:27:14:27:22 | getVoid(...) | Uses Void result |
+| Test.java:28:18:28:26 | getVoid(...) | Uses Void result |
+| Test.java:69:39:69:55 | checkPermission(...) | Uses Void result |
