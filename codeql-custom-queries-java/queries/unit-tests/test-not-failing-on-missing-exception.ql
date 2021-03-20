@@ -59,7 +59,7 @@ predicate isFailMethodCall(MethodAccess call, Method m) {
     )
 }
 
-predicate isFailing(Block tryBlock) {
+predicate isFailing(BlockStmt tryBlock) {
     exists(MethodAccess failCall, ExprStmt failCallStmt |
         isFailMethodCall(failCall, failCall.getMethod())
         and failCall.getEnclosingStmt() = failCallStmt
