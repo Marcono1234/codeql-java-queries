@@ -17,6 +17,7 @@ class Expressions {
         for (int i1 = 0; i1 < 10; i1++) { }
         for (;;) {
             doSomething();
+            break;
         }
 
         // Not a StatementExpression
@@ -32,14 +33,19 @@ class Expressions {
 
         // Lambda with non-void return type has no StatementExpression
         Supplier<Object> supplier1 = () -> toString();
+        Supplier<Object> supplier2 = () -> {
+            return toString();
+        };
         // Lambda with void return type has StatementExpression
         Runnable r = () -> toString();
+        Runnable r2 = () -> {
+            toString();
+        };
 
         // Method reference with non-void return type has no StatementExpression
-        Supplier<Object> supplier2 = Expressions::new;
+        Supplier<Object> supplier3 = Expressions::new;
         // Implicit method of method reference contains StatementExpression
-        // TODO: Missing, not sure why. Workaround in StmtExpr should cover this
-        Runnable r2 = this::toString;
+        Runnable r3 = this::toString;
     }
 
     void doSomething() { }

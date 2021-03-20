@@ -22,9 +22,14 @@ class StmtExpr extends Expr {
             this = lambda.getExprBody()
             and lambda.asMethod().getReturnType() instanceof VoidType
         )
-        or exists(MemberRefExpr memberRef |
-            this.getEnclosingStmt().(ReturnStmt).getEnclosingCallable() = memberRef.asMethod()
-            and memberRef.asMethod().getReturnType() instanceof VoidType
+        or exists(MemberRefExpr memberRef, Method implicitMethod, Method overridden |
+            implicitMethod = memberRef.asMethod()
+        |
+            this.getParent().(ReturnStmt).getEnclosingCallable() = implicitMethod
+            // asMethod() has bogus method with wrong return type as result, e.g. `run(): String` (overriding `Runnable.run(): void`)
+            // Therefore need to check the overridden method
+            and implicitMethod.getSourceDeclaration().overridesOrInstantiates*(overridden)
+            and overridden.getReturnType() instanceof VoidType
         )
     }
 }
