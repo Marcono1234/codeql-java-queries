@@ -8,6 +8,10 @@ class Test {
         return 1;
     }
 
+    boolean getBoolean() {
+        return false;
+    }
+
     void sink(int i) { }
     
     int test() {
@@ -18,13 +22,13 @@ class Test {
         sink(f = i = 1);
         f |= i |= 1; // This is not a normal multi assignment, should be detected
 
-        if (true) {
+        if (getBoolean()) {
             // This is pretty exotic and should be detected
             throw e = new Exception();
         }
 
         // Assignment in init and update of for loop should be detected
-        for (int j = 1 + (i = getInt());; sink(f = getInt())) {
+        for (int j = 1 + (i = getInt()); getBoolean(); sink(f = getInt())) {
         }
 
         // Should be detected; not a simple assignment as return result
