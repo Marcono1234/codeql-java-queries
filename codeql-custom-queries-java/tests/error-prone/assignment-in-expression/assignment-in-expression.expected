@@ -1,0 +1,8 @@
+| Test.java:4:18:4:29 | ...=... | Should write assignment as separate statement for better readability |
+| Test.java:14:14:14:18 | ...=... | Should write assignment as separate statement for better readability |
+| Test.java:18:14:18:22 | ...=... | Should write assignment as separate statement for better readability |
+| Test.java:19:14:19:19 | ...\|=... | Should write assignment as separate statement for better readability |
+| Test.java:23:19:23:37 | ...=... | Should write assignment as separate statement for better readability |
+| Test.java:27:27:27:38 | ...=... | Should write assignment as separate statement for better readability |
+| Test.java:27:48:27:59 | ...=... | Should write assignment as separate statement for better readability |
+| Test.java:31:21:31:32 | ...=... | Should write assignment as separate statement for better readability |
