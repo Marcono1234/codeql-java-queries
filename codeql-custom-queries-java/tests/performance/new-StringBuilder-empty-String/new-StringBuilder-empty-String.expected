@@ -1,0 +1,2 @@
+| Test.java:5:9:5:29 | new StringBuilder(...) | Should create StringBuilder without arguments |
+| Test.java:6:9:6:28 | new StringBuffer(...) | Should create StringBuffer without arguments |
