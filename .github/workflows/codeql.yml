@@ -1,13 +1,13 @@
 # This usage of CodeQL CLI is permitted by https://securitylab.github.com/tools/codeql/license
 # > Test CodeQL queries that are released under an OSI-approved Licence to confirm that new versions of those queries continue to find the right vulnerabilities.
 
-name: Query tests
+name: CodeQL checks
 
 on: [push, pull_request]
 
 jobs:
-  test:
-    name: Run query tests
+  codeql-cli:
+    name: Run CodeQL CLI checks
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -34,3 +34,9 @@ jobs:
 
       - name: Run query tests
         run: ./codeql-cli/codeql/codeql test run "--search-path=codeql:./codeql-custom-queries-java/queries" ./codeql-custom-queries-java/tests
+
+      # Compile all queries to detect errors in queries even without corresponding tests
+      # Perform this last because it will likely consume in total more time than the tests
+      # Increase available RAM and use as many threads as there are cores
+      - name: Compile queries
+        run: ./codeql-cli/codeql/codeql query compile --check-only --search-path=codeql --ram 4096 --threads=0 ./codeql-custom-queries-java/queries
