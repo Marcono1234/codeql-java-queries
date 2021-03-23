@@ -1,0 +1,18 @@
+edges
+| Test.java:12:24:12:41 | readLine(...) : String | Test.java:19:41:19:41 | s |
+| Test.java:12:24:12:41 | readLine(...) : String | Test.java:21:45:21:45 | s |
+nodes
+| Test.java:7:28:7:49 | readPassword(...) | semmle.label | readPassword(...) |
+| Test.java:8:28:8:60 | readPassword(...) | semmle.label | readPassword(...) |
+| Test.java:9:28:9:45 | readLine(...) | semmle.label | readLine(...) |
+| Test.java:10:28:10:52 | readLine(...) | semmle.label | readLine(...) |
+| Test.java:12:24:12:41 | readLine(...) : String | semmle.label | readLine(...) : String |
+| Test.java:19:41:19:41 | s | semmle.label | s |
+| Test.java:21:45:21:45 | s | semmle.label | s |
+#select
+| Test.java:7:28:7:49 | readPassword(...) | Test.java:7:28:7:49 | readPassword(...) | Test.java:7:28:7:49 | readPassword(...) | Might throw NullPointerException because Console read result is not checked for null |
+| Test.java:8:28:8:60 | readPassword(...) | Test.java:8:28:8:60 | readPassword(...) | Test.java:8:28:8:60 | readPassword(...) | Might throw NullPointerException because Console read result is not checked for null |
+| Test.java:9:28:9:45 | readLine(...) | Test.java:9:28:9:45 | readLine(...) | Test.java:9:28:9:45 | readLine(...) | Might throw NullPointerException because Console read result is not checked for null |
+| Test.java:10:28:10:52 | readLine(...) | Test.java:10:28:10:52 | readLine(...) | Test.java:10:28:10:52 | readLine(...) | Might throw NullPointerException because Console read result is not checked for null |
+| Test.java:19:41:19:41 | s | Test.java:12:24:12:41 | readLine(...) : String | Test.java:19:41:19:41 | s | Might throw NullPointerException because Console read result is not checked for null |
+| Test.java:21:45:21:45 | s | Test.java:12:24:12:41 | readLine(...) : String | Test.java:21:45:21:45 | s | Might throw NullPointerException because Console read result is not checked for null |
