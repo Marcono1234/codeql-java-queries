@@ -40,6 +40,7 @@ abstract class LoggingCall extends MethodAccess {
      *
      * The default implementation of this predicate never holds.
      */
+    // Note: Predicate is currently not used
     predicate returnsException() {
         none()
     }

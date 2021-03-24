@@ -49,7 +49,7 @@ class ModifyingCall extends Call {
         this.(MethodAccess).getMethod().getSourceDeclaration().getAnOverride*() instanceof ModifyingMethod
         // Only consider modifying if method cannot be overridden, otherwise would cause
         // too many false positives
-        or exists (Callable c, Block body | c = getCallee() and body = c.getBody() |
+        or exists (Callable c, BlockStmt body | c = getCallee() and body = c.getBody() |
             (
                 not c.(Method).isOverridable()
                 or this.(MethodAccess).getReceiverType().isFinal()
@@ -89,7 +89,7 @@ class NonModifyingExpr extends Expr {
 
 class CheapMethodCall extends MethodAccess {
     CheapMethodCall() {
-        exists (Method m, Block body | m = getMethod() and body = m.getBody() |
+        exists (Method m, BlockStmt body | m = getMethod() and body = m.getBody() |
             // Only if method cannot be overridden can be sure that method is cheap
             (
                 not m.isOverridable()
@@ -156,7 +156,7 @@ class ExpensiveCallable extends Callable {
             )
             // Rough estimation for what could be considered an expensive method
             or count (Stmt stmt |
-                not (stmt instanceof AssertStmt or stmt instanceof Block)
+                not (stmt instanceof AssertStmt or stmt instanceof BlockStmt)
                 and stmt.getEnclosingCallable() = this
             ) > 5
         )

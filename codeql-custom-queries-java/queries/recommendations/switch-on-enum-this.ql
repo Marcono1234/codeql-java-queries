@@ -24,19 +24,18 @@ class SwitchStmtOrExpr extends Top {
         or result.getSwitchExpr() = this
     }
     
-    
     predicate isCompleteEnumSwitch() {
         forall (EnumConstant enumConstant |
             enumConstant = getSelectorExpr().getType().(EnumType).getAnEnumConstant()
             |
-            switch.getAConstCase().getValue(_).(FieldRead).getField() = enumConstant
+            getAConstCase().getValue(_).(FieldRead).getField() = enumConstant
         )
     }
 }
 
 from SwitchStmtOrExpr switch, ThisAccess thisAccess
 where
-    thisAccess = switch.getCondition()
+    thisAccess = switch.getSelectorExpr()
     and thisAccess.getType() instanceof EnumType
     // If switch is incomplete, adding field which is only set by some constants,
     // or method which only some constants override is also error-prone, so switch
