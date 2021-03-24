@@ -1,0 +1,2 @@
+| Test.java:8:16:8:31 | orElse(...) | Use Optional.map(...) and remove null check $@. | Test.java:9:18:9:48 | ...?...:... | here |
+| Test.java:11:16:11:31 | orElse(...) | Use Optional.map(...) and remove null check $@. | Test.java:12:18:12:48 | ...?...:... | here |

@@ -1,15 +1,15 @@
 /**
- * Finds calls of `Optional.orElse(T)` with `null` as argument, whose result
+ * Finds calls to `Optional.orElse(T)` with `null` as argument, whose result
  * is then later used in a conditional expression (ternary) with a `null` check.
  * E.g.:
- * ```
+ * ```java
  * public static String trim(Optional<String> optionalStr) {
  *     String str = optionalStr.orElse(null);
  *     return str == null ? "" : str.trim();
  * }
  * ```
  * This could be simplified using `Optional.map(...)`:
- * ```
+ * ```java
  * public static String trim(Optional<String> optionalStr) {
  *     return optionalStr.map(String::trim).orElse("");
  * }
@@ -18,21 +18,7 @@
 
 import java
 import semmle.code.java.dataflow.DataFlow
-
-class TypeOptional extends Class {
-    TypeOptional() {
-        hasQualifiedName("java.util", "Optional")
-    }
-}
-
-class OrElseCall extends MethodAccess {
-    OrElseCall() {
-        exists (Method m | m = getMethod() |
-            m.getDeclaringType().getASourceSupertype*() instanceof TypeOptional
-            and m.hasName("orElse")
-        )
-    }
-}
+import lib.Optionals
 
 class MemberAccess extends Expr {
     Expr qualifier;
@@ -71,11 +57,12 @@ private class NullCheckTernary extends ConditionalExpr {
     }
 }
 
-from OrElseCall orElseCall, NullCheckTernary nullCheck, VarAccess nullCheckRead, MemberAccess memberAccess
+from OptionalObjectOrNullCall orElseCall, NullCheckTernary nullCheck, VarAccess nullCheckRead, MemberAccess memberAccess, string alternative
 where
     orElseCall.getArgument(0) instanceof NullLiteral
     and nullCheckRead = nullCheck.getNullChecked()
     and memberAccess = nullCheck.getNonNullExpr()
     and DataFlow::localFlow(DataFlow::exprNode(orElseCall), DataFlow::exprNode(nullCheckRead))
     and DataFlow::localFlow(DataFlow::exprNode(orElseCall), DataFlow::exprNode(memberAccess.getQualifier()))
-select orElseCall, "Use Optional.map(...).orElse(...) and remove null check $@.", nullCheck, "here"
+    and alternative = orElseCall.getOptionalType().getMapMethodName()
+select orElseCall, "Use " + alternative + " and remove null check $@.", nullCheck, "here"
