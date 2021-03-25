@@ -1,0 +1,3 @@
+| Test.java:5:31:5:45 | ... + ... | Treats `www.` subdomain in a special way |
+| Test.java:9:31:9:36 | "wWw." | Treats `www.` subdomain in a special way |
+| Test.java:12:38:12:43 | "www." | Treats `www.` subdomain in a special way |
