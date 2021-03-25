@@ -15,11 +15,14 @@ import java
 
 /**
  * Class which appears to be intended to be subclassed by anonymous classes to make
- * the generic type argument available at compile-time. E.g. Gson's or Guava's `TypeToken`
+ * the generic type argument available at compile-time. E.g. Gson's or Guava's `TypeToken`.
  */
 class TypeToken extends GenericType {
     TypeToken() {
-        exists (Method m |
+        // Make sure there is only one type variable, otherwise it might not
+        // be a type token
+        count(getATypeParameter()) = 1
+        and exists (Method m |
             m = getAMethod()
             and not m.isStatic()
             and m.getNumberOfParameters() = 0
