@@ -1,0 +1,4 @@
+| Test.java:2:5:2:27 | String s1, ...; | Misleading declaration of multiple variables |
+| Test.java:3:5:3:27 | int i1, ...; | Misleading declaration of multiple variables |
+| Test.java:6:9:6:31 | stmt | Misleading declaration of multiple variables |
+| Test.java:7:9:7:31 | stmt | Misleading declaration of multiple variables |
