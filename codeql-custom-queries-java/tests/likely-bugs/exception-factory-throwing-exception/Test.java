@@ -5,7 +5,7 @@ import java.util.Optional;
 
 class Test {
     Exception factoryBad() {
-        throw new Exception();
+        throw new RuntimeException();
     }
 
     // Throws UnsupportedOperationException, but also has

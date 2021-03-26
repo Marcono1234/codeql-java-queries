@@ -72,7 +72,9 @@ class Test {
         // Pattern used by OpenJDK to perform SecurityManager check before
         // calling delegate `this(...)` or `super(...)` (which have to be
         // the first statement)
-        static Void checkPermission() { }
+        static Void checkPermission() {
+            return null;
+        }
     }
 
     static class Subclass extends ConstructorDelegation {

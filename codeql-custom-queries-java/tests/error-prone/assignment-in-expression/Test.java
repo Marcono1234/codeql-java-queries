@@ -2,7 +2,7 @@ class Test {
     int f;
     int g = f = getInt(); // This is allowed
     int h = 1 + (f = getInt()); // This should be detected
-    Exception e;
+    RuntimeException e;
 
     int getInt() {
         return 1;
@@ -24,7 +24,7 @@ class Test {
 
         if (getBoolean()) {
             // This is pretty exotic and should be detected
-            throw e = new Exception();
+            throw e = new RuntimeException();
         }
 
         // Assignment in init and update of for loop should be detected

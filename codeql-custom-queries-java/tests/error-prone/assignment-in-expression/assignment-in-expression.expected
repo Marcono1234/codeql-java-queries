@@ -2,7 +2,7 @@
 | Test.java:18:14:18:18 | ...=... | Should write assignment as separate statement for better readability |
 | Test.java:22:14:22:22 | ...=... | Should write assignment as separate statement for better readability |
 | Test.java:23:14:23:19 | ...\|=... | Should write assignment as separate statement for better readability |
-| Test.java:27:19:27:37 | ...=... | Should write assignment as separate statement for better readability |
+| Test.java:27:19:27:44 | ...=... | Should write assignment as separate statement for better readability |
 | Test.java:31:27:31:38 | ...=... | Should write assignment as separate statement for better readability |
 | Test.java:31:61:31:72 | ...=... | Should write assignment as separate statement for better readability |
 | Test.java:35:21:35:32 | ...=... | Should write assignment as separate statement for better readability |
