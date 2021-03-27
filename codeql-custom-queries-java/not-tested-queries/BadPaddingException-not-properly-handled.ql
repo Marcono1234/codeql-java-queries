@@ -32,7 +32,10 @@ private predicate catchesPaddingException(TryStmt try, Expr throwingExpr) {
 }
 
 private predicate hasUncaughtPaddingException(Stmt parentStmt, Call throwingCall) {
-    throwingCall.getEnclosingStmt+() = parentStmt
+    // Need to cast to Expr and use its predicate since transitive closure
+    // `throwingCall.getEnclosingStmt+()` would only yield Call elements
+    // which are also Stmt (which is not desired)
+    throwingCall.(Expr).getAnEnclosingStmt() = parentStmt
     and throwingCall.getCallee() instanceof PaddingExceptionThrowingCallable
     // And exception from throwing call is not caught already
     and not exists(TryStmt nestedTry |
