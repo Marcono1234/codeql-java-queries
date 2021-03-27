@@ -31,16 +31,36 @@ private predicate catchesPaddingException(TryStmt try, Expr throwingExpr) {
     and try.getACatchClause().getACaughtType().getASubtype*() instanceof TypeBadPaddingException
 }
 
-private predicate hasUncaughtPaddingException(Stmt parentStmt, Call throwingCall) {
+private predicate hasUncaughtPaddingException(BlockStmt parentBlock, Call throwingCall) {
     // Need to cast to Expr and use its predicate since transitive closure
     // `throwingCall.getEnclosingStmt+()` would only yield Call elements
     // which are also Stmt (which is not desired)
-    throwingCall.(Expr).getAnEnclosingStmt() = parentStmt
+    throwingCall.(Expr).getAnEnclosingStmt() = parentBlock
     and throwingCall.getCallee() instanceof PaddingExceptionThrowingCallable
     // And exception from throwing call is not caught already
     and not exists(TryStmt nestedTry |
-        nestedTry.getEnclosingStmt+() = parentStmt
+        nestedTry.getEnclosingStmt+() = parentBlock
         and catchesPaddingException(nestedTry, throwingCall)
+    )
+}
+
+private predicate mightThrowPaddingException(BlockStmt block, Stmt throwingStmt) {
+    exists(RefType thrownException |
+         // Need to cast to Expr and use its predicate since transitive closure
+        // `throwingCall.getEnclosingStmt+()` would only yield Call elements
+        // which are also Stmt (which is not desired)
+        exists(Call throwingCall | throwingCall.(Expr).getAnEnclosingStmt() = throwingStmt |
+            thrownException = throwingCall.getCallee().getAThrownExceptionType()
+        )
+        or thrownException = throwingStmt.(ThrowStmt).getThrownExceptionType()
+    |
+        thrownException.getASubtype*() instanceof TypeBadPaddingException
+        and throwingStmt.getEnclosingStmt+() = block
+        // And exception from throwing call is not caught already
+        and not exists(TryStmt nestedTry |
+            nestedTry.getEnclosingStmt+() = block
+            and nestedTry.getACatchClause().getACaughtType().getASubtype*() = thrownException
+        )
     )
 }
 
@@ -54,7 +74,12 @@ where
         and caughtType = catch.getACaughtType()
         and (
             // Catches BadPaddingException
-            caughtType instanceof TypeBadPaddingException
+            (
+                caughtType instanceof TypeBadPaddingException
+                // Only consider if BadPaddingException is actually thrown; ignore when only AEADBadTagException
+                // can be thrown from try body
+                and mightThrowPaddingException(try.getBlock(), _)
+            )
             // Or supertype of BadPaddingException is caught and `try`
             // calls method which throws BadPaddingException
             or (

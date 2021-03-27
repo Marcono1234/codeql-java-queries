@@ -1,0 +1,5 @@
+| Test.java:22:9:22:37 | stmt | Catches BadPaddingException or supertype but might not handle it properly |
+| Test.java:33:11:33:63 | stmt | Catches BadPaddingException or supertype but might not handle it properly |
+| Test.java:45:9:45:27 | stmt | Catches BadPaddingException or supertype but might not handle it properly |
+| Test.java:52:10:52:25 | testThrowsHiding | Has `throws` clause which hides that BadPaddingException is thrown |
+| Test.java:57:10:57:26 | testThrowsHiding2 | Has `throws` clause which hides that BadPaddingException is thrown |
