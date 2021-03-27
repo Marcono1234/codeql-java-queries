@@ -1,0 +1,12 @@
+| Test.java:4:19:4:48 | toString(...) | Does not check length of String representation |
+| Test.java:5:19:5:47 | toString(...) | Does not check length of String representation |
+| Test.java:6:19:6:46 | toString(...) | Does not check length of String representation |
+| Test.java:7:19:7:50 | toBinaryString(...) | Does not check length of String representation |
+| Test.java:8:19:8:49 | toOctalString(...) | Does not check length of String representation |
+| Test.java:9:19:9:47 | toHexString(...) | Does not check length of String representation |
+| Test.java:11:20:11:48 | toHexString(...) | Does not check length of String representation |
+| Test.java:18:19:18:40 | format(...) | Should specify width and padding ("%02x") |
+| Test.java:19:19:19:40 | format(...) | Should specify width and padding ("%02x") |
+| Test.java:21:13:21:34 | format(...) | Should specify width and padding ("%02x") |
+| Test.java:28:19:28:52 | toHexString(...) | Does not check length of String representation |
+| Test.java:29:19:29:45 | format(...) | Should specify width and padding ("%02x") |

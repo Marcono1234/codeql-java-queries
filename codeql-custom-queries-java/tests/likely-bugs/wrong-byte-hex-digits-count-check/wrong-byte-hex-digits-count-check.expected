@@ -1,0 +1,9 @@
+| Test.java:4:13:4:18 | ... < ... | Might incorrectly check hex digits count of signed byte value |
+| Test.java:5:13:5:18 | ... > ... | Might incorrectly check hex digits count of signed byte value |
+| Test.java:6:13:6:19 | ... <= ... | Might incorrectly check hex digits count of signed byte value |
+| Test.java:7:13:7:19 | ... >= ... | Might incorrectly check hex digits count of signed byte value |
+| Test.java:8:13:8:18 | ... > ... | Might incorrectly check hex digits count of signed byte value |
+| Test.java:9:13:9:18 | ... < ... | Might incorrectly check hex digits count of signed byte value |
+| Test.java:10:13:10:19 | ... >= ... | Might incorrectly check hex digits count of signed byte value |
+| Test.java:11:13:11:19 | ... <= ... | Might incorrectly check hex digits count of signed byte value |
+| Test.java:14:13:14:23 | ... > ... | Might incorrectly check hex digits count of signed byte value |

@@ -1,0 +1,7 @@
+| Test.java:3:9:3:30 | toString(...) | Does not convert byte to unsigned int before getting String representation |
+| Test.java:4:9:4:30 | toString(...) | Does not convert byte to unsigned int before getting String representation |
+| Test.java:5:9:5:31 | toString(...) | Does not convert byte to unsigned int before getting String representation |
+| Test.java:6:9:6:33 | toBinaryString(...) | Does not convert byte to unsigned int before getting String representation |
+| Test.java:7:9:7:32 | toOctalString(...) | Does not convert byte to unsigned int before getting String representation |
+| Test.java:8:9:8:30 | toHexString(...) | Does not convert byte to unsigned int before getting String representation |
+| Test.java:11:9:11:35 | toHexString(...) | Does not convert byte to unsigned int before getting String representation |
