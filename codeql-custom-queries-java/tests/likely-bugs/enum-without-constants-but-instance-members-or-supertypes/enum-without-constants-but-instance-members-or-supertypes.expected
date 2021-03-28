@@ -1,0 +1,5 @@
+| Test.java:2:10:2:17 | EnumTest | Enum has no constants but has non-static member $@ | Test.java:6:24:6:24 | s | s |
+| Test.java:2:10:2:17 | EnumTest | Enum has no constants but has non-static member $@ | Test.java:8:9:8:16 | EnumTest | EnumTest |
+| Test.java:2:10:2:17 | EnumTest | Enum has no constants but has non-static member $@ | Test.java:13:21:13:23 | run | run |
+| Test.java:2:10:2:17 | EnumTest | Enum has no constants but has non-static member $@ | Test.java:16:15:16:24 | InnerClass | InnerClass |
+| Test.java:2:10:2:17 | EnumTest | Enum has no constants but has supertype $@ | Test.java:2:30:2:37 | Runnable | Runnable |

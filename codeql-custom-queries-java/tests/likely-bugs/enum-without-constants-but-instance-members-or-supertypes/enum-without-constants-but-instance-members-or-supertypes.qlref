@@ -1,0 +1,1 @@
+./likely-bugs/enum-without-constants-but-instance-members-or-supertypes.ql
