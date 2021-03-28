@@ -43,36 +43,40 @@ where
             and eqTest.getAnOperand() instanceof MinusOne
         )
         // Checking > -1
-        or exists(GTExpr gtExpr |
-            gtExpr = checkExpr
+        or exists(ComparisonExpr compExpr |
+            compExpr = checkExpr
+            and compExpr.isStrict()
             and isContainedPolarity = true
         |
-            gtExpr.getLeftOperand() = indexCall
-            and gtExpr.getRightOperand() instanceof MinusOne
+            compExpr.getGreaterOperand() = indexCall
+            and compExpr.getLesserOperand() instanceof MinusOne
         )
         // Checking <= -1
-        or exists(LEExpr leExpr |
-            leExpr = checkExpr
+        or exists(ComparisonExpr compExpr |
+            compExpr = checkExpr
+            and not compExpr.isStrict()
             and isContainedPolarity = false
         |
-            leExpr.getLeftOperand() = indexCall
-            and leExpr.getRightOperand() instanceof MinusOne
+            compExpr.getLesserOperand() = indexCall
+            and compExpr.getGreaterOperand() instanceof MinusOne
         )
         // Checking >= 0
-        or exists(GEExpr geExpr |
-            geExpr = checkExpr
+        or exists(ComparisonExpr compExpr |
+            compExpr = checkExpr
+            and not compExpr.isStrict()
             and isContainedPolarity = true
         |
-            geExpr.getLeftOperand() = indexCall
-            and geExpr.getRightOperand() instanceof Zero
+            compExpr.getGreaterOperand() = indexCall
+            and compExpr.getLesserOperand() instanceof Zero
         )
         // Checking < 0
-        or exists(LTExpr ltExpr |
-            ltExpr = checkExpr
+        or exists(ComparisonExpr compExpr |
+            compExpr = checkExpr
+            and compExpr.isStrict()
             and isContainedPolarity = false
         |
-            ltExpr.getLeftOperand() = indexCall
-            and ltExpr.getRightOperand() instanceof Zero
+            compExpr.getLesserOperand() = indexCall
+            and compExpr.getGreaterOperand() instanceof Zero
         )
     )
     and if isContainedPolarity = true then negationPrefix = ""

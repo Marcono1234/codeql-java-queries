@@ -4,9 +4,13 @@ class Test {
         r = s.indexOf("substring") == -1;
         r = s.indexOf("substring") != -1;
         r = s.indexOf("substring") > -1;
+        r = -1 < s.indexOf("substring");
         r = s.indexOf("substring") <= -1;
+        r = -1 >= s.indexOf("substring");
         r = s.indexOf("substring") >= 0;
+        r = 0 <= s.indexOf("substring");
         r = s.indexOf("substring") < 0;
+        r = 0 > s.indexOf("substring");
         r = s.lastIndexOf("substring") == -1;
         r = s.lastIndexOf("substring") != -1;
         r = s.lastIndexOf("substring") > -1;
