@@ -1,0 +1,5 @@
+| Test.java:15:18:15:37 | ExtendingComplexBase | Complex type implements standard functional interface Predicate |
+| Test.java:22:15:22:30 | ComplexInterface | Complex type implements standard functional interface Function |
+| Test.java:31:15:31:33 | ComplexExtendingRaw | Complex type implements standard functional interface Predicate |
+| Test.java:41:15:41:40 | MultipleStandardInterfaces | Complex type implements standard functional interface Function |
+| Test.java:41:15:41:40 | MultipleStandardInterfaces | Complex type implements standard functional interface Predicate |
