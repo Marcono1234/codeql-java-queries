@@ -1,0 +1,4 @@
+| Test.java:2:25:2:39 | PubliclyVisible | Custom Java classfiles can subclass this class and access protected member $@ | Test.java:5:30:5:30 | i | i |
+| Test.java:2:25:2:39 | PubliclyVisible | Custom Java classfiles can subclass this class and access protected member $@ | Test.java:6:31:6:34 | test | test |
+| Test.java:2:25:2:39 | PubliclyVisible | Custom Java classfiles can subclass this class and access protected member $@ | Test.java:7:32:7:37 | Nested | Nested |
+| Test.java:16:25:16:40 | PubliclyVisible2 | Custom Java classfiles can subclass this class and access protected member $@ | Test.java:19:30:19:30 | i | i |

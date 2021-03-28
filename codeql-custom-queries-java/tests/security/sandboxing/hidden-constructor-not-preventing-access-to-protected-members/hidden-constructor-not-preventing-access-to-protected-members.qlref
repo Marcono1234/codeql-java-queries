@@ -1,0 +1,1 @@
+./security/sandboxing/hidden-constructor-not-preventing-access-to-protected-members.ql

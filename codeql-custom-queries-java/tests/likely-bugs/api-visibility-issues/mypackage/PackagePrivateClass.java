@@ -1,0 +1,4 @@
+package mypackage;
+
+class PackagePrivateClass {
+}

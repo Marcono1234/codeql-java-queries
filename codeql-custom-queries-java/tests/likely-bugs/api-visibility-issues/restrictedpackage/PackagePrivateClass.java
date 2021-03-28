@@ -1,0 +1,4 @@
+package restrictedpackage;
+
+class PackagePrivateClass {
+}
