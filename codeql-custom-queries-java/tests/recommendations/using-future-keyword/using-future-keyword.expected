@@ -1,0 +1,16 @@
+| Test.java:6:11:6:11 | _ | '_' is a keyword since Java 9 |
+| Test.java:7:11:7:13 | var | 'var' is a restricted identifier since Java 10 |
+| Test.java:8:11:8:15 | yield | 'yield' is a restricted identifier since Java 14 |
+| Test.java:9:11:9:16 | record | 'record' is a restricted identifier since Java 14 |
+| Test.java:10:24:10:24 | _ | '_' is a keyword since Java 9 |
+| Test.java:10:27:10:29 | var | 'var' is a restricted identifier since Java 10 |
+| Test.java:10:32:10:36 | yield | 'yield' is a restricted identifier since Java 14 |
+| Test.java:10:39:10:44 | record | 'record' is a restricted identifier since Java 14 |
+| Test.java:11:10:11:10 | _ | '_' is a keyword since Java 9 |
+| Test.java:11:13:11:15 | var | 'var' is a restricted identifier since Java 10 |
+| Test.java:11:18:11:22 | yield | 'yield' is a restricted identifier since Java 14 |
+| Test.java:11:25:11:30 | record | 'record' is a restricted identifier since Java 14 |
+| Test.java:16:9:16:9 | _ | '_' is a keyword since Java 9 |
+| Test.java:23:14:23:14 | _ | '_' is a keyword since Java 9 |
+| Test.java:26:19:26:23 | _ | '_' is a keyword since Java 9 |
+| file://:0:0:0:0 | var.yield.record._.Var.Yield.Record._a | Package 'var.yield.record._.Var.Yield.Record._a': '_' is a keyword since Java 9 |
