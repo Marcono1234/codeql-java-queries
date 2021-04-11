@@ -562,6 +562,8 @@ class JUnit5AssumeFalse extends AssertFalseMethod {
 class TypeTestNgAssert extends Class {
   TypeTestNgAssert() {
     hasQualifiedName("org.testng", "Assert")
+    // Assertion class has instance methods which appear to be the same as Assert ones
+    or hasQualifiedName("org.testng.asserts", "Assertion")
   }
 }
 
