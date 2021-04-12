@@ -1,0 +1,9 @@
+| Test.java:4:13:4:18 | ... % ... | Uses negative divisor for remainder operation |
+| Test.java:5:13:5:27 | ... % ... | Uses negative divisor for remainder operation |
+| Test.java:6:13:6:19 | ... % ... | Uses negative divisor for remainder operation |
+| Test.java:7:13:7:37 | ... % ... | Uses negative divisor for remainder operation |
+| Test.java:8:13:8:21 | ... % ... | Uses negative divisor for remainder operation |
+| Test.java:9:13:9:25 | ... % ... | Uses negative divisor for remainder operation |
+| Test.java:10:13:10:25 | ... % ... | Uses negative divisor for remainder operation |
+| Test.java:13:13:13:18 | ... % ... | Uses negative divisor for remainder operation |
+| Test.java:15:9:15:15 | ...%=... | Uses negative divisor for remainder operation |
