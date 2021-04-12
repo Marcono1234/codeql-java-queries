@@ -1,0 +1,30 @@
+| Test.java:10:13:10:17 | ... / ... | Divides by $@ expression which is 0 | Test.java:10:17:10:17 | 0 | this |
+| Test.java:11:13:11:18 | ... / ... | Divides by $@ expression which is 0 | Test.java:11:17:11:18 | 0L | this |
+| Test.java:12:13:12:18 | ... / ... | Divides by $@ expression which is 0 | Test.java:12:17:12:18 | 0f | this |
+| Test.java:13:13:13:18 | ... / ... | Divides by $@ expression which is 0 | Test.java:13:17:13:18 | 0d | this |
+| Test.java:14:13:14:17 | ... % ... | Divides by $@ expression which is 0 | Test.java:14:17:14:17 | 0 | this |
+| Test.java:15:13:15:18 | ... % ... | Divides by $@ expression which is 0 | Test.java:15:17:15:18 | 0L | this |
+| Test.java:16:13:16:18 | ... % ... | Divides by $@ expression which is 0 | Test.java:16:17:16:18 | 0f | this |
+| Test.java:17:13:17:18 | ... % ... | Divides by $@ expression which is 0 | Test.java:17:17:17:18 | 0d | this |
+| Test.java:19:13:19:22 | ... / ... | Divides by $@ expression which is 0 | Test.java:19:17:19:22 | bFinal | this |
+| Test.java:20:13:20:22 | ... / ... | Divides by $@ expression which is 0 | Test.java:20:17:20:22 | iFinal | this |
+| Test.java:21:13:21:22 | ... / ... | Divides by $@ expression which is 0 | Test.java:21:17:21:22 | lFinal | this |
+| Test.java:22:13:22:22 | ... / ... | Divides by $@ expression which is 0 | Test.java:22:17:22:22 | fFinal | this |
+| Test.java:23:13:23:22 | ... / ... | Divides by $@ expression which is 0 | Test.java:23:17:23:22 | dFinal | this |
+| Test.java:31:13:31:27 | ... / ... | Divides by $@ expression which is 0 | Test.java:31:17:31:27 | bLocalFinal | this |
+| Test.java:32:13:32:27 | ... / ... | Divides by $@ expression which is 0 | Test.java:32:17:32:27 | iLocalFinal | this |
+| Test.java:33:13:33:27 | ... / ... | Divides by $@ expression which is 0 | Test.java:33:17:33:27 | lLocalFinal | this |
+| Test.java:34:13:34:27 | ... / ... | Divides by $@ expression which is 0 | Test.java:34:17:34:27 | fLocalFinal | this |
+| Test.java:35:13:35:27 | ... / ... | Divides by $@ expression which is 0 | Test.java:35:17:35:27 | dLocalFinal | this |
+| Test.java:44:13:44:22 | ... / ... | Divides by variable which is assigned 0 $@ | Test.java:38:14:38:23 | bLocal | here |
+| Test.java:45:13:45:22 | ... / ... | Divides by variable which is assigned 0 $@ | Test.java:39:13:39:22 | iLocal | here |
+| Test.java:46:13:46:22 | ... / ... | Divides by variable which is assigned 0 $@ | Test.java:40:14:40:24 | lLocal | here |
+| Test.java:47:13:47:22 | ... / ... | Divides by variable which is assigned 0 $@ | Test.java:41:15:41:25 | fLocal | here |
+| Test.java:48:13:48:22 | ... / ... | Divides by variable which is assigned 0 $@ | Test.java:42:16:42:26 | dLocal | here |
+| Test.java:50:13:50:24 | ... / ... | Divides by $@ expression which is 0 | Test.java:50:17:50:24 | (...)... | this |
+| Test.java:51:13:51:27 | ... / ... | Divides by $@ expression which is 0 | Test.java:51:17:51:27 | (...)... | this |
+| Test.java:52:13:52:23 | ... / ... | Divides by $@ expression which is 0 | Test.java:52:18:52:22 | ... - ... | this |
+| Test.java:55:9:55:14 | .../=... | Divides by $@ expression which is 0 | Test.java:55:14:55:14 | 0 | this |
+| Test.java:56:9:56:14 | ...%=... | Divides by $@ expression which is 0 | Test.java:56:14:56:14 | 0 | this |
+| Test.java:63:17:63:21 | ... / ... | Divides by variable which is 0 due to $@ check | Test.java:62:13:62:18 | ... == ... | this |
+| Test.java:69:17:69:21 | ... / ... | Divides by variable which is 0 due to $@ check | Test.java:66:13:66:18 | ... != ... | this |
