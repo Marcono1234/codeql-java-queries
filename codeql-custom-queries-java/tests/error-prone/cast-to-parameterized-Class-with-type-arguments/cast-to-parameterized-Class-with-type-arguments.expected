@@ -1,0 +1,3 @@
+| Test.java:7:13:7:35 | (...)... | Casts to error-prone Class type Class<List<String>> |
+| Test.java:8:13:8:30 | (...)... | Casts to error-prone Class type Class<List<T>> |
+| Test.java:9:13:9:38 | (...)... | Casts to error-prone Class type Class<Map<?,Integer>> |
