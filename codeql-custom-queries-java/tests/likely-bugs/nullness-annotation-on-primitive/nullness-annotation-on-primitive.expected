@@ -1,0 +1,6 @@
+| Test.java:26:5:26:12 | NotNull | Annotates field of primitive type int |
+| Test.java:29:5:29:12 | NotNull | Annotates method return type of primitive type int |
+| Test.java:30:28:30:35 | NotNull | Annotates parameter of primitive type short |
+| Test.java:31:9:31:16 | NotNull | Annotates variable of primitive type boolean |
+| Test.java:36:10:36:17 | NotNull | Annotates type use of primitive type byte |
+| Test.java:38:12:38:19 | NotNull | Annotates parameter of primitive type long |

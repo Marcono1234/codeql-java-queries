@@ -1,0 +1,6 @@
+| Test.java:7:9:7:33 | requireNonNull(...) | Performs nullness check on $@ expression of primitive type | Test.java:7:32:7:32 | i | this |
+| Test.java:8:9:8:41 | requireNonNull(...) | Performs nullness check on $@ expression of primitive type | Test.java:8:32:8:32 | i | this |
+| Test.java:9:9:9:47 | requireNonNull(...) | Performs nullness check on $@ expression of primitive type | Test.java:9:32:9:32 | i | this |
+| Test.java:10:9:10:40 | requireNonNullElse(...) | Performs nullness check on $@ expression of primitive type | Test.java:10:36:10:36 | i | this |
+| Test.java:11:9:11:49 | requireNonNullElseGet(...) | Performs nullness check on $@ expression of primitive type | Test.java:11:39:11:39 | i | this |
+| Test.java:13:36:13:57 | nonNull(...) | Performs nullness check on $@ expression of primitive type | Test.java:13:52:13:56 | value | this |

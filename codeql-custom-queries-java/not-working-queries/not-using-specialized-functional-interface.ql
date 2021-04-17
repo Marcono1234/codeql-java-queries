@@ -1,4 +1,5 @@
 import java
+import lib.Nullness
 
 abstract class FunctionalTypeAccess extends TypeAccess {
     FunctionalTypeAccess() {
@@ -12,12 +13,7 @@ abstract class FunctionalTypeAccess extends TypeAccess {
             // Make sure that type has no annotations (except NonNull)
             // This also covers not having Nullable annotation
             and not exists (Annotation annotation | annotation = typeArg.getAnAnnotation() |
-                not annotation.getType().hasName([
-                    "NotNull",
-                    "Notnull",
-                    "NonNull",
-                    "Nonnull"
-                ])
+                not annotation instanceof NonNullAnnotation
             )
         )
         // In case type argument is not boxed or has annotations

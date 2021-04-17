@@ -6,29 +6,7 @@
 
 import java
 import semmle.code.java.dataflow.Nullness
-
-class NonNullAnnotation extends Annotation {
-    NonNullAnnotation() {
-        // Ignore case due to the different existing annotations
-        exists (string typeNameLower |
-            typeNameLower = getType().getName().toLowerCase()
-            |
-            typeNameLower = "nonnull"
-            or typeNameLower = "notnull"
-        )
-    }
-}
-
-class NullableAnnotation extends Annotation {
-    NullableAnnotation() {
-        // Ignore case due to the different existing annotations
-        exists (string typeNameLower |
-            typeNameLower = getType().getName().toLowerCase()
-            |
-            typeNameLower = "nullable"
-        )
-    }
-}
+import lib.Nullness
 
 Annotation getAReturnTypeAnnotation(Method m) {
     // Might be incomplete, see also https://github.com/github/codeql/issues/3417
