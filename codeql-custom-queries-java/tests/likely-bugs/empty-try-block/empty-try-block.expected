@@ -1,0 +1,3 @@
+| Test.java:6:9:8:9 | stmt | Has empty block |
+| Test.java:10:9:20:9 | stmt | Has empty block |
+| Test.java:23:9:24:9 | stmt | Has empty block |
