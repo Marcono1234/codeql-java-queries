@@ -1,0 +1,8 @@
+| Test.java:20:13:20:13 | l | Variable cannot be null due to being initialized with a non-null value $@ | Test.java:15:17:15:19 | "a" | here | Test.java:15:17:15:19 | "a" | reason |
+| Test.java:20:13:20:13 | l | Variable cannot be null due to being initialized with a non-null value $@ | Test.java:17:17:17:19 | "b" | here | Test.java:17:17:17:19 | "b" | reason |
+| Test.java:24:13:24:13 | s | Variable cannot be null due to being initialized with a non-null value $@ | Test.java:6:17:6:19 | "a" | here | Test.java:6:17:6:19 | "a" | reason |
+| Test.java:24:13:24:13 | s | Variable cannot be null due to being initialized with a non-null value $@ | Test.java:8:17:8:19 | "b" | here | Test.java:8:17:8:19 | "b" | reason |
+| Test.java:33:13:33:13 | l | Variable cannot be null due to being assigned a non-null value $@ | Test.java:31:13:31:14 | "" | here | Test.java:31:13:31:14 | "" | reason |
+| Test.java:43:13:43:13 | l | Variable cannot be null due to being assigned the result of $@ String concatenation | Test.java:41:9:41:17 | ...+=... | this | Test.java:41:9:41:17 | ...+=... | reason |
+| Test.java:52:13:52:13 | p | Variable cannot be null due to being dereferenced $@ | Test.java:50:9:50:9 | p | here | Test.java:50:9:50:9 | p | reason |
+| Test.java:71:17:71:17 | p | Variable cannot be null due to $@ null check | Test.java:70:13:70:21 | ... != ... | this | Test.java:70:13:70:21 | ... != ... | reason |
