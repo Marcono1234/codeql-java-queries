@@ -29,7 +29,9 @@
 
 import java
 
-BlockStmt getScopeBlock(LocalVariableDecl var) {
+// Need to use StmtParent instead of BlockStmt as result type because SwitchStmt
+// and SwitchExpr do not have BlockStmt as body
+StmtParent getScopeBlock(LocalVariableDecl var) {
     // For loop report the body as scope to detect variables declared in loop init
     // which are not used there or directly in loop body
     exists(ForStmt forStmt, LocalVariableDeclExpr varDecl |
@@ -40,6 +42,8 @@ BlockStmt getScopeBlock(LocalVariableDecl var) {
     or exists(LocalVariableDeclStmt declStmt |
         declStmt.getAVariable().getVariable() = var
         and result = declStmt.getParent()
+        // Ignore try-with-resources variables because they cannot be moved
+        and not any(TryStmt tryStmt).getAResourceDecl() = declStmt
     )
     // Don't cover other situations where local variables are declared (e.g. enhanced
     // `for` loop or `catch` clause) since variable cannot be moved in these cases
@@ -55,7 +59,7 @@ Expr getLoopEntry(LoopStmt loop) {
     else result = loop.getCondition()
 }
 
-from LocalVariableDecl var, BlockStmt scopeBlock, BlockStmt usageBlock
+from LocalVariableDecl var, StmtParent scopeBlock, BlockStmt usageBlock
 where
     scopeBlock = getScopeBlock(var)
     and usageBlock.getEnclosingStmt+() = scopeBlock
@@ -64,7 +68,7 @@ where
         varAccess.getAnEnclosingStmt() = usageBlock
     )
     and not exists(TryStmt tryStmt |
-        scopeBlock = tryStmt.getEnclosingStmt+()
+        tryStmt.getEnclosingStmt+() = scopeBlock
         and (
             /*
              * Ignore `try` statements where variable is declared in parent and
@@ -82,7 +86,7 @@ where
     // expressions as possible to release the lock faster again
     and not exists(SynchronizedStmt syncStmt |
         syncStmt.getBlock() = usageBlock.getEnclosingStmt*()
-        and scopeBlock = syncStmt.getEnclosingStmt+()
+        and syncStmt.getEnclosingStmt+() = scopeBlock
     )
     // Ignore if usage only occurs in loop body, then for performance reasons
     // variable value should not be evaluated every iteration, or if variable
