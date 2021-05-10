@@ -2,27 +2,49 @@
  * Finds implicit (through try-with-resources) and explicit method calls of
  * in-memory stream types (such as `StringWriter`) which have no effect.
  * E.g.:
- * ```
+ * ```java
  * // Redundant usage of try-with-resources because ByteArrayInputStream.close()
  * // has no effect
  * try (ByteArrayInputStream in = new ByteArrayInputStream(...)) {
  *     ...
  * }
  * ```
+ * 
+ * Note that some of the results might be false positives in case custom
+ * subclasses are used which override the methods in question.
  */
 
 import java
 
+
+abstract class InMemoryInputStream extends Class {
+}
+
+abstract class InMemoryReader extends Class {
+}
+
+class TypeStringReader extends InMemoryReader {
+    TypeStringReader() {
+        hasQualifiedName("java.io", "StringReader")
+    }
+}
+
+class TypeCharArrayReader extends InMemoryReader {
+    TypeCharArrayReader() {
+        hasQualifiedName("java.io", "CharArrayReader")
+    }
+}
+
 abstract class InMemoryStream extends Class {
 }
 
-abstract class FlushableInMemoryStream extends InMemoryStream {
-}
-
-class TypeByteArrayInputStream extends InMemoryStream {
+class TypeByteArrayInputStream extends InMemoryStream, InMemoryInputStream {
     TypeByteArrayInputStream() {
         hasQualifiedName("java.io", "ByteArrayInputStream")
     }
+}
+
+abstract class FlushableInMemoryStream extends InMemoryStream {
 }
 
 class TypeByteArrayOutputStream extends FlushableInMemoryStream {
@@ -65,12 +87,28 @@ private Expr getAResourceExpr(TryStmt try) {
     or result = try.getAResourceDecl().getAVariable().getInit()
 }
 
+/*
+ * Note: For now don't consider calling InputStream.available() or Reader.ready();
+ * in some cases they might be replacable with direct calls to read(), but in
+ * other cases they can improve readability compared to reading, storing the result
+ * and checking its value (e.g. `(b = stream.read()) != -1`).
+ */
+
 from Top noopStreamTop, string message
 where
+    // Calling markSupported() on in-memory InputStream or Reader
+    exists(MethodAccess markSupportedCall | noopStreamTop = markSupportedCall |
+        (
+            markSupportedCall.getReceiverType() instanceof InMemoryReader
+            or markSupportedCall.getReceiverType() instanceof InMemoryInputStream
+        )
+        and markSupportedCall.getMethod().hasStringSignature("markSupported()")
+        and message = "Redundant call because markSupported() always returns true for this type"
+    )
     // try-with-resources implicitly invoking `close()`
     // Only report if all resources are in-memory streams, otherwise for consistency it does
     // not hurt to declare in-memory streams as resources if there are non-in-memory streams as well
-    (
+    or (
         // `forex` instead of `forall` because there has to exist at least one resource
         forex(Expr resourceExpr | resourceExpr = getAResourceExpr(noopStreamTop) |
             resourceExpr.getType() instanceof InMemoryStream
