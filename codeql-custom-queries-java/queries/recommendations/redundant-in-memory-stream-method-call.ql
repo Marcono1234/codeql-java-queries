@@ -31,6 +31,12 @@ class TypeByteArrayOutputStream extends FlushableInMemoryStream {
     }
 }
 
+class TypeCharArrayWriter extends FlushableInMemoryStream {
+    TypeCharArrayWriter() {
+        hasQualifiedName("java.io", "CharArrayWriter")
+    }
+}
+
 class TypeStringWriter extends FlushableInMemoryStream {
     TypeStringWriter() {
         hasQualifiedName("java.io", "StringWriter")
