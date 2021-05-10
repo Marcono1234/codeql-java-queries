@@ -1,0 +1,16 @@
+| Test.java:8:13:8:56 | isAfter(...) | Should use Duration.between(...) |
+| Test.java:9:13:9:56 | isAfter(...) | Should use Duration.between(...) |
+| Test.java:10:13:10:47 | isAfter(...) | Should use Duration.between(...) |
+| Test.java:11:13:11:47 | isAfter(...) | Should use Duration.between(...) |
+| Test.java:12:13:12:46 | isAfter(...) | Should use Duration.between(...) |
+| Test.java:13:13:13:47 | isBefore(...) | Should use Duration.between(...) |
+| Test.java:14:13:14:48 | compareTo(...) | Should use Duration.between(...) |
+| Test.java:16:13:16:55 | isAfter(...) | Should use Duration.between(...) |
+| Test.java:17:13:17:55 | isAfter(...) | Should use Duration.between(...) |
+| Test.java:18:13:18:46 | isAfter(...) | Should use Duration.between(...) |
+| Test.java:19:13:19:46 | isAfter(...) | Should use Duration.between(...) |
+| Test.java:20:13:20:45 | isAfter(...) | Should use Duration.between(...) |
+| Test.java:21:13:21:46 | isBefore(...) | Should use Duration.between(...) |
+| Test.java:22:13:22:47 | compareTo(...) | Should use Duration.between(...) |
+| Test.java:27:13:27:57 | ... - ... | Should use Duration.between(...) |
+| Test.java:28:13:28:53 | ... - ... | Should use Duration.between(...) |
