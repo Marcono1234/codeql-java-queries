@@ -1,0 +1,1 @@
+| MyClass.java:1:7:1:16 | OtherClass | Is in 'MyClass.java' but should be in 'OtherClass.java' |
