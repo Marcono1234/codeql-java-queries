@@ -8,10 +8,7 @@ import java
 // TODO: Reduce code duplication; already declared in manual-CharSequence-joining.ql
 class StringAppendingMethod extends Method {
     StringAppendingMethod() {
-        (
-            getDeclaringType() instanceof TypeStringBuilder
-            or getDeclaringType() instanceof TypeStringBuffer
-        )
+        getDeclaringType() instanceof StringBuildingType
         and hasName("append")
     }
 }

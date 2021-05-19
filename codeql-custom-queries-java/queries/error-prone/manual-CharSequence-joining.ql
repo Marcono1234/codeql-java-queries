@@ -13,10 +13,7 @@ import java
 
 class StringAppendingMethod extends Method {
     StringAppendingMethod() {
-        (
-            getDeclaringType() instanceof TypeStringBuilder
-            or getDeclaringType() instanceof TypeStringBuffer
-        )
+        getDeclaringType() instanceof StringBuildingType
         and hasName("append")
     }
 }

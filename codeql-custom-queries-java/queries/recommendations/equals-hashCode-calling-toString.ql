@@ -10,13 +10,6 @@
 
 import java
 
-class ToStringMethod extends Method {
-    ToStringMethod() {
-        this.hasName("toString") and
-        this.hasNoParameters()
-    }
-}
-
 from Method m, MethodAccess toStringCall
 where
     (m instanceof EqualsMethod or m instanceof HashCodeMethod)

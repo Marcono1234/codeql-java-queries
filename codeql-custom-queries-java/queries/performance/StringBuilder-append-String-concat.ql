@@ -21,10 +21,7 @@ import java
 // TODO: Remove code duplication; already exists in manual-CharSequence-joining.ql
 class StringAppendingMethod extends Method {
     StringAppendingMethod() {
-        (
-            getDeclaringType() instanceof TypeStringBuilder
-            or getDeclaringType() instanceof TypeStringBuffer
-        )
+        getDeclaringType() instanceof StringBuildingType
         and hasName("append")
     }
 }

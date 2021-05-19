@@ -7,12 +7,6 @@
 
 import java
 
-class ToStringMethod extends Method {
-    ToStringMethod() {
-        hasStringSignature("toString()")
-    }
-}
-
 from ReturnStmt returnStmt
 where
     returnStmt.getEnclosingCallable() instanceof ToStringMethod

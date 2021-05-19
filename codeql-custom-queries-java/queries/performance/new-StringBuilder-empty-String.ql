@@ -8,13 +8,6 @@
 
 import java
 
-class StringBuildingType extends Class {
-    StringBuildingType() {
-        this instanceof TypeStringBuilder
-        or this instanceof TypeStringBuffer
-    }
-}
-
 from ClassInstanceExpr newExpr, StringBuildingType stringBuildingType
 where
     stringBuildingType = newExpr.getConstructedType()
