@@ -1,0 +1,2 @@
+| Test.java:11:20:11:23 | ints | Primitive array is used as single element for $@ varargs parameter | Test.java:5:21:5:37 | objects | this |
+| Test.java:14:28:14:31 | ints | Primitive array is used as single element for $@ varargs parameter | Test.java:7:35:7:51 | objects | this |
