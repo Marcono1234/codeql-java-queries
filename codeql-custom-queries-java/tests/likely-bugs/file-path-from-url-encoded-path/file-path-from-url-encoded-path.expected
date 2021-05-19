@@ -1,0 +1,6 @@
+| Test.java:9:18:9:33 | getRawPath(...) | URL encoded path is used $@ to create a file path | Test.java:9:9:9:34 | new File(...) | here |
+| Test.java:10:17:10:32 | getRawPath(...) | URL encoded path is used $@ to create a file path | Test.java:10:9:10:33 | of(...) | here |
+| Test.java:12:18:12:30 | getFile(...) | URL encoded path is used $@ to create a file path | Test.java:12:9:12:31 | new File(...) | here |
+| Test.java:13:17:13:29 | getFile(...) | URL encoded path is used $@ to create a file path | Test.java:13:9:13:30 | of(...) | here |
+| Test.java:14:18:14:30 | getPath(...) | URL encoded path is used $@ to create a file path | Test.java:14:9:14:31 | new File(...) | here |
+| Test.java:15:17:15:29 | getPath(...) | URL encoded path is used $@ to create a file path | Test.java:15:9:15:30 | of(...) | here |
