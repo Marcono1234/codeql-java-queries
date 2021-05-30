@@ -32,7 +32,11 @@ private predicate iteratesAtMostOnce(LoopStmt loop) {
         // or with empty body
         // Note: Might not be needed because apparently even empty body has node
         exists(ControlFlowNode node | node.getEnclosingStmt().getEnclosingStmt*() = loop.getBody())
-        // None of the nodes in the loop body have the loopReentry as successor 
+        // None of the nodes in the loop body have the loopReentry as successor
+        /*
+         * TODO: This can have false negatives for nested loops where the loop entry of the inner loop
+         * is reached due to the subsequent iteration of the outer loop
+         */
         and not exists(ControlFlowNode loopNode |
             loopNode.getEnclosingStmt().getEnclosingStmt*() = loop.getBody()
             and loopNode.getASuccessor+() = loopReentry.getControlFlowNode()
