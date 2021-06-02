@@ -31,7 +31,7 @@ class TestPluginElement extends PomElement {
     TestPluginElement() {
         exists(PluginsElement pluginsElement |
             this = pluginsElement.getAChild("plugin")
-            // groupId is optional, see https://maven.apache.org/settings.html#plugin-groups
+            // groupId is optional because it has a default value in the XSD (see https://stackoverflow.com/a/65533111)
             and (exists(getAChild("groupId")) implies getAChild("groupId").getTextValue() = "org.apache.maven.plugins")
             and getAChild("artifactId").getTextValue() = ["maven-surefire-plugin", "maven-failsafe-plugin"]
         )
