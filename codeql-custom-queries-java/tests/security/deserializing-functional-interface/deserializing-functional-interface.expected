@@ -1,0 +1,2 @@
+| Test.java:12:35:12:42 | supplier | Field with functional interface type is deserialized |
+| Test.java:45:38:45:52 | readObject(...) | Deserializes functional interface instance |
