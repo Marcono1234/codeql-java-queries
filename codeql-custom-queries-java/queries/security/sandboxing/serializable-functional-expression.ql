@@ -2,9 +2,10 @@
  * Finds functional expressions which either implement a serializable
  * interface or are made serializable with an intersection type cast.
  *
- * If a class contains such a functional expression, it is possible
- * to access any of its methods (including private ones) by deserializing
- * a forged `SerializedLambda`.
+ * If a class contains such a functional expression, the functional expression
+ * can – even if it accesses internal fields or methods – be executed by anyone
+ * who deserializes an instance of this functional expression through a
+ * forged `SerializedLambda`.
  * See also https://stackoverflow.com/q/25443655/
  */
 
