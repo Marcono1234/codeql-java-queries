@@ -1,0 +1,10 @@
+| Test.java:8:16:8:32 | ... == ... | Redundant null check for annotation element value obtained from $@ | Test.java:8:16:8:24 | value(...) | here |
+| Test.java:8:37:8:53 | ... != ... | Redundant null check for annotation element value obtained from $@ | Test.java:8:37:8:45 | value(...) | here |
+| Test.java:13:16:13:24 | ... == ... | Redundant null check for annotation element value obtained from $@ | Test.java:12:20:12:28 | value(...) | here |
+| Test.java:13:29:13:37 | ... != ... | Redundant null check for annotation element value obtained from $@ | Test.java:12:20:12:28 | value(...) | here |
+| Test.java:18:16:18:32 | ... == ... | Redundant null check for annotation element value obtained from $@ | Test.java:18:16:18:24 | array(...) | here |
+| Test.java:22:16:22:35 | ... == ... | Redundant null check for annotation element value obtained from $@ | Test.java:22:16:22:24 | array(...) | here |
+| Test.java:22:40:22:59 | ... != ... | Redundant null check for annotation element value obtained from $@ | Test.java:22:40:22:48 | array(...) | here |
+| Test.java:28:16:28:24 | ... == ... | Redundant null check for annotation element value obtained from $@ | Test.java:26:26:26:34 | array(...) | here |
+| Test.java:28:29:28:37 | ... != ... | Redundant null check for annotation element value obtained from $@ | Test.java:26:26:26:34 | array(...) | here |
+| Test.java:35:16:35:24 | ... == ... | Redundant null check for annotation element value obtained from $@ | Test.java:34:13:34:21 | value(...) | here |
