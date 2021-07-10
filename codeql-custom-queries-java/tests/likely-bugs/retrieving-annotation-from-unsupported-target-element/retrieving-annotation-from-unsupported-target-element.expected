@@ -1,0 +1,9 @@
+| Test.java:42:9:42:48 | getAnnotation(...) | Call will never succeed; target is not supported by targets of annotation type $@: FIELD | Test.java:11:16:11:23 | AnnField | @AnnField |
+| Test.java:45:9:45:40 | getAnnotation(...) | Call will never succeed; target is not supported by targets of annotation type $@: METHOD | Test.java:15:16:15:24 | AnnMethod | @AnnMethod |
+| Test.java:48:9:48:41 | getAnnotation(...) | Call will never succeed; target is not supported by targets of annotation type $@: TYPE_USE | Test.java:39:16:39:25 | AnnTypeUse | @AnnTypeUse |
+| Test.java:51:9:51:43 | getAnnotation(...) | Call will never succeed; target is not supported by targets of annotation type $@: PARAMETER | Test.java:27:16:27:27 | AnnParameter | @AnnParameter |
+| Test.java:54:9:54:45 | getAnnotation(...) | Call will never succeed; target is not supported by targets of annotation type $@: CONSTRUCTOR | Test.java:7:16:7:29 | AnnConstructor | @AnnConstructor |
+| Test.java:57:9:57:43 | getAnnotation(...) | Call will never succeed; target is not supported by targets of annotation type $@: TYPE | Test.java:35:16:35:22 | AnnType | @AnnType |
+| Test.java:60:9:60:38 | getAnnotation(...) | Call will never succeed; target is not supported by targets of annotation type $@: TYPE | Test.java:35:16:35:22 | AnnType | @AnnType |
+| Test.java:63:9:63:43 | getAnnotation(...) | Call will never succeed; target is not supported by targets of annotation type $@: FIELD | Test.java:11:16:11:23 | AnnField | @AnnField |
+| Test.java:66:9:66:39 | getAnnotation(...) | Call will never succeed; target is not supported by targets of annotation type $@: FIELD | Test.java:11:16:11:23 | AnnField | @AnnField |

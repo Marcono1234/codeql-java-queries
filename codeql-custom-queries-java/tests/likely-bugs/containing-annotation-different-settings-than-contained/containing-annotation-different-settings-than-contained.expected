@@ -1,0 +1,8 @@
+| Test.java:9:16:9:35 | ContainingDocumented | Containing annotation is marked as Documented, but contained $@ is not | Test.java:5:16:5:31 | AnnNotDocumented | @AnnNotDocumented |
+| Test.java:18:16:18:34 | ContainingInherited | Containing annotation is marked as Inherited, but contained $@ is not | Test.java:14:16:14:30 | AnnNotInherited | @AnnNotInherited |
+| Test.java:42:16:42:33 | ContainingNoTarget | Containing annotation does not explicitly specify Target, but contained $@ does | Test.java:39:16:39:24 | AnnTarget | @AnnTarget |
+| Test.java:51:16:51:31 | ContainingTarget | Containing annotation explicitly specifies Target, but contained $@ does not | Test.java:47:16:47:26 | AnnNoTarget | @AnnNoTarget |
+| Test.java:61:16:61:39 | ContainingTargetMismatch | Containing annotation uses different Target than contained $@ | Test.java:57:16:57:32 | AnnTargetMismatch | @AnnTargetMismatch |
+| Test.java:70:16:70:36 | ContainingNoRetention | Containing annotation does not explicitly specify Retention, but contained $@ does | Test.java:67:16:67:27 | AnnRetention | @AnnRetention |
+| Test.java:79:16:79:34 | ContainingRetention | Containing annotation explicitly specifies Retention, but contained $@ does not | Test.java:75:16:75:29 | AnnNoRetention | @AnnNoRetention |
+| Test.java:89:16:89:42 | ContainingRetentionMismatch | Containing annotation uses different Retention than contained $@ | Test.java:85:16:85:35 | AnnRetentionMismatch | @AnnRetentionMismatch |

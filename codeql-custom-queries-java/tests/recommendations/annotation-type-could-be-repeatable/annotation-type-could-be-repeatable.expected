@@ -1,0 +1,1 @@
+| Test.java:6:16:6:19 | Anns | Could be used as containing annotation type by marking $@ as @Repeatable | Test.java:4:16:4:18 | Ann | @Ann |

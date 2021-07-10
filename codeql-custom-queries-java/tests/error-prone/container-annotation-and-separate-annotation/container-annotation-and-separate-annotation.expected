@@ -1,0 +1,1 @@
+| Test.java:17:5:17:16 | Marker | This separate annotation should be moved to $@ existing container annotation | Test.java:13:5:16:6 | Markers | this |

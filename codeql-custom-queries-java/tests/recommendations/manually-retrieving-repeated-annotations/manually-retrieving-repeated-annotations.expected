@@ -1,0 +1,6 @@
+| Test.java:30:9:30:53 | getAnnotation(...) | Manually retrieves repeated annotations, should use `getAnnotationsByType` with the repeatable annotation type @Ann as argument |
+| Test.java:31:9:31:60 | getAnnotationsByType(...) | Manually retrieves repeated annotations, should use `getAnnotationsByType` with the repeatable annotation type @Ann as argument |
+| Test.java:32:9:32:61 | getDeclaredAnnotation(...) | Manually retrieves repeated annotations, should use `getDeclaredAnnotationsByType` with the repeatable annotation type @Ann as argument |
+| Test.java:33:9:33:68 | getDeclaredAnnotationsByType(...) | Manually retrieves repeated annotations, should use `getDeclaredAnnotationsByType` with the repeatable annotation type @Ann as argument |
+| Test.java:37:9:37:60 | getAnnotation(...) | Manually retrieves repeated annotations, should use `getAnnotationsByType` with the repeatable annotation type @NestedAnn as argument |
+| Test.java:38:9:38:68 | getDeclaredAnnotation(...) | Manually retrieves repeated annotations, should use `getDeclaredAnnotationsByType` with the repeatable annotation type @NestedAnn as argument |

@@ -1,0 +1,1 @@
+| Test.java:5:5:5:14 | Inherited | Usage of @Inherited makes no sense because $@ does not permit usage on classes | Test.java:4:5:4:31 | Target | target annotation |

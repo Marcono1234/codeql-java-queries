@@ -1,0 +1,3 @@
+| Test.java:12:9:12:43 | getAnnotation(...) | Retrieves only direct annotations of repeatable annotation type; should use `getAnnotationsByType` |
+| Test.java:13:9:13:51 | getDeclaredAnnotation(...) | Retrieves only direct annotations of repeatable annotation type; should use `getDeclaredAnnotationsByType` |
+| Test.java:14:9:14:49 | isAnnotationPresent(...) | Retrieves only direct annotations of repeatable annotation type; should use `getAnnotationsByType(...).length != 0` |
