@@ -25,16 +25,22 @@ class PluginsElement extends PomElement {
 }
 
 /**
+ * A `plugin` element of a Maven POM.
+ */
+class PluginElement extends ProtoPom {
+    PluginElement() {
+        any(PluginsElement e).getAChild("plugin") = this
+    }
+}
+
+/**
  * A `plugin` element of a Maven POM specifying a test plugin.
  */
-class TestPluginElement extends PomElement {
+class TestPluginElement extends PluginElement {
     TestPluginElement() {
-        exists(PluginsElement pluginsElement |
-            this = pluginsElement.getAChild("plugin")
-            // groupId is optional because it has a default value in the XSD (see https://stackoverflow.com/a/65533111)
-            and (exists(getAChild("groupId")) implies getAChild("groupId").getTextValue() = "org.apache.maven.plugins")
-            and getAChild("artifactId").getTextValue() = ["maven-surefire-plugin", "maven-failsafe-plugin"]
-        )
+        // groupId is optional because it has a default value in the XSD (see https://stackoverflow.com/a/65533111)
+        (exists(getGroup()) implies getGroup().getTextValue() = "org.apache.maven.plugins")
+        and getArtifact().getTextValue() = ["maven-surefire-plugin", "maven-failsafe-plugin"]
     }
 }
 
