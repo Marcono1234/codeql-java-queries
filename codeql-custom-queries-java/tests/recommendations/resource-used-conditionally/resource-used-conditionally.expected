@@ -1,0 +1,5 @@
+| Test.java:7:14:7:56 | InputStream in | Resource is only conditionally used based on $@ guard | Test.java:8:17:8:17 | b | this |
+| Test.java:15:14:15:56 | InputStream in | Resource is only conditionally used based on $@ guard | Test.java:16:17:16:17 | b | this |
+| Test.java:25:14:25:56 | InputStream in | Resource is only conditionally used based on $@ guard | Test.java:26:17:26:17 | b | this |
+| Test.java:34:14:34:56 | InputStream in | Resource is only conditionally used based on $@ guard | Test.java:36:17:36:18 | b1 | this |
+| Test.java:45:14:45:56 | InputStream in | Resource is only conditionally used based on $@ guard | Test.java:47:17:47:18 | b1 | this |
