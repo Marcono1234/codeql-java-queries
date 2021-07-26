@@ -1,0 +1,2 @@
+| Test.java:19:22:19:33 | otherAddress | Field seems to represent native pointer, but can be deserialized |
+| Test.java:20:22:20:28 | pointer | Field seems to represent native pointer, but can be deserialized |
