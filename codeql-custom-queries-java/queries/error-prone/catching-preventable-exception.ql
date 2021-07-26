@@ -11,27 +11,31 @@ import java
 
 class PreventableExceptionType extends Class {
     PreventableExceptionType() {
-        this.hasQualifiedName("java.lang", "NullPointerException")
-        or this instanceof TypeClassCastException
-        or this.hasQualifiedName("java.lang", "NegativeArraySizeException")
-        or this.hasQualifiedName("java.lang", "IndexOutOfBoundsException")
-        or this.hasQualifiedName("java.lang", "ArrayStoreException")
-        or this.hasQualifiedName("java.nio", "BufferUnderflowException")
-        or this.hasQualifiedName("java.nio", "BufferOverflowException")
-        or this.hasQualifiedName("java.util", "ConcurrentModificationException")
-        or this.hasQualifiedName("java.util", "EmptyStackException")
+        this instanceof TypeClassCastException
+        or this.hasQualifiedName("java.lang", [
+            "NullPointerException",
+            "NegativeArraySizeException",
+            "IndexOutOfBoundsException",
+            "ArrayStoreException",
+            // Could use Thread.holdsLock(Object)
+            // Based on SpotBugs `IMSE_DONT_CATCH_IMSE`
+            "IllegalMonitorStateException"
+        ])
+        or this.hasQualifiedName("java.nio", [
+            "BufferUnderflowException",
+            "BufferOverflowException"
+        ])
+        or this.hasQualifiedName("java.util", [
+            "ConcurrentModificationException",
+            "EmptyStackException"
+        ])
     }
-}
-
-predicate isWithinTestClass(RefType type) {
-    type instanceof TestClass
-    or isWithinTestClass(type.getEnclosingType())
 }
 
 from CatchClause catch, RefType caught
 where
     caught = catch.getACaughtType()
     // Ignore test classes
-    and not isWithinTestClass(catch.getEnclosingCallable().getDeclaringType())
+    and not catch.getEnclosingCallable().getDeclaringType() instanceof TestClass
     and caught.getAnAncestor() instanceof PreventableExceptionType
-select catch, caught
+select catch, "Catches preventable exception " + caught.getName()
