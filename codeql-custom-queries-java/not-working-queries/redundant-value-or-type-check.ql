@@ -44,7 +44,7 @@ class ImplicitlyTypeCheckingExpr extends Expr {
         )
         or (
             operand = this.(InstanceOfExpr).getExpr()
-            and checkedType = this.(InstanceOfExpr).getTypeName().getType()
+            and checkedType = this.(InstanceOfExpr).getCheckedType()
         )
         // TODO: Causes some false positives for equals methods considering
         // other types equal, e.g. when comparing numeric values
@@ -114,7 +114,7 @@ from ImplicitlyTypeCheckingExpr implicitCheck, InstanceOfExpr explicitCheck, Exp
 where
     implicitCheck != explicitCheck
     and accessSameVariable(implicitCheck.getAnOperand(), explicitCheck.getExpr())
-    and exists (Type explicitlyCheckedType | explicitlyCheckedType = explicitCheck.getTypeName().getType() |
+    and exists (Type explicitlyCheckedType | explicitlyCheckedType = explicitCheck.getCheckedType() |
         implicitCheck.getCheckedType() = explicitlyCheckedType
         or implicitCheck.getCheckedType().(RefType).getASourceSupertype*() = explicitlyCheckedType
     )

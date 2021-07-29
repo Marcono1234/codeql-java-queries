@@ -8,5 +8,5 @@
 import java
 
 from InstanceOfExpr e
-where e.getTypeName().getType() instanceof TypeObject
+where e.getCheckedType() instanceof TypeObject
 select e, "Should be replaced with an explicit null check"

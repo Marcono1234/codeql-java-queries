@@ -54,7 +54,7 @@ Expr getDirectAccessOrSsa(Expr source) {
 
 from AnnotationRetrievingCall retrievingCall, TypeLiteral annTypeLiteral, AnnotationType annType, AnnotationType repeatableAnnType
 where
-    annType = annTypeLiteral.getTypeName().getType()
+    annType = annTypeLiteral.getReferencedType()
     and repeatableAnnType.getAnAnnotation().(RepeatableAnnotation).getContainingType() = annType
     // Ignore if containing annotation type is itself repeatable as well
     and not (

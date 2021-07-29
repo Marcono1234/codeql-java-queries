@@ -11,7 +11,7 @@ boolean doesInstanceOfVerifyCast(InstanceOfExpr instanceOfExpr, CastExpr cast) {
     exists (ConditionNode conditionNode, Variable var, RefType instanceOfType, Type castType |
         instanceOfExpr = conditionNode.getCondition()
         and instanceOfExpr.getExpr() = var.getAnAccess()
-        and instanceOfType = instanceOfExpr.getTypeName().getType().getErasure()
+        and instanceOfType = instanceOfExpr.getCheckedType().getErasure()
         and cast.getBasicBlock() = conditionNode.getATrueSuccessor()
         and cast.getExpr() = var.getAnAccess()
         and castType = cast.getType().getErasure()

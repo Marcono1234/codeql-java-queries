@@ -189,7 +189,7 @@ class UnsafeValidatorBuilderConfiguration extends MethodAccess, UnsafeDefaultTyp
             (
                 m.hasName("allowIfBaseType")
                 and exists(Expr arg | arg = getArgument(0) |
-                    arg.(TypeLiteral).getTypeName().getType() instanceof UnsafeBaseType
+                    arg.(TypeLiteral).getReferencedType() instanceof UnsafeBaseType
                     // Usage of `allowIfBaseType(String)`
                     or arg.(CompileTimeConstantExpr).getStringValue().matches([
                         "", // empty String

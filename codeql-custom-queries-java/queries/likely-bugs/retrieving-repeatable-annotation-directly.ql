@@ -50,6 +50,6 @@ Expr getDirectAccessOrSsa(Expr source) {
 from DirectAnnotationRetrievingCall retrievingCall, TypeLiteral annTypeLiteral, AnnotationType annType
 where
     retrievingCall.getAnnotationTypeArg() = getDirectAccessOrSsa(annTypeLiteral)
-    and annType = annTypeLiteral.getTypeName().getType()
+    and annType = annTypeLiteral.getReferencedType()
     and annType.getAnAnnotation() instanceof RepeatableAnnotation
 select retrievingCall, "Retrieves only direct annotations of repeatable annotation type; should use `" + retrievingCall.getAlternative() + "`"

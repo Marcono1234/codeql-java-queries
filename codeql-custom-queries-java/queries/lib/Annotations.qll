@@ -52,8 +52,8 @@ class RepeatableAnnotation extends Annotation {
      * repeatable annotations together.
      */
     AnnotationType getContainingType() {
-        // Get annotation type A of Class<A> specified by `value`
-        result = getValue("value").(TypeLiteral).getTypeName().getType()
+        // Get annotation type specified by `value`
+        result = getValue("value").(TypeLiteral).getReferencedType()
     }
 }
 

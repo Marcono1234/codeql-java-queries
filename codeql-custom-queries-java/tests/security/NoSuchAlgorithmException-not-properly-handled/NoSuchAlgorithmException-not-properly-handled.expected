@@ -1,3 +1,3 @@
-| Test.java:14:9:14:42 | stmt | Might not properly handle NoSuchAlgorithmException |
-| Test.java:23:11:23:68 | stmt | Might not properly handle NoSuchAlgorithmException |
-| Test.java:33:9:33:27 | stmt | Might not properly handle NoSuchAlgorithmException |
+| Test.java:14:9:14:42 | catch (...) | Might not properly handle NoSuchAlgorithmException |
+| Test.java:23:11:23:68 | catch (...) | Might not properly handle NoSuchAlgorithmException |
+| Test.java:33:9:33:27 | catch (...) | Might not properly handle NoSuchAlgorithmException |

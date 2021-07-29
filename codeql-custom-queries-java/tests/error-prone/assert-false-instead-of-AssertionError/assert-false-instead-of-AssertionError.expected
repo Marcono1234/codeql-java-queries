@@ -1,5 +1,5 @@
-| Test.java:5:9:5:21 | stmt | Should instead explicitly throw AssertionError |
-| Test.java:6:9:6:23 | stmt | Should instead explicitly throw AssertionError |
-| Test.java:7:9:7:38 | stmt | Should instead explicitly throw AssertionError |
-| Test.java:9:9:9:21 | stmt | Should instead explicitly throw AssertionError |
-| Test.java:10:9:10:29 | stmt | Should instead explicitly throw AssertionError |
+| Test.java:5:9:5:21 | assert ... | Should instead explicitly throw AssertionError |
+| Test.java:6:9:6:23 | assert ... | Should instead explicitly throw AssertionError |
+| Test.java:7:9:7:38 | assert ... | Should instead explicitly throw AssertionError |
+| Test.java:9:9:9:21 | assert ... | Should instead explicitly throw AssertionError |
+| Test.java:10:9:10:29 | assert ... | Should instead explicitly throw AssertionError |

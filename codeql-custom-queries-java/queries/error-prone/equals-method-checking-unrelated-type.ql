@@ -14,7 +14,7 @@ import java
 
 Type getTypeCheckedByInstanceOfExpr(InstanceOfExpr e, Variable checked) {
     e.getExpr() = checked.getAnAccess()
-    and result = e.getTypeName().getType()
+    and result = e.getCheckedType()
 }
 
 Type getTypeCheckedByEqualityTest(EQExpr e, Variable checked) {
@@ -23,7 +23,7 @@ Type getTypeCheckedByEqualityTest(EQExpr e, Variable checked) {
     |
         e.getAnOperand() = getClassCall
         and getClassCall.getQualifier() = checked.getAnAccess()
-        and result = e.getAnOperand().(TypeLiteral).getTypeName().getType()
+        and result = e.getAnOperand().(TypeLiteral).getReferencedType()
     )
 }
 

@@ -540,7 +540,7 @@ Expr getDirectAccessOrSsa(Expr source) {
 from AnnotationRetrievingCall retrievingCall, TypeLiteral annTypeLiteral, AnnotationType annType
 where
     retrievingCall.getAnnotationTypeArg() = getDirectAccessOrSsa(annTypeLiteral)
-    and annType = annTypeLiteral.getTypeName().getType()
+    and annType = annTypeLiteral.getReferencedType()
     // Annotation type is not applicable to any of the targets
     and not exists(string target |
         target = retrievingCall.getACheckedTarget()
