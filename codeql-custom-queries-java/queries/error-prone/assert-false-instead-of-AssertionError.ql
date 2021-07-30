@@ -12,6 +12,12 @@
  *     assert false;
  * }
  * ```
+ * 
+ * However, an `AssertionError` might propagate high up the call stack before
+ * it is handled. Applications where it might be possible for an adversary to
+ * trigger this unexpected condition might want to prefer throwing a
+ * `RuntimeException` or a subclass of it to prevent any denial of service
+ * attacks.
  */
 
 // Real world example of this bug: https://bugs.openjdk.java.net/browse/JDK-8253459
