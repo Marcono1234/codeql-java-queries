@@ -1,0 +1,8 @@
+| Test.java:6:9:6:28 | new BigDecimal(...) | Uses $@ floating point literal to construct BigDecimal | Test.java:6:24:6:27 | 1.1f | this |
+| Test.java:7:9:7:28 | new BigDecimal(...) | Uses $@ floating point literal to construct BigDecimal | Test.java:7:24:7:27 | 1.1d | this |
+| Test.java:9:9:9:52 | new BigDecimal(...) | Uses $@ floating point literal to construct BigDecimal | Test.java:9:24:9:27 | 1.1f | this |
+| Test.java:10:9:10:52 | new BigDecimal(...) | Uses $@ floating point literal to construct BigDecimal | Test.java:10:24:10:27 | 1.1d | this |
+| Test.java:12:9:12:32 | valueOf(...) | Uses $@ floating point literal to construct BigDecimal | Test.java:12:28:12:31 | 1.1f | this |
+| Test.java:13:9:13:32 | valueOf(...) | Uses $@ floating point literal to construct BigDecimal | Test.java:13:28:13:31 | 1.1d | this |
+| Test.java:16:9:16:25 | new BigDecimal(...) | Uses $@ floating point literal to construct BigDecimal | Test.java:15:19:15:22 | 1.1f | this |
+| Test.java:19:9:19:25 | new BigDecimal(...) | Uses $@ floating point literal to construct BigDecimal | Test.java:18:20:18:23 | 1.1d | this |
