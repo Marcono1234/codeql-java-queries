@@ -31,6 +31,31 @@ class PluginElement extends ProtoPom {
     PluginElement() {
         any(PluginsElement e).getAChild("plugin") = this
     }
+
+    /**
+     * Gets the effective `groupId` of this plugin declaration.
+     */
+    string getEffectiveGroupId() {
+        if exists(getGroup()) then result = getGroup().getTextValue()
+        // groupId is optional because it has a default value in the XSD (see https://stackoverflow.com/a/65533111)
+        else result = "org.apache.maven.plugins"
+    }
+
+    predicate hasEffectiveCoordinates(string groupId, string artifactId) {
+        getEffectiveGroupId() = groupId
+        and getArtifact().getTextValue() = artifactId
+    }
+
+    /**
+     * Gets a `configuration` element of this plugin; either the global configuration
+     * or an execution specific configuration.
+     */
+    PomElement getAConfigElement() {
+        // Configuration for all executions
+        result = getAChild("configuration")
+        // Or configuration for specific execution
+        or result = getAChild("executions").getAChild("execution").getAChild("configuration")
+    }
 }
 
 /**
@@ -38,9 +63,7 @@ class PluginElement extends ProtoPom {
  */
 class TestPluginElement extends PluginElement {
     TestPluginElement() {
-        // groupId is optional because it has a default value in the XSD (see https://stackoverflow.com/a/65533111)
-        (exists(getGroup()) implies getGroup().getTextValue() = "org.apache.maven.plugins")
-        and getArtifact().getTextValue() = ["maven-surefire-plugin", "maven-failsafe-plugin"]
+        hasEffectiveCoordinates("org.apache.maven.plugins", ["maven-surefire-plugin", "maven-failsafe-plugin"])
     }
 }
 
@@ -50,12 +73,7 @@ class TestPluginElement extends PluginElement {
  */
 class TestPluginConfigElement extends PomElement {
     TestPluginConfigElement() {
-        exists(TestPluginElement testPluginElement |
-            // Configuration for all goals
-            this = testPluginElement.getAChild("configuration")
-            // Or configuration for specific goals
-            or this = testPluginElement.getAChild("executions").getAChild("execution").getAChild("configuration")
-        )
+        this = any(TestPluginElement e).getAConfigElement()
     }
 
     /**
@@ -98,3 +116,74 @@ class TestPluginConfigElement extends PomElement {
     }
 }
 
+/**
+ * A `plugin` element of a Maven POM specifying the Maven Shade Plugin.
+ */
+class ShadePluginElement extends PluginElement {
+    ShadePluginElement() {
+        hasEffectiveCoordinates("org.apache.maven.plugins", "maven-shade-plugin")
+    }
+}
+
+/**
+ * A shade plugin transformer declaration.
+ */
+class ShadeTransformerElement extends PomElement {
+    ShadeTransformerElement() {
+        this = any(PluginElement e).getAConfigElement().getAChild("transformers").getAChild("transformer")
+    }
+
+    string getTransformerImplementationName() {
+        result = getAttributeValue("implementation")
+    }
+}
+
+/**
+ * A shade plugin transformer declaration of type `ManifestResourceTransformer`.
+ */
+class ShadeManifestTransformerElement extends ShadeTransformerElement {
+    ShadeManifestTransformerElement() {
+        getTransformerImplementationName() = "org.apache.maven.plugins.shade.resource.ManifestResourceTransformer"
+    }
+
+    /**
+     * Gets an element specifying the main class.
+     */
+    PomElement getAMainClassElement() {
+        // See https://maven.apache.org/plugins/maven-shade-plugin/examples/executable-jar.html
+        result = getAChild("mainClass")
+        or result = getAChild("manifestEntries").getAChild("Main-Class")
+    }
+}
+
+/**
+ * A `plugin` element of a Maven POM specifying the Maven JAR Plugin.
+ */
+class JarPluginElement extends PluginElement {
+    JarPluginElement() {
+        hasEffectiveCoordinates("org.apache.maven.plugins", "maven-jar-plugin")
+    }
+
+    PomElement getAnArchiveConfig() {
+        result = getAConfigElement().getAChild("archive")
+    }
+
+    /**
+     * Gets an element of any of the archive configurations specifying the main class.
+     */
+    PomElement getAMainClassElement() {
+        // See https://maven.apache.org/shared/maven-archiver/index.html
+        result = getAnArchiveConfig().getAChild("manifest").getAChild("mainClass")
+        or result = getAnArchiveConfig().getAChild("manifestEntries").getAChild("Main-Class")
+    }
+}
+
+/**
+ * An element which specifies the main class.
+ */
+class MainClassElement extends PomElement {
+    MainClassElement() {
+        this = any(ShadeManifestTransformerElement e).getAMainClassElement()
+        or this = any(JarPluginElement e).getAMainClassElement()
+    }
+}
