@@ -1,0 +1,11 @@
+| Test.java:3:9:3:14 | "\\000" | Contains octal escape '\\000' |
+| Test.java:4:9:4:12 | "\\1" | Contains octal escape '\\1' |
+| Test.java:5:9:5:12 | "\\7" | Contains octal escape '\\7' |
+| Test.java:6:9:6:15 | "\\3771" | Contains octal escape '\\377' |
+| Test.java:7:9:7:14 | "\\388" | Contains octal escape '\\3' |
+| Test.java:8:9:8:14 | "\\\\\\1" | Contains octal escape '\\1' |
+| Test.java:9:9:9:16 | "\\\\\\\\\\1" | Contains octal escape '\\1' |
+| Test.java:10:9:10:20 | "test\\1text" | Contains octal escape '\\1' |
+| Test.java:11:9:11:20 | "a\\5b\\6c\\7d" | Contains octal escape '\\5' |
+| Test.java:11:9:11:20 | "a\\5b\\6c\\7d" | Contains octal escape '\\6' |
+| Test.java:11:9:11:20 | "a\\5b\\6c\\7d" | Contains octal escape '\\7' |
