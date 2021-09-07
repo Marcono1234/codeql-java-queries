@@ -1,0 +1,12 @@
+| StmtExpr.java:7:9:7:18 | toString(...) |
+| StmtExpr.java:11:9:11:13 | ...=... |
+| StmtExpr.java:12:9:12:11 | ...++ |
+| StmtExpr.java:13:9:13:20 | new Object(...) |
+| StmtExpr.java:16:9:16:28 | clone(...) |
+| StmtExpr.java:19:18:19:23 | i1 |
+| StmtExpr.java:19:35:19:38 | ...++ |
+| StmtExpr.java:21:13:21:25 | doSomething(...) |
+| StmtExpr.java:29:24:29:33 | toString(...) |
+| StmtExpr.java:42:28:42:37 | toString(...) |
+| StmtExpr.java:44:13:44:22 | toString(...) |
+| StmtExpr.java:50:23:50:36 | toString(...) |

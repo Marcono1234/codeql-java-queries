@@ -1,0 +1,7 @@
+| Test.java:3:9:6:11 | """\n    \tmixed same line\n\t    mixed same line2\n        """ | Text block line 0 (0-based) uses mixed indentation; used characters: U+0009, U+0020 |
+| Test.java:3:9:6:11 | """\n    \tmixed same line\n\t    mixed same line2\n        """ | Text block line 1 (0-based) uses mixed indentation; used characters: U+0009, U+0020 |
+| Test.java:7:9:9:8 | """\n        test\n\t    """ | Text block line 1 (0-based) uses mixed indentation; used characters: U+0009, U+0020 |
+| Test.java:10:9:13:11 | """\n        spaces\n\t\ttabs\n        """ | Text block line(s) 0, 2 (0-based) use U+0020 for indentation, but line(s) 1 use U+0009 |
+| Test.java:14:9:19:11 | """\n        spaces\n        spaces\n\t\ttabs\n\t\ttabs\n        """ | Text block line(s) 0, 1, 4 (0-based) use U+0020 for indentation, but line(s) 2, 3 use U+0009 |
+| Test.java:20:9:22:5 | """\n        spaces\n\t\t""" | Text block line(s) 0 (0-based) use U+0020 for indentation, but line(s) 1 use U+0009 |
+| Test.java:23:9:26:11 | """\n        spaces, line continuation \\\n\t\ttabs\n        """ | Text block line(s) 0, 2 (0-based) use U+0020 for indentation, but line(s) 1 use U+0009 |

@@ -1,0 +1,4 @@
+| Test.java:3:9:6:11 | """\n        spaces   \n        second line   \n        """ | Has trailing whitespaces at text block line 0 (0-based) |
+| Test.java:3:9:6:11 | """\n        spaces   \n        second line   \n        """ | Has trailing whitespaces at text block line 1 (0-based) |
+| Test.java:7:9:9:11 | """\n        tabs\t\t\n        """ | Has trailing whitespaces at text block line 0 (0-based) |
+| Test.java:10:9:11:24 | """\n        same line    """ | Has trailing whitespaces at text block line 0 (0-based) |

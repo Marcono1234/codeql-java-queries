@@ -1,0 +1,15 @@
+| TextBlock.java:5:9:6:11 | """\n        """ | 0 |          |
+| TextBlock.java:7:9:9:11 | """\n        test\n        """ | 0 |         test |
+| TextBlock.java:7:9:9:11 | """\n        test\n        """ | 1 |          |
+| TextBlock.java:10:9:11:15 | """\n        test""" | 0 |         test |
+| TextBlock.java:12:9:14:17 | """\n        first\n        second""" | 0 |         first |
+| TextBlock.java:12:9:14:17 | """\n        first\n        second""" | 1 |         second |
+| TextBlock.java:15:9:17:11 | """\n\n        """ | 0 |  |
+| TextBlock.java:15:9:17:11 | """\n\n        """ | 1 |          |
+| TextBlock.java:18:9:21:11 | """\n        continuation \\\n        next\n        """ | 0 |         continuation \\ |
+| TextBlock.java:18:9:21:11 | """\n        continuation \\\n        next\n        """ | 1 |         next |
+| TextBlock.java:18:9:21:11 | """\n        continuation \\\n        next\n        """ | 2 |          |
+| TextBlock.java:22:9:25:11 | """\n        escaped \\\\\n        next\n        """ | 0 |         escaped \\\\ |
+| TextBlock.java:22:9:25:11 | """\n        escaped \\\\\n        next\n        """ | 1 |         next |
+| TextBlock.java:22:9:25:11 | """\n        escaped \\\\\n        next\n        """ | 2 |          |
+| TextBlock.java:26:9:27:3 | """\n""" | 0 |  |

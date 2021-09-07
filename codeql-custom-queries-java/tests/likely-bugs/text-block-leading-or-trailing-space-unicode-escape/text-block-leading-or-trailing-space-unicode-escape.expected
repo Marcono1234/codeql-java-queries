@@ -1,0 +1,10 @@
+| Test.java:3:9:5:11 | """\n        \\u0020    leading\n        """ | Contains leading Unicode escape `\\u0020`; should use `\\s` |
+| Test.java:6:9:8:11 | """\n        trailing    \\u0020\n        """ | Contains trailing Unicode escape `\\u0020`; should use `\\s` |
+| Test.java:9:9:11:11 | """\n           \\u0020    leading with space\n        """ | Contains leading Unicode escape `\\u0020`; should use `\\s` |
+| Test.java:12:9:14:11 | """\n        trailing with space    \\u0020    \n        """ | Contains trailing Unicode escape `\\u0020`; should use `\\s` |
+| Test.java:16:9:18:11 | """\n        \\uuuu0020\n        """ | Empty line contains Unicode escape `\\uuuu0020`; should use `\\s` |
+| Test.java:19:9:20:17 | """\n        \\u0020""" | Empty line contains Unicode escape `\\u0020`; should use `\\s` |
+| Test.java:21:9:24:11 | """\n        \\u0009\n        \\u000c \\u000C\n        """ | Contains leading Unicode escape `\\u000c`; should use `\\f` |
+| Test.java:21:9:24:11 | """\n        \\u0009\n        \\u000c \\u000C\n        """ | Contains trailing Unicode escape `\\u000C`; should use `\\f` |
+| Test.java:21:9:24:11 | """\n        \\u0009\n        \\u000c \\u000C\n        """ | Empty line contains Unicode escape `\\u0009`; should use `\\t` |
+| Test.java:26:9:28:11 | """\n        \\u2028\n        """ | Empty line contains Unicode escape `\\u2028` |

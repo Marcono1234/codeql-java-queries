@@ -1,0 +1,11 @@
+| 1234\\u123456 | \\u1234 | 4 | 1234 |
+| \\u89ab | \\u89ab | 0 | 89AB |
+| \\u0123 | \\u0123 | 0 | 0123 |
+| \\u1234\\uabcd | \\u1234 | 0 | 1234 |
+| \\u1234\\uabcd | \\uabcd | 6 | ABCD |
+| \\u4567 | \\u4567 | 0 | 4567 |
+| \\uABCD | \\uABCD | 0 | ABCD |
+| \\ucdef | \\ucdef | 0 | CDEF |
+| \\uuuuu1234 | \\uuuuu1234 | 0 | 1234 |
+| abcd\\uabcdef | \\uabcd | 4 | ABCD |
+| test\\u1234test | \\u1234 | 4 | 1234 |

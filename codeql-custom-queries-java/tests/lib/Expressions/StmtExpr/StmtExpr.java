@@ -1,6 +1,8 @@
+package StmtExpr;
+
 import java.util.function.Supplier;
 
-class Expressions {
+class StmtExpr {
     void test() {
         toString();
         // LocalVariableDeclarationStatement with init
@@ -43,7 +45,7 @@ class Expressions {
         };
 
         // Method reference with non-void return type has no StatementExpression
-        Supplier<Object> supplier3 = Expressions::new;
+        Supplier<Object> supplier3 = StmtExpr::new;
         // Implicit method of method reference contains StatementExpression
         Runnable r3 = this::toString;
     }

@@ -19,15 +19,16 @@
  */
 
 import java
+import lib.Strings
 
-from JavadocText javadocText, string unicodeEscape
+from JavadocText javadocText, string unicodeEscape, string unicodeEscapeHex
 where
     // JavadocText matches regular comments as well, see https://github.com/github/codeql/issues/3695
     // So make sure that it is actually a javadoc comment
     exists (javadocText.getParent+().(Javadoc).getCommentedElement())
     // Only match unescaped (= no leading backslash) unicode escape sequences since only
     // they are converted by preprocessor
-    and unicodeEscape = javadocText.getText().regexpCapture("(?s).*?(?:^|[^\\\\])(?:\\\\\\\\)*(\\\\u[0-9a-fA-F]{4}).*?", 1)
+    and unicodeEscape = getUnicodeEscape(javadocText.getText(), _, unicodeEscapeHex)
     // Ignore if escape represents backslash, escape is likely on purpose then
-    and not unicodeEscape in ["\\u005c", "\\u005C"]
-select javadocText, unicodeEscape
+    and unicodeEscapeHex != "005C"
+select javadocText, "Contains Unicode escape `" + unicodeEscape + "`"

@@ -1,0 +1,5 @@
+| Test.java:3:9:5:11 | """\n        \\u000a \\u000A \\u000d \\u000D\n        """ | Contains Unicode escape `\\u000A`; should use `\\n` |
+| Test.java:3:9:5:11 | """\n        \\u000a \\u000A \\u000d \\u000D\n        """ | Contains Unicode escape `\\u000D`; should use `\\r` |
+| Test.java:3:9:5:11 | """\n        \\u000a \\u000A \\u000d \\u000D\n        """ | Contains Unicode escape `\\u000a`; should use `\\n` |
+| Test.java:3:9:5:11 | """\n        \\u000a \\u000A \\u000d \\u000D\n        """ | Contains Unicode escape `\\u000d`; should use `\\r` |
+| Test.java:7:9:8:11 | """\\u000A some text\n        """ | Contains Unicode escape `\\u000A`; should use `\\n` |

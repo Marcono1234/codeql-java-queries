@@ -1,0 +1,8 @@
+| \u00ff | U+00FF |
+| \u0000 | U+0000 |
+| \u0100 | U+0100 |
+| \ud83d\ude0a | U+1F60A |
+| \ud800\udc00 | U+10000 |
+| \udbff\udfff | U+10FFFF |
+| \uffff | U+FFFF |
+| a | U+0061 |

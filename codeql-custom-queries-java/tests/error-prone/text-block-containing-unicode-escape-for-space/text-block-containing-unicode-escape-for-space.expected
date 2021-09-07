@@ -1,0 +1,6 @@
+| Test.java:3:9:5:11 | """\n        \\u0020 \\u0009 \\u000c \\u000C\n        """ | Contains Unicode escape `\\u000C`; should use `\\f` |
+| Test.java:3:9:5:11 | """\n        \\u0020 \\u0009 \\u000c \\u000C\n        """ | Contains Unicode escape `\\u000c`; should use `\\f` |
+| Test.java:3:9:5:11 | """\n        \\u0020 \\u0009 \\u000c \\u000C\n        """ | Contains Unicode escape `\\u0009`; should use `\\t` |
+| Test.java:3:9:5:11 | """\n        \\u0020 \\u0009 \\u000c \\u000C\n        """ | Contains Unicode escape `\\u0020`; should use `\\s` |
+| Test.java:6:9:8:11 | """\n        \\uuuu0020\n        """ | Contains Unicode escape `\\uuuu0020`; should use `\\s` |
+| Test.java:10:9:11:11 | """   \\u0020\n        """ | Contains Unicode escape `\\u0020`; should use `\\s` |

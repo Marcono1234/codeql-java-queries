@@ -1,0 +1,4 @@
+| Test.java:2:4:2:9 | \\u1234 | Contains Unicode escape `\\u1234` |
+| Test.java:3:4:3:9 | \\uabcd | Contains Unicode escape `\\uabcd` |
+| Test.java:4:4:4:9 | \\uABCD | Contains Unicode escape `\\uABCD` |
+| Test.java:5:4:5:11 | \\uuuABCD | Contains Unicode escape `\\uuuABCD` |

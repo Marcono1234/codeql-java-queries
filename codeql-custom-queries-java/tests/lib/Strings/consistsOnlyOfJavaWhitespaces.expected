@@ -1,0 +1,15 @@
+|  | false |
+|   | true |
+|   a | false |
+|  a  | false |
+| \n | true |
+| \r | true |
+| \t | true |
+| \t  \t \n | true |
+| \u00a0 | false |
+| \u000c | true |
+| \u202f | false |
+| \u2007 | false |
+| \u2028 | true |
+| \u2029 | true |
+| a   | false |
