@@ -1,0 +1,2 @@
+| Test.java:2:4:2:10 | \\uu1234 | Contains Unicode escape `\\uu1234` which uses multiple `u`s |
+| Test.java:11:9:11:17 | "\\uuABCD" | Contains Unicode escape `\\uuABCD` which uses multiple `u`s |
