@@ -1,8 +1,8 @@
 /**
- * Finds expressions which calculate the perform a division or calculate the
- * remainder with a divisor of 0.
- * For integer types this will result in a runtime exception, for floating point
- * types the result will be one of the non-finite values `Infinity` or `NaN`.
+ * Finds expressions which perform a division or calculate the remainder with
+ * a divisor of 0. For integer types this will result in a runtime exception,
+ * for floating point types the result will be one of the non-finite values
+ * `Infinity` or `NaN`.
  */
 
 import java
