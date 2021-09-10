@@ -4,3 +4,6 @@
 # CodeQL test projects and artifacts
 **/tests/**/*.testproj
 **/tests/**/*.actual
+
+# VSCode workspace file
+/*.code-workspace
