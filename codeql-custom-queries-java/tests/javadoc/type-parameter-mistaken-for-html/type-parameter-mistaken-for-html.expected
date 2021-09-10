@@ -1,0 +1,12 @@
+| Test.java:3:8:3:19 | List<String> | Contains `<String>` which is mistaken for an HTML tag |
+| Test.java:4:8:4:15 | Map<K,V> | Contains `<K,V>` which is mistaken for an HTML tag |
+| Test.java:5:8:5:16 | Map<K, V> | Contains `<K, V>` which is mistaken for an HTML tag |
+| Test.java:6:8:6:29 | List<E extends Number> | Contains `<E extends Number>` which is mistaken for an HTML tag |
+| Test.java:7:8:7:13 | List<> | Contains `<>` which is mistaken for an HTML tag |
+| Test.java:8:8:8:14 | List<?> | Contains `<?>` which is mistaken for an HTML tag |
+| Test.java:9:8:9:16 | Map<?, ?> | Contains `<?, ?>` which is mistaken for an HTML tag |
+| Test.java:10:8:10:15 | Map<?,?> | Contains `<?,?>` which is mistaken for an HTML tag |
+| Test.java:11:8:11:44 | Map<? extends Number, ? super String> | Contains `<? extends Number, ? super String>` which is mistaken for an HTML tag |
+| Test.java:12:8:12:43 | List<Map<K, List<E extends Nested>>> | Contains `<E extends Nested>` which is mistaken for an HTML tag |
+| Test.java:13:8:13:29 | new List<Integer>() {} | Contains `<Integer>` which is mistaken for an HTML tag |
+| Test.java:23:8:23:14 | List<E> | Contains `<E>` which is mistaken for an HTML tag |

@@ -1,0 +1,2 @@
+| Test.java:3:8:3:46 | {@code And a nested {@code tag} inside} | Inline tag `{@code And a nested {@code tag} inside}` contains nested inline tag `{@code tag}` |
+| Test.java:4:8:4:63 | {@linkplain #method overload with {@code int} parameter} | Inline tag `{@linkplain #method overload with {@code int} parameter}` contains nested inline tag `{@code int}` |

@@ -1,0 +1,6 @@
+| Test.java:3:8:3:17 | First line | 0 |
+| Test.java:4:8:4:18 | second line | 11 |
+| Test.java:5:8:5:17 | third line | 23 |
+| Test.java:14:8:14:12 | First | 0 |
+| Test.java:15:20:15:30 | Deprecated1 | 0 |
+| Test.java:16:8:16:18 | Deprecated2 | 6 |

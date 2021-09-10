@@ -1,0 +1,17 @@
+| Test.java:3:8:3:43 | {@code this is not <b>bold</b> text} | Contains HTML `<b>` in literal inline tag `{@code this is not <b>bold</b> text}` |
+| Test.java:4:8:4:40 | {@literal not <i>italic</i> text} | Contains HTML `<i>` in literal inline tag `{@literal not <i>italic</i> text}` |
+| Test.java:5:8:5:36 | {@code not a <h1>header</h1>} | Contains HTML `<h1>` in literal inline tag `{@code not a <h1>header</h1>}` |
+| Test.java:6:8:6:30 | {@code test <br/> test} | Contains HTML `<br/>` in literal inline tag `{@code test <br/> test}` |
+| Test.java:7:8:7:31 | {@code test <br /> test} | Contains HTML `<br />` in literal inline tag `{@code test <br /> test}` |
+| Test.java:8:8:8:37 | {@code test <CODE>text</CODE>} | Contains HTML `<CODE>` in literal inline tag `{@code test <CODE>text</CODE>}` |
+| Test.java:9:8:9:37 | {@code test <Code>text</Code>} | Contains HTML `<Code>` in literal inline tag `{@code test <Code>text</Code>}` |
+| Test.java:14:8:14:25 | {@code test &#x0;} | Contains HTML `&#x0;` in literal inline tag `{@code test &#x0;}` |
+| Test.java:15:8:15:25 | {@code test &#x1;} | Contains HTML `&#x1;` in literal inline tag `{@code test &#x1;}` |
+| Test.java:16:8:16:25 | {@code test &#xf;} | Contains HTML `&#xf;` in literal inline tag `{@code test &#xf;}` |
+| Test.java:17:8:17:28 | {@code test &#xFFFF;} | Contains HTML `&#xFFFF;` in literal inline tag `{@code test &#xFFFF;}` |
+| Test.java:18:8:18:28 | {@code test &#x12AB;} | Contains HTML `&#x12AB;` in literal inline tag `{@code test &#x12AB;}` |
+| Test.java:19:8:19:48 | {@code test &#x10FFFF;} // max code point | Contains HTML `&#x10FFFF;` in literal inline tag `{@code test &#x10FFFF;}` |
+| Test.java:21:8:21:24 | {@code test &#0;} | Contains HTML `&#0;` in literal inline tag `{@code test &#0;}` |
+| Test.java:22:8:22:48 | {@code test &#1114111;} // max code point | Contains HTML `&#1114111;` in literal inline tag `{@code test &#1114111;}` |
+| Test.java:24:8:24:28 | {@code test &aacute;} | Contains HTML `&aacute;` in literal inline tag `{@code test &aacute;}` |
+| Test.java:25:8:25:28 | {@code test &Aacute;} | Contains HTML `&Aacute;` in literal inline tag `{@code test &Aacute;}` |

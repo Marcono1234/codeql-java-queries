@@ -1,0 +1,20 @@
+| some {@code tag} and another {@link test} tag | {@code tag} | code | tag |
+| some {@code tag} and another {@link test} tag | {@link test} | link | test |
+| test {}} some text{@code more text}{}}}{ | {@code more text} | code | more text |
+| {@code   spaces  } | {@code   spaces  } | code | spaces |
+| {@code "{"}} | {@code "{"}} | code | "{"} |
+| {@code '{'}} | {@code '{'}} | code | '{'} |
+| {@code \\{}} | {@code \\{}} | code | \\{} |
+| {@code first second} | {@code first second} | code | first second |
+| {@code first\nsecond\nthird} | {@code first\nsecond\nthird} | code | first\nsecond\nthird |
+| {@code first{}\nsecond\nthird} | {@code first{}\nsecond\nthird} | code | first{}\nsecond\nthird |
+| {@code test} | {@code test} | code | test |
+| {@code {@code text}} | {@code {@code text}} | code | {@code text} |
+| {@code {@code {first}}} {@code {@code {second}}} | {@code {@code {first}}} | code | {@code {first}} |
+| {@code {@code {first}}} {@code {@code {second}}} | {@code {@code {second}}} | code | {@code {second}} |
+| {@code {}{@code text}} | {@code {}{@code text}} | code | {}{@code text} |
+| {@code {}{@code {}{@code text}}} | {@code {}{@code {}{@code text}}} | code | {}{@code {}{@code text}} |
+| {@code\ncontent\n} | {@code\ncontent\n} | code | content |
+| {@code\t\ttabs\t\t} | {@code\t\ttabs\t\t} | code | tabs |
+| {@some.:-_tag value} | {@some.:-_tag value} | some.:-_tag | value |
+| {{@code {}{{{}{}}}}{}} | {@code {}{{{}{}}}} | code | {}{{{}{}}} |

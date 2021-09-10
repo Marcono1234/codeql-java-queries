@@ -15,6 +15,7 @@ string getUnicodeEscape(string s, int index, string hexValue) {
     and hexValue = result.suffix(result.length() - 4).toUpperCase()
 }
 
+// TODO / Note: Because CodeQL uses Java's Pattern, could replace this with "\p{javaWhitespace}"
 private string getJavaWhitespaceRegex() {
     result = "(" +
         "[" +

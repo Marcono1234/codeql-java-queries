@@ -1,0 +1,4 @@
+| Test.java:2:5:5:7 | /** First line ... */ | First line\nsecond line |
+| Test.java:8:5:8:10 | (no string representation) |  |
+| Test.java:12:5:16:7 | /** First ... */ | First\nDeprecated2 |
+| Test.java:14:8:14:19 | @deprecated | Deprecated1 |
