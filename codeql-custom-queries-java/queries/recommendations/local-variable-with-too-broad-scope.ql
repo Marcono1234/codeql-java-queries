@@ -28,6 +28,7 @@
  */
 
 import java
+import lib.Loops
 
 // Need to use StmtParent instead of BlockStmt as result type because SwitchStmt
 // and SwitchExpr do not have BlockStmt as body
@@ -47,16 +48,6 @@ StmtParent getScopeBlock(LocalVariableDecl var) {
     )
     // Don't cover other situations where local variables are declared (e.g. enhanced
     // `for` loop or `catch` clause) since variable cannot be moved in these cases
-}
-
-// Partially based on CodeQL's java/constant-loop-condition
-Expr getLoopEntry(LoopStmt loop) {
-    result = loop.(EnhancedForStmt).getVariable()
-    or if exists(loop.(ForStmt).getAnUpdate())
-    then result = loop.(ForStmt).getUpdate(0)
-    // Note: For do-while loop condition is not really the entry, but it
-    // works here regardless
-    else result = loop.getCondition()
 }
 
 from LocalVariableDecl var, StmtParent scopeBlock, BlockStmt usageBlock

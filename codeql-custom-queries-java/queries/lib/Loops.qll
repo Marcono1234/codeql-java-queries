@@ -1,6 +1,19 @@
 import java
 
 /**
+ * Gets the entry expression of the loop.
+ */
+// Partially based on CodeQL's java/constant-loop-condition
+Expr getLoopEntry(LoopStmt loop) {
+    result = loop.(EnhancedForStmt).getVariable()
+    or if exists(loop.(ForStmt).getAnUpdate())
+    then result = loop.(ForStmt).getUpdate(0)
+    // Note: For do-while loop condition is not really the entry, but it
+    // works here regardless
+    else result = loop.getCondition()
+}
+
+/**
  * Gets a statement which exits the loop.
  */
 Stmt getAnExitingStatement(LoopStmt loop) {
