@@ -1,0 +1,7 @@
+| Test.java:6:14:6:18 | clone | Method is incompatible with method declared by Object: Declares incompatible return type void |
+| Test.java:7:16:7:23 | finalize | Method is incompatible with method declared by Object: Declares incompatible return type Object |
+| Test.java:12:13:12:17 | clone | Method is incompatible with method declared by Object: Declares incompatible return type int |
+| Test.java:13:17:13:24 | finalize | Method is incompatible with method declared by Object: Declares incompatible return type boolean |
+| Test.java:18:16:18:20 | clone | Method is incompatible with method declared by Object: Declares incompatible thrown exception type Exception |
+| Test.java:23:24:23:28 | clone | Method is incompatible with method declared by Object: Declares incompatible thrown exception type Exception |
+| Test.java:27:25:27:32 | finalize | Method is incompatible with method declared by Object: Declares incompatible return type boolean |
