@@ -5,23 +5,11 @@
  */
 
 import java
-import semmle.code.java.frameworks.Assertions
-
-predicate isTearDownMethod(Callable callable) {
-    callable instanceof TearDownMethod // Only covers JUnit 3.8
-    // JUnit 4
-    or callable.hasAnnotation("org.junit", "After")
-    or callable.hasAnnotation("org.junit", "AfterClass")
-    // JUnit 5
-    or callable.hasAnnotation("org.junit.jupiter.api", "AfterEach")
-    or callable.hasAnnotation("org.junit.jupiter.api", "AfterAll")
-}
+import lib.TestsQLInterop
 
 predicate isTestMethod(Callable callable) {
-    ( 
+    (
         callable instanceof TestMethod
-        // TestMethod currently does not cover JUnit 5, check it manually
-        or callable.hasAnnotation("org.junit.jupiter.api", "Test")
         // Check if method is inside test class, might be utility method
         // then which is used by test methods
         or exists (RefType type | type = callable.getDeclaringType() |
@@ -30,8 +18,8 @@ predicate isTestMethod(Callable callable) {
             and type.getCompilationUnit() = callable.getCompilationUnit()
         )
     )
-    // Ignore tearDown methods
-    and not isTearDownMethod(callable)
+    // Ignore teardown methods
+    and not callable instanceof TeardownMethod
 }
 
 predicate isExpectingException(CatchClause catch) {
@@ -44,25 +32,9 @@ predicate isExpectingException(CatchClause catch) {
     )
 }
 
-predicate isFailMethodCall(MethodAccess call, Method m) {
-    m instanceof AssertFailMethod
-    // AssertFailMethod currently does not cover JUnit 5, check it manually
-    or (m.hasName("fail") and m.getDeclaringType().hasQualifiedName("org.junit.jupiter.api", "Assertions"))
-    // Sometimes these tests also fail by calling assertTrue(false) / assertFalse(true)
-    or (
-        m.hasName("assertTrue")
-        and call.getAnArgument().(BooleanLiteral).getBooleanValue() = false
-    )
-    or (
-        m.hasName("assertFalse")
-        and call.getAnArgument().(BooleanLiteral).getBooleanValue() = true
-    )
-}
-
 predicate isFailing(BlockStmt tryBlock) {
-    exists(MethodAccess failCall, ExprStmt failCallStmt |
-        isFailMethodCall(failCall, failCall.getMethod())
-        and failCall.getEnclosingStmt() = failCallStmt
+    exists(TestFailingCall failCall, ExprStmt failCallStmt |
+        failCall.getEnclosingStmt() = failCallStmt
         // Fail call should be last statement
         and tryBlock.getLastStmt() = failCallStmt
     )
@@ -73,4 +45,4 @@ where
     isTestMethod(try.getEnclosingCallable())
     and isExpectingException(try.getACatchClause())
     and not isFailing(try.getBlock())
-select try
+select try, "Test does not fail when the expected exception is not thrown in this `try` statement"

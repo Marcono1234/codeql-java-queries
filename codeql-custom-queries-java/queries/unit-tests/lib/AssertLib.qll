@@ -12,6 +12,16 @@ abstract class AssertMethod extends Method {
 }
 
 /**
+ * Assertion method which unconditionally causes a test failure.
+ */
+abstract class FailMethod extends AssertMethod {
+  override
+  int getAnInputParamIndex() {
+    none()
+  }
+}
+
+/**
  * Base class for all assertion methods performing an assertion on a single argument.
  */
 abstract class AssertOneArgumentMethod extends AssertMethod {
@@ -152,6 +162,41 @@ abstract class AssertNotNullMethod extends AssertNullnessMethod {
   }
 }
 
+abstract class AssertThrowsMethod extends AssertMethod {
+  /**
+   * Gets the index of the parameter representing the expected exception class.
+   * Has no result if this assertion method does not have a parameter for the
+   * expected exception class and instead expects any exception.
+   */
+  abstract int getExpectedClassParamIndex();
+
+  /**
+   * Gets the index of the parameter representing the executable object causing
+   * the expected exception.
+   */
+  abstract int getExecutableParamIndex();
+
+  override
+  int getAnInputParamIndex() {
+    result = [getExpectedClassParamIndex(), getExecutableParamIndex()]
+  }
+
+  /**
+   * Holds if this assertion method returns the caught exception.
+   */
+  abstract predicate returnsException();
+
+  /**
+   * Holds if this assertion method allows exception subtypes.
+   */
+  predicate allowsExceptionSubtypes() {
+    any()
+  }
+}
+
+abstract class JUnit4AssertionMethod extends Method {
+}
+
 class TypeJUnit4Assert extends Class {
   TypeJUnit4Assert() {
     hasQualifiedName("org.junit", "Assert")
@@ -161,7 +206,7 @@ class TypeJUnit4Assert extends Class {
   }
 }
 
-class JUnit4AssertTrue extends AssertTrueMethod {
+class JUnit4AssertTrue extends AssertTrueMethod, JUnit4AssertionMethod {
   JUnit4AssertTrue() {
     getDeclaringType() instanceof TypeJUnit4Assert
     and hasName("assertTrue")
@@ -173,7 +218,7 @@ class JUnit4AssertTrue extends AssertTrueMethod {
   }
 }
 
-class JUnit4AssertFalse extends AssertFalseMethod {
+class JUnit4AssertFalse extends AssertFalseMethod, JUnit4AssertionMethod {
   JUnit4AssertFalse() {
     getDeclaringType() instanceof TypeJUnit4Assert
     and hasName("assertFalse")
@@ -185,7 +230,7 @@ class JUnit4AssertFalse extends AssertFalseMethod {
   }
 }
 
-class JUnit4AssertNull extends AssertNullMethod {
+class JUnit4AssertNull extends AssertNullMethod, JUnit4AssertionMethod {
   JUnit4AssertNull() {
     getDeclaringType() instanceof TypeJUnit4Assert
     and hasName("assertNull")
@@ -197,7 +242,7 @@ class JUnit4AssertNull extends AssertNullMethod {
   }
 }
 
-class JUnit4AssertNotNull extends AssertNotNullMethod {
+class JUnit4AssertNotNull extends AssertNotNullMethod, JUnit4AssertionMethod {
   JUnit4AssertNotNull() {
     getDeclaringType() instanceof TypeJUnit4Assert
     and hasName("assertNotNull")
@@ -209,22 +254,24 @@ class JUnit4AssertNotNull extends AssertNotNullMethod {
   }
 }
 
-class JUnit4AssertEquals extends AssertEqualsMethod {
+class JUnit4AssertEquals extends AssertEqualsMethod, JUnit4AssertionMethod {
+  int messageOffset;
+
   JUnit4AssertEquals() {
     getDeclaringType() instanceof TypeJUnit4Assert
     and hasName("assertEquals")
+    and if getParameterType(0) instanceof TypeString then messageOffset = 1
+    else messageOffset = 0
   }
 
   override
   int getFixedParamIndex() {
-    if getParameterType(0) instanceof TypeString then result = 1
-    else result = 0
+    result = messageOffset + 0
   }
 
   override
   int getAssertionParamIndex() {
-    if getParameterType(0) instanceof TypeString then result = 2
-    else result = 1
+    result = messageOffset + 1
   }
 
   override
@@ -234,86 +281,232 @@ class JUnit4AssertEquals extends AssertEqualsMethod {
   }
 }
 
-class JUnit4AssertArrayEquals extends AssertEqualsMethod {
+class JUnit4AssertArrayEquals extends AssertEqualsMethod, JUnit4AssertionMethod {
+  int messageOffset;
+
   JUnit4AssertArrayEquals() {
     getDeclaringType() instanceof TypeJUnit4Assert
     and hasName("assertArrayEquals")
+    and if getParameterType(0) instanceof TypeString then messageOffset = 1
+    else messageOffset = 0
   }
 
   override
   int getFixedParamIndex() {
-    if getParameterType(0) instanceof TypeString then result = 1
-    else result = 0
+    result = messageOffset + 0
   }
 
   override
   int getAssertionParamIndex() {
-    if getParameterType(0) instanceof TypeString then result = 2
-    else result = 1
+    result = messageOffset + 1
   }
 
   override
   predicate comparesArrayElements(boolean deepEquals) { deepEquals = true }
 }
 
-class JUnit4AssertNotEquals extends AssertNotEqualsMethod {
+class JUnit4AssertNotEquals extends AssertNotEqualsMethod, JUnit4AssertionMethod {
+  int messageOffset;
+
   JUnit4AssertNotEquals() {
     getDeclaringType() instanceof TypeJUnit4Assert
     and hasName("assertNotEquals")
+    and if getParameterType(0) instanceof TypeString then messageOffset = 1
+    else messageOffset = 0
   }
 
   override
   int getFixedParamIndex() {
-    if getParameterType(0) instanceof TypeString then result = 1
-    else result = 0
+    result = messageOffset + 0
   }
 
   override
   int getAssertionParamIndex() {
-    if getParameterType(0) instanceof TypeString then result = 2
-    else result = 1
+    result = messageOffset + 1
   }
 
   override
   predicate comparesArrayElements(boolean deepEquals) { none() }
 }
 
-class JUnit4AssertSame extends AssertSameMethod {
+class JUnit4AssertSame extends AssertSameMethod, JUnit4AssertionMethod {
+  int messageOffset;
+
   JUnit4AssertSame() {
     getDeclaringType() instanceof TypeJUnit4Assert
     and hasName("assertSame")
+    and if getParameterType(0) instanceof TypeString then messageOffset = 1
+    else messageOffset = 0
   }
 
   override
   int getFixedParamIndex() {
-    if getParameterType(0) instanceof TypeString then result = 1
-    else result = 0
+    result = messageOffset + 0
   }
 
   override
   int getAssertionParamIndex() {
-    if getParameterType(0) instanceof TypeString then result = 2
-    else result = 1
+    result = messageOffset + 1
   }
 }
 
-class JUnit4AssertNotSame extends AssertNotSameMethod {
+class JUnit4AssertNotSame extends AssertNotSameMethod, JUnit4AssertionMethod {
+  int messageOffset;
+
   JUnit4AssertNotSame() {
     getDeclaringType() instanceof TypeJUnit4Assert
     and hasName("assertNotSame")
+    and if getParameterType(0) instanceof TypeString then messageOffset = 1
+    else messageOffset = 0
   }
 
   override
   int getFixedParamIndex() {
-    if getParameterType(0) instanceof TypeString then result = 1
-    else result = 0
+    result = messageOffset + 0
   }
 
   override
   int getAssertionParamIndex() {
-    if getParameterType(0) instanceof TypeString then result = 2
-    else result = 1
+    result = messageOffset + 1
   }
+}
+
+class JUnit4AssertThrows extends AssertThrowsMethod, JUnit4AssertionMethod {
+  int messageOffset;
+
+  JUnit4AssertThrows() {
+    getDeclaringType() instanceof TypeJUnit4Assert
+    and hasName("assertThrows")
+    and if getParameterType(0) instanceof TypeString then messageOffset = 1
+    else messageOffset = 0
+  }
+
+  override
+  int getExpectedClassParamIndex() {
+    result = messageOffset + 0
+  }
+
+  override
+  int getExecutableParamIndex() {
+    result = messageOffset + 1
+  }
+
+  override
+  predicate returnsException() {
+    any()
+  }
+}
+
+class TypeJUnit4ErrorCollector extends Class {
+  TypeJUnit4ErrorCollector() {
+    hasQualifiedName("org.junit.rules", "ErrorCollector")
+  }
+}
+
+class JUnit4CheckThrows extends AssertThrowsMethod, JUnit4AssertionMethod {
+  JUnit4CheckThrows() {
+    getDeclaringType().getASourceSupertype*() instanceof TypeJUnit4ErrorCollector
+    and hasName("checkThrows")
+  }
+
+  override
+  int getExpectedClassParamIndex() {
+    result = 0
+  }
+
+  override
+  int getExecutableParamIndex() {
+    result = 1
+  }
+
+  override
+  predicate returnsException() {
+    none()
+  }
+}
+
+class JUnit4Fail extends FailMethod, JUnit4AssertionMethod {
+  JUnit4Fail() {
+    getDeclaringType() instanceof TypeJUnit4Assert
+    and hasName("fail")
+  }
+}
+
+// Consider JUnit 4 Assume as well; it is not exactly the same
+// as Assert, but similar enough to be relevant for most queries
+class TypeJUnit4Assume extends Class {
+  TypeJUnit4Assume() {
+    hasQualifiedName("org.junit", "Assume")
+  }
+}
+
+class JUnit4AssumeTrue extends AssertTrueMethod, JUnit4AssertionMethod {
+  JUnit4AssumeTrue() {
+    getDeclaringType() instanceof TypeJUnit4Assume
+    and hasName("assumeTrue")
+  }
+
+  override
+  int getAssertionParamIndex() {
+    result = getNumberOfParameters() - 1
+  }
+}
+
+class JUnit4AssumeFalse extends AssertFalseMethod, JUnit4AssertionMethod {
+  JUnit4AssumeFalse() {
+    getDeclaringType() instanceof TypeJUnit4Assume
+    and hasName("assumeFalse")
+  }
+
+  override
+  int getAssertionParamIndex() {
+    result = getNumberOfParameters() - 1
+  }
+}
+
+class JUnit4AssumeNoException extends AssertMethod, JUnit4AssertionMethod {
+  JUnit4AssumeNoException() {
+    getDeclaringType() instanceof TypeJUnit4Assume
+    and hasName("assumeNoException")
+  }
+
+  override
+  int getAnInputParamIndex() {
+    result = getNumberOfParameters() - 1
+  }
+}
+
+class JUnit4AssumeNotNull extends AssertNotNullMethod, JUnit4AssertionMethod {
+  JUnit4AssumeNotNull() {
+    getDeclaringType() instanceof TypeJUnit4Assume
+    and hasName("assumeNotNull")
+  }
+
+  override
+  int getAssertionParamIndex() {
+    // TODO: Actually elements of (varargs) array are checked as well, but this can
+    // currently not be modeled here
+    result = 0
+  }
+}
+
+class JUnit4AssumeThat extends AssertMethod, JUnit4AssertionMethod {
+  int messageOffset;
+
+  JUnit4AssumeThat() {
+    getDeclaringType() instanceof TypeJUnit4Assume
+    and hasName("assumeThat")
+    and if getParameterType(0) instanceof TypeString then messageOffset = 1
+    else messageOffset = 0
+  }
+
+  override
+  int getAnInputParamIndex() {
+    result = messageOffset + 0
+  }
+}
+
+abstract class JUnit5AssertionMethod extends Method {
 }
 
 class TypeJUnit5Assertions extends Class {
@@ -322,7 +515,7 @@ class TypeJUnit5Assertions extends Class {
   }
 }
 
-class JUnit5AssertTrue extends AssertTrueMethod {
+class JUnit5AssertTrue extends AssertTrueMethod, JUnit5AssertionMethod {
   JUnit5AssertTrue() {
     getDeclaringType() instanceof TypeJUnit5Assertions
     and hasName("assertTrue")
@@ -336,7 +529,7 @@ class JUnit5AssertTrue extends AssertTrueMethod {
   }
 }
 
-class JUnit5AssertFalse extends AssertFalseMethod {
+class JUnit5AssertFalse extends AssertFalseMethod, JUnit5AssertionMethod {
   JUnit5AssertFalse() {
     getDeclaringType() instanceof TypeJUnit5Assertions
     and hasName("assertFalse")
@@ -350,7 +543,7 @@ class JUnit5AssertFalse extends AssertFalseMethod {
   }
 }
 
-class JUnit5AssertNull extends AssertNullMethod {
+class JUnit5AssertNull extends AssertNullMethod, JUnit5AssertionMethod {
   JUnit5AssertNull() {
     getDeclaringType() instanceof TypeJUnit5Assertions
     and hasName("assertNull")
@@ -362,7 +555,7 @@ class JUnit5AssertNull extends AssertNullMethod {
   }
 }
 
-class JUnit5AssertNotNull extends AssertNotNullMethod {
+class JUnit5AssertNotNull extends AssertNotNullMethod, JUnit5AssertionMethod {
   JUnit5AssertNotNull() {
     getDeclaringType() instanceof TypeJUnit5Assertions
     and hasName("assertNotNull")
@@ -374,7 +567,7 @@ class JUnit5AssertNotNull extends AssertNotNullMethod {
   }
 }
 
-class JUnit5AssertEquals extends AssertEqualsMethod {
+class JUnit5AssertEquals extends AssertEqualsMethod, JUnit5AssertionMethod {
   JUnit5AssertEquals() {
     getDeclaringType() instanceof TypeJUnit5Assertions
     and hasName("assertEquals")
@@ -394,7 +587,7 @@ class JUnit5AssertEquals extends AssertEqualsMethod {
   predicate comparesArrayElements(boolean deepEquals) { none() }
 }
 
-class JUnit5AssertArrayEquals extends AssertEqualsMethod {
+class JUnit5AssertArrayEquals extends AssertEqualsMethod, JUnit5AssertionMethod {
   JUnit5AssertArrayEquals() {
     getDeclaringType() instanceof TypeJUnit5Assertions
     and hasName("assertArrayEquals")
@@ -414,7 +607,7 @@ class JUnit5AssertArrayEquals extends AssertEqualsMethod {
   predicate comparesArrayElements(boolean deepEquals) { deepEquals = true }
 }
 
-class JUnit5AssertIterableEquals extends AssertEqualsMethod {
+class JUnit5AssertIterableEquals extends AssertEqualsMethod, JUnit5AssertionMethod {
   JUnit5AssertIterableEquals() {
     getDeclaringType() instanceof TypeJUnit5Assertions
     and hasName("assertIterableEquals")
@@ -438,7 +631,7 @@ class JUnit5AssertIterableEquals extends AssertEqualsMethod {
 }
 
 // Not a subclass of AssertEqualsMethod because lines are not matched exactly
-class JUnit5AssertLinesMatch extends AssertTwoArgumentsMethod {
+class JUnit5AssertLinesMatch extends AssertTwoArgumentsMethod, JUnit5AssertionMethod {
   JUnit5AssertLinesMatch() {
     getDeclaringType() instanceof TypeJUnit5Assertions
     and hasName("assertLinesMatch")
@@ -455,7 +648,7 @@ class JUnit5AssertLinesMatch extends AssertTwoArgumentsMethod {
   }
 }
 
-class JUnit5AssertNotEquals extends AssertNotEqualsMethod {
+class JUnit5AssertNotEquals extends AssertNotEqualsMethod, JUnit5AssertionMethod {
   JUnit5AssertNotEquals() {
     getDeclaringType() instanceof TypeJUnit5Assertions
     and hasName("assertNotEquals")
@@ -475,7 +668,7 @@ class JUnit5AssertNotEquals extends AssertNotEqualsMethod {
   predicate comparesArrayElements(boolean deepEquals) { none() }
 }
 
-class JUnit5AssertSame extends AssertSameMethod {
+class JUnit5AssertSame extends AssertSameMethod, JUnit5AssertionMethod {
   JUnit5AssertSame() {
     getDeclaringType() instanceof TypeJUnit5Assertions
     and hasName("assertSame")
@@ -492,7 +685,7 @@ class JUnit5AssertSame extends AssertSameMethod {
   }
 }
 
-class JUnit5AssertNotSame extends AssertNotSameMethod {
+class JUnit5AssertNotSame extends AssertNotSameMethod, JUnit5AssertionMethod {
   JUnit5AssertNotSame() {
     getDeclaringType() instanceof TypeJUnit5Assertions
     and hasName("assertNotSame")
@@ -509,7 +702,63 @@ class JUnit5AssertNotSame extends AssertNotSameMethod {
   }
 }
 
-// Consider JUnit 5 Assumptions as well; they are not exactly the same
+class JUnit5AssertThrows extends AssertThrowsMethod, JUnit5AssertionMethod {
+  JUnit5AssertThrows() {
+    getDeclaringType() instanceof TypeJUnit5Assertions
+    and hasName("assertThrows")
+  }
+
+  override
+  int getExpectedClassParamIndex() {
+    result = 0
+  }
+
+  override
+  int getExecutableParamIndex() {
+    result = 1
+  }
+
+  override
+  predicate returnsException() {
+    any()
+  }
+}
+
+class JUnit5AssertThrowsExactly extends AssertThrowsMethod, JUnit5AssertionMethod {
+  JUnit5AssertThrowsExactly() {
+    getDeclaringType() instanceof TypeJUnit5Assertions
+    and hasName("assertThrowsExactly")
+  }
+
+  override
+  int getExpectedClassParamIndex() {
+    result = 0
+  }
+
+  override
+  int getExecutableParamIndex() {
+    result = 1
+  }
+
+  override
+  predicate returnsException() {
+    any()
+  }
+
+  override
+  predicate allowsExceptionSubtypes() {
+    none()
+  }
+}
+
+class JUnit5Fail extends FailMethod, JUnit5AssertionMethod {
+  JUnit5Fail() {
+    getDeclaringType() instanceof TypeJUnit5Assertions
+    and hasName("fail")
+  }
+}
+
+// Consider JUnit 5 Assumptions as well; it is not exactly the same
 // as Assertions, but similar enough to be relevant for most queries
 class TypeJUnit5Assumptions extends Class {
   TypeJUnit5Assumptions() {
@@ -517,7 +766,7 @@ class TypeJUnit5Assumptions extends Class {
   }
 }
 
-class JUnit5AssumeTrue extends AssertTrueMethod {
+class JUnit5AssumeTrue extends AssertTrueMethod, JUnit5AssertionMethod {
   JUnit5AssumeTrue() {
     getDeclaringType() instanceof TypeJUnit5Assumptions
     and hasName("assumeTrue")
@@ -531,7 +780,7 @@ class JUnit5AssumeTrue extends AssertTrueMethod {
   }
 }
 
-class JUnit5AssumingThat extends AssertTrueMethod {
+class JUnit5AssumingThat extends AssertTrueMethod, JUnit5AssertionMethod {
   JUnit5AssumingThat() {
     getDeclaringType() instanceof TypeJUnit5Assumptions
     and hasName("assumingThat")
@@ -545,7 +794,7 @@ class JUnit5AssumingThat extends AssertTrueMethod {
   }
 }
 
-class JUnit5AssumeFalse extends AssertFalseMethod {
+class JUnit5AssumeFalse extends AssertFalseMethod, JUnit5AssertionMethod {
   JUnit5AssumeFalse() {
     getDeclaringType() instanceof TypeJUnit5Assumptions
     and hasName("assumeFalse")
@@ -755,6 +1004,72 @@ class TestNgAssertNotSame extends AssertNotSameMethod {
   override
   int getAssertionParamIndex() {
     result = 0
+  }
+}
+
+class TestNgAssertThrows extends AssertThrowsMethod {
+  boolean hasExceptionParam;
+
+  TestNgAssertThrows() {
+    getDeclaringType() instanceof TypeTestNgAssert
+    and hasName("assertThrows")
+    and if getNumberOfParameters() = 2 then hasExceptionParam = true
+    else hasExceptionParam = false
+  }
+
+  override
+  int getExpectedClassParamIndex() {
+    if hasExceptionParam = false then none()
+    else result = 0
+  }
+
+  override
+  int getExecutableParamIndex() {
+    if hasExceptionParam = false then result = 0
+    else result = 1
+  }
+
+  override
+  predicate returnsException() {
+    none()
+  }
+}
+
+class TestNgExpectThrows extends AssertThrowsMethod {
+  TestNgExpectThrows() {
+    getDeclaringType() instanceof TypeTestNgAssert
+    and hasName("expectThrows")
+  }
+
+  override
+  int getExpectedClassParamIndex() {
+    result = 0
+  }
+
+  override
+  int getExecutableParamIndex() {
+    result = 1
+  }
+
+  override
+  predicate returnsException() {
+    any()
+  }
+}
+
+class TypeTestNgFileAssert extends Class {
+  TypeTestNgFileAssert() {
+    hasQualifiedName("org.testng", "FileAssert")
+  }
+}
+
+class TestNgFail extends FailMethod {
+  TestNgFail() {
+    (
+      getDeclaringType() instanceof TypeTestNgAssert
+      or getDeclaringType() instanceof TypeTestNgFileAssert
+    )
+    and hasName("fail")
   }
 }
 

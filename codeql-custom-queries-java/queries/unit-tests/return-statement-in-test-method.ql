@@ -22,7 +22,7 @@
  */
 
 import java
-import semmle.code.java.frameworks.Assertions
+import lib.TestsQLInterop
 
 StmtParent getParent(Stmt s) {
     result = s.getParent()
