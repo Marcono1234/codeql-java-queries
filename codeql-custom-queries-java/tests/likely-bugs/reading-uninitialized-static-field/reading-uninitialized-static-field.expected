@@ -1,0 +1,5 @@
+| Test.java:6:28:6:28 | s | Reads uninitialized static field $@ | Test.java:2:19:2:19 | s | s |
+| Test.java:8:9:8:9 | i | Reads uninitialized static field $@ | Test.java:3:16:3:16 | i | i |
+| Test.java:10:9:10:10 | i2 | Reads uninitialized static field $@ | Test.java:4:16:4:17 | i2 | i2 |
+| Test.java:20:28:20:28 | s | Reads uninitialized static field $@ | Test.java:2:19:2:19 | s | s |
+| Test.java:34:28:34:46 | nativelyInitialized | Reads uninitialized static field $@ | Test.java:29:19:29:37 | nativelyInitialized | nativelyInitialized |

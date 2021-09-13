@@ -39,6 +39,9 @@ class IndexOfCall extends MethodAccess {
     }
 }
 
+// TODO: Also consider assignment to local variable
+// TODO: Move this to QL library, then reuse for List
+// TODO: For List could also check for lastIndexOf() == size() - 1 instead of get(size() - 1).equals... (though lastIndexOf usage also covers empty List, maybe on purpose)
 from IndexOfCall indexOfCall, EqualityTest eqTest, string alternative
 where
     eqTest.getAnOperand() = indexOfCall

@@ -1,0 +1,6 @@
+| Test.java:9:13:9:19 | (...)... | Performs pointless cast to same type or supertype |
+| Test.java:11:13:11:23 | (...)... | Performs pointless cast to same type or supertype |
+| Test.java:12:13:12:36 | (...)... | Performs pointless cast to same type or supertype |
+| Test.java:13:13:13:36 | (...)... | Performs pointless cast to same type or supertype |
+| Test.java:14:13:14:67 | (...)... | Performs pointless cast to same type or supertype |
+| Test.java:16:13:16:50 | (...)... | Performs pointless cast to same type or supertype |

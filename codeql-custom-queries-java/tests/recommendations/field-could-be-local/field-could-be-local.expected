@@ -1,0 +1,5 @@
+| Test.java:3:12:3:13 | f1 | This field could be converted to a local variable because it is only used $@ | Test.java:5:5:5:8 | Test | here |
+| Test.java:3:12:3:13 | f1 | This field could be converted to a local variable because it is only used $@ | Test.java:12:5:12:8 | Test | here |
+| Test.java:38:19:38:20 | f3 | This field could be converted to a local variable because it is only used $@ | Test.java:39:5:43:5 | { ... } | here |
+| Test.java:92:20:92:27 | fPrivate | This field could be converted to a local variable because it is only used $@ | Test.java:98:10:98:23 | testVisibility | here |
+| Test.java:93:12:93:19 | fPackage | This field could be converted to a local variable because it is only used $@ | Test.java:98:10:98:23 | testVisibility | here |
