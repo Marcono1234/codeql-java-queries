@@ -1,5 +1,49 @@
 import java
 
+/** An `int` or a `long` literal. */
+class IntegralLiteral extends Literal {
+    IntegralLiteral() {
+        this instanceof IntegerLiteral
+        or this instanceof LongLiteral
+    }
+
+    /**
+     * Gets the value this literal represents. Has no result for `long` literals whose
+     * values exceeds the CodeQL int value range.
+     */
+    int getIntValue() {
+        result = this.(IntegerLiteral).getIntValue()
+        or result = this.(LongLiteral).getValue().toInt()
+    }
+
+    /**
+     * Holds if the value of this literal is positive or 0.
+     */
+    predicate isPositive() {
+        this.(IntegerLiteral).getIntValue() >= 0
+        // LongLiteral does not have predicate for getting integral value
+        or this.(LongLiteral).getValue().toFloat() >= 0
+    }
+}
+
+/**
+ * An expression which performs a bitwise operation.
+ */
+class BitwiseExpr_ extends Expr {
+    BitwiseExpr_() {
+        this instanceof BitwiseExpr
+        or this instanceof AssignAndExpr
+        or this instanceof AssignOrExpr
+        or this instanceof AssignXorExpr
+        or this instanceof LShiftExpr
+        or this instanceof AssignLShiftExpr
+        or this instanceof RShiftExpr
+        or this instanceof AssignRShiftExpr
+        or this instanceof URShiftExpr
+        or this instanceof AssignURShiftExpr
+    }
+}
+
 /**
  * A statement expression, as specified by [JLS 16 §14.8](https://docs.oracle.com/javase/specs/jls/se16/html/jls-14.html#jls-14.8).
  * The result value of a statement expression, if any, is discarded.

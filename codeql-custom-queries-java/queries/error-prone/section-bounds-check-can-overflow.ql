@@ -30,14 +30,7 @@
 
 import java
 import semmle.code.java.arithmetic.Overflow
-
-class NonNegativeIntegralLiteral extends Literal {
-    NonNegativeIntegralLiteral() {
-        this.(IntegerLiteral).getIntValue() >= 0
-        // LongLiteral does not have predicate for getting integral value
-        or this.(LongLiteral).getValue().toFloat() >= 0
-    }
-}
+import lib.Expressions
 
 // Only consider int and long because smaller types (e.g. byte) would
 // have widening conversion on addition and therefore cannot overflow
@@ -59,7 +52,7 @@ class IntegralVarAccessMethodCallOrLiteral extends Expr {
     IntegralVarAccessMethodCallOrLiteral() {
         (
             this instanceof VarAccess
-            or this instanceof NonNegativeIntegralLiteral
+            or this.(IntegralLiteral).isPositive()
             or this instanceof MethodAccess
         )
         and getType() instanceof IntOrLong
