@@ -33,10 +33,11 @@ jobs:
         run: ./codeql-cli/codeql/codeql version --format=terse
 
       - name: Run query tests
-        run: ./codeql-cli/codeql/codeql test run "--search-path=codeql:./codeql-custom-queries-java/queries" ./codeql-custom-queries-java/tests
+        # Increase available RAM and use as many threads as there are cores
+        run: ./codeql-cli/codeql/codeql test run "--search-path=codeql:./codeql-custom-queries-java/queries" --ram 4096 --threads=0 ./codeql-custom-queries-java/tests
 
       # Compile all queries to detect errors in queries even without corresponding tests
       # Perform this last because it will likely consume in total more time than the tests
-      # Increase available RAM and use as many threads as there are cores
       - name: Compile queries
+        # Increase available RAM and use as many threads as there are cores
         run: ./codeql-cli/codeql/codeql query compile --check-only --search-path=codeql --ram 4096 --threads=0 ./codeql-custom-queries-java/queries
