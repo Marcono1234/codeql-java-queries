@@ -1,7 +1,8 @@
 /**
  * Finds Javadoc inline tags which themselves contain inline tags as content.
- * Nested inline tags are not supported, they will be displayed as is in the
- * created documentation.
+ * Java versions below 17 do not support nested inline tags, they will be displayed
+ * as is in the created documentation. Starting with Java 17 nested inline tags are
+ * supported, see [JDK-8257925](https://bugs.openjdk.java.net/browse/JDK-8257925).
  */
 
 import java
