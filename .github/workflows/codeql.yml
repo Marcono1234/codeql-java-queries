@@ -40,4 +40,4 @@ jobs:
       # Perform this last because it will likely consume in total more time than the tests
       - name: Compile queries
         # Increase available RAM and use as many threads as there are cores
-        run: ./codeql-cli/codeql/codeql query compile --check-only --search-path=codeql --ram 4096 --threads=0 ./codeql-custom-queries-java/queries
+        run: ./codeql-cli/codeql/codeql query compile --check-only --search-path=codeql --ram 4096 --threads=0 --keep-going ./codeql-custom-queries-java/queries
