@@ -75,3 +75,9 @@ class TestNgTestAnnotationType extends TestNgTestMethodAnnotationType {
         hasQualifiedName("org.testng.annotations", "Test")
     }
 }
+
+class TestNgSoftAssert extends Class {
+    TestNgSoftAssert() {
+        hasQualifiedName("org.testng.asserts", "SoftAssert")
+    }
+}
