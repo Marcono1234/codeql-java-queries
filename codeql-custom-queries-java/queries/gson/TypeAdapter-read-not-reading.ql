@@ -69,17 +69,10 @@ predicate isUsageWithSideEffects(VarAccess readerAccess) {
 query predicate edges(ControlFlowNode a, ControlFlowNode b) {
     a.getASuccessor() = b
     // And there is no reading action
-    and not exists(VarAccess readerAccess, ControlFlowNode readerAccessNode |
+    and not exists(VarAccess readerAccess |
         readerAccess.getType() instanceof TypeJsonReader
         and isUsageWithSideEffects(readerAccess)
-        and readerAccessNode = readerAccess.getControlFlowNode()
-        and (
-            a = readerAccessNode
-            or
-            // Or there is a different (transitive) path from `a` to `b`
-            a.getASuccessor+() = readerAccessNode
-            and readerAccessNode.getASuccessor*() = b
-        )
+        and readerAccess.getControlFlowNode() = [a, b]
     )
 }
 

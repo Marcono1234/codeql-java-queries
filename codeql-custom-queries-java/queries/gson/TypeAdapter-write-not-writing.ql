@@ -55,29 +55,33 @@ predicate isUsageWithSideEffects(VarAccess writerAccess) {
     )
 }
 
+ControlFlowNode getMethodExitNode(Method m) {
+    // Method itself seems to represent exit of body
+    result = m
+}
+
+predicate isExceptionExit(ControlFlowNode a, ControlFlowNode b) {
+    b = getMethodExitNode(b.getEnclosingCallable())
+    // Check this instead of just testing for ThrowStmt because CodeQL seems
+    // to also consider exceptions thrown by called methods (?)
+    and a.getAnExceptionSuccessor() = b
+}
+
 query predicate edges(ControlFlowNode a, ControlFlowNode b) {
     a.getASuccessor() = b
     // Ignore exceptional exit from method
-    and not a.getEnclosingStmt() instanceof ThrowStmt
+    and not isExceptionExit(a, b)
     // And there is no writing action
-    and not exists(VarAccess writerAccess, ControlFlowNode writerAccessNode |
+    and not exists(VarAccess writerAccess |
         writerAccess.getType() instanceof TypeJsonWriter
         and isUsageWithSideEffects(writerAccess)
-        and writerAccessNode = writerAccess.getControlFlowNode()
-        and (
-            a = writerAccessNode
-            or
-            // Or there is a different (transitive) path from `a` to `b`
-            a.getASuccessor+() = writerAccessNode
-            and writerAccessNode.getASuccessor*() = b
-        )
+        and writerAccess.getControlFlowNode() = [a, b]
     )
 }
 
 from TypeAdapterWriteMethod writeMethod, ControlFlowNode entryNode, ControlFlowNode exitNode
 where
     entryNode = writeMethod.getBody().getBasicBlock().getFirstNode()
-    // Method itself seems to represent exit of body
-    and exitNode = writeMethod
+    and exitNode = getMethodExitNode(writeMethod)
     and edges+(entryNode, exitNode)
 select exitNode, entryNode, exitNode, "Exits `write` method without actually having written something"
