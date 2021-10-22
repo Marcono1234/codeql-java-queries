@@ -15,7 +15,7 @@ import lib.AssertLib
 from MethodAccess assertCall, AssertMethod assertMethod
 where
     assertMethod = assertCall.getMethod()
-    and forall(int inputParamIndex | inputParamIndex = assertMethod.getAnInputParamIndex() |
+    and forex(int inputParamIndex | inputParamIndex = assertMethod.getAnInputParamIndex() |
         assertCall.getArgument(inputParamIndex) instanceof CompileTimeConstantOrLiteral
     )
 select assertCall, "Assertion will always have the same outcome"
