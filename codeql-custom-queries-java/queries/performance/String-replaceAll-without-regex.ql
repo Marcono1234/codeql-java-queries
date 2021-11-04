@@ -32,9 +32,25 @@ predicate containsRegex(string s) {
     )
 }
 
-from MethodAccess call, string toReplace
+class PatternQuoteMethod extends Method {
+    PatternQuoteMethod() {
+        getDeclaringType().hasQualifiedName("java.util.regex", "Pattern")
+        and hasName("quote")
+    }
+}
+
+from MethodAccess call, Expr toReplaceArg
 where
     call.getMethod() instanceof ReplaceAllMethod
-    and toReplace = call.getArgument(0).(CompileTimeConstantExpr).getStringValue()
-    and not containsRegex(toReplace)
-select call, toReplace
+    and toReplaceArg = call.getArgument(0)
+    and (
+        // Uses Pattern.quote to produce literal Regex pattern
+        toReplaceArg.(MethodAccess).getMethod() instanceof PatternQuoteMethod
+        or
+        // Or toReplace string does not use Regex
+        exists(string toReplace |
+            toReplace = toReplaceArg.(CompileTimeConstantExpr).getStringValue()
+            and not containsRegex(toReplace)
+        )
+    )
+select call, "String to replace does not use Regex; should use `replace(...)` instead"
