@@ -12,5 +12,5 @@ where
     assertMethod = assertCall.getMethod()
     and booleanArg = assertCall.getArgument(assertMethod.getAssertionParamIndex()).(BooleanLiteral).getBooleanValue()
     // And boolean constant is not the expected one
-    and booleanArg = assertMethod.polarity().booleanNot()
+    and booleanArg = assertMethod.expectedBooleanValue().booleanNot()
 select assertCall, "Should use assertion method for explicitly failing a test, e.g. `fail(...)`"

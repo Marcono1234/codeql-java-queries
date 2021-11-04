@@ -76,19 +76,19 @@ abstract class AssertBooleanMethod extends AssertOneArgumentMethod {
    * `true` if this method expects that the checked argument is `true`,
    * `false` if this method expects that the checked argument is `false`.
    */
-  abstract boolean polarity();
+  abstract boolean expectedBooleanValue();
 }
 
 abstract class AssertTrueMethod extends AssertBooleanMethod {
   override
-  boolean polarity() {
+  boolean expectedBooleanValue() {
     result = true
   }
 }
 
 abstract class AssertFalseMethod extends AssertBooleanMethod {
   override
-  boolean polarity() {
+  boolean expectedBooleanValue() {
     result = false
   }
 }

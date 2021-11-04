@@ -12,7 +12,13 @@ abstract class BinaryOperation extends Expr {
     }
 }
 
-class OrLogical extends BinaryOperation {
+abstract class OrOperation extends BinaryOperation {
+}
+
+abstract class AndOperation extends BinaryOperation {
+}
+
+class OrLogical extends OrOperation {
     Expr rightOperand;
 
     OrLogical() {
@@ -30,7 +36,7 @@ class OrLogical extends BinaryOperation {
     }
 }
 
-class AndLogical extends BinaryOperation {
+class AndLogical extends AndOperation {
     Expr rightOperand;
 
     AndLogical() {
@@ -48,7 +54,7 @@ class AndLogical extends BinaryOperation {
     }
 }
 
-class OrBitwise extends BinaryOperation {
+class OrBitwise extends OrOperation {
     Expr rightOperand;
 
     OrBitwise() {
@@ -69,7 +75,7 @@ class OrBitwise extends BinaryOperation {
     }
 }
 
-class AndBitwise extends BinaryOperation {
+class AndBitwise extends AndOperation {
     Expr rightOperand;
 
     AndBitwise() {

@@ -38,6 +38,12 @@ class TestFailingCall extends MethodAccess {
         exists(Method m | m = getMethod() |
             m instanceof AssertFailMethod
             // Sometimes these tests also fail by calling assertTrue(false) / assertFalse(true)
+            or exists(AssertBooleanMethod assertBooleanMethod, BooleanLiteral arg |
+                assertBooleanMethod = m
+                and arg = getArgument(assertBooleanMethod.getAssertionParamIndex())
+                and arg.getBooleanValue() = assertBooleanMethod.expectedBooleanValue().booleanNot()
+            )
+            // Cover assert methods of other test frameworks, not covered by these CodeQL libraries yet
             or (
                 m.hasName("assertTrue")
                 and getAnArgument().(BooleanLiteral).getBooleanValue() = false

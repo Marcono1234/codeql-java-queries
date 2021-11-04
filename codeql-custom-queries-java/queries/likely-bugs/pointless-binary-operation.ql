@@ -20,11 +20,7 @@ abstract class PointlessOperation extends Expr {
 
 class OrFalse extends PointlessOperation {
     OrFalse() {
-        (
-            this instanceof OrLogical
-            or this instanceof OrBitwise
-        )
-        and this.(BinaryOperation).getAnOperand().(BooleanLiteral).getBooleanValue() = false
+        this.(OrOperation).getAnOperand().(BooleanLiteral).getBooleanValue() = false
     }
 
     override
@@ -35,11 +31,7 @@ class OrFalse extends PointlessOperation {
 
 class OrTrue extends PointlessOperation {
     OrTrue() {
-        (
-            this instanceof OrLogical
-            or this instanceof OrBitwise
-        )
-        and this.(BinaryOperation).getAnOperand().(BooleanLiteral).getBooleanValue() = true
+        this.(OrOperation).getAnOperand().(BooleanLiteral).getBooleanValue() = true
     }
 
     override
@@ -50,11 +42,7 @@ class OrTrue extends PointlessOperation {
 
 class AndFalse extends PointlessOperation {
     AndFalse() {
-        (
-            this instanceof AndLogical
-            or this instanceof AndBitwise
-        )
-        and this.(BinaryOperation).getAnOperand().(BooleanLiteral).getBooleanValue() = false
+        this.(AndOperation).getAnOperand().(BooleanLiteral).getBooleanValue() = false
     }
 
     override
@@ -65,11 +53,7 @@ class AndFalse extends PointlessOperation {
 
 class AndTrue extends PointlessOperation {
     AndTrue() {
-        (
-            this instanceof AndLogical
-            or this instanceof AndBitwise
-        )
-        and this.(BinaryOperation).getAnOperand().(BooleanLiteral).getBooleanValue() = true
+        this.(AndOperation).getAnOperand().(BooleanLiteral).getBooleanValue() = true
     }
 
     override
