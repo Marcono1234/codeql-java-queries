@@ -29,6 +29,6 @@ where
         and otherLocation = exception.getLocation()
         and otherLocation.getFile().(CompilationUnit).fromSource()
         and location != otherLocation
-        and location.getFile().getAbsolutePath() = otherLocation.getFile().getAbsolutePath()
+        and location.getFile() = otherLocation.getFile()
     )
 select callable, "Declares exception type " + exceptionType.getQualifiedName() + " multiple times in `throws` clause"
