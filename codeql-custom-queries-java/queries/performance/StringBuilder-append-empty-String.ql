@@ -16,5 +16,5 @@ class StringAppendingMethod extends Method {
 from MethodAccess appendCall
 where
     appendCall.getMethod() instanceof StringAppendingMethod
-    and appendCall.getAnArgument().(StringLiteral).getRepresentedString() = ""
+    and appendCall.getAnArgument().(StringLiteral).getValue() = ""
 select appendCall, "Appends empty String"

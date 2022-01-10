@@ -109,6 +109,6 @@ where
     and not exists(AddExpr concatExpr |
         concatExpr.getAnOperand() = toStringCall
         // Consider any String containing a space to be a display message
-        and exists(concatExpr.getAnOperand().(StringLiteral).getRepresentedString().indexOf(" "))
+        and exists(concatExpr.getAnOperand().(StringLiteral).getValue().indexOf(" "))
     )
 select toStringCall, message

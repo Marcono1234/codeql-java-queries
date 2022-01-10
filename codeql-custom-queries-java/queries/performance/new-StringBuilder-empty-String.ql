@@ -12,5 +12,5 @@ from ClassInstanceExpr newExpr, StringBuildingType stringBuildingType
 where
     stringBuildingType = newExpr.getConstructedType()
     // Only consider literals, ignore compile time constants
-    and newExpr.getArgument(0).(StringLiteral).getRepresentedString().length() = 0
+    and newExpr.getArgument(0).(StringLiteral).getValue().length() = 0
 select newExpr, "Should create " + stringBuildingType.getName() + " without arguments"
