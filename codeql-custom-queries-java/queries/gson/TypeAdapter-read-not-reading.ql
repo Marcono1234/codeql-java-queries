@@ -85,7 +85,7 @@ ControlFlowNode getSuccessfulExitNode(Callable c) {
 
 from TypeAdapterReadMethod readMethod, ControlFlowNode entryNode, ControlFlowNode exitNode
 where
-        entryNode = readMethod.getBody().getBasicBlock().getFirstNode()
-        and exitNode = getSuccessfulExitNode(readMethod)
-        and edges+(entryNode, exitNode)
+    entryNode = readMethod.getBody().getBasicBlock().getFirstNode()
+    and exitNode = getSuccessfulExitNode(readMethod)
+    and edges+(entryNode, exitNode)
 select exitNode, entryNode, exitNode, "Returns from `read` method without actually having read something"
