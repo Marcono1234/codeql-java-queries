@@ -40,8 +40,7 @@ class LiteralOne extends Literal {
  */
 float getNumericValue(Literal l) {
     result = [
-        // TODO: Cannot get code point value of char, see https://github.com/github/codeql/issues/3635
-
+        l.(CharacterLiteral).getCodePointValue(),
         l.(IntegerLiteral).getIntValue(),
         // Has no predicate for getting long value; therefore parse as CodeQL float
         l.(LongLiteral).getValue().toFloat(),

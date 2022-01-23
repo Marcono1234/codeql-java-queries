@@ -5,9 +5,9 @@ class Literals {
     };
 
     char[] chars = {
-        'a', // $ MISSING: numeric=97
-        '\0', // $ MISSING: numeric=0
-        '\uFFFF' // $ MISSING: numeric=0
+        'a', // $numeric=97
+        '\0', // $numeric=0
+        '\uFFFF' // $numeric=65535
     };
 
     int[] ints = {
