@@ -137,8 +137,19 @@ class CallableReferencingExpr extends Expr {
     RefType getReceiverType() {
         result = [
             this.(MethodAccess).getReceiverType(),
-            this.(ConstructorCall).getConstructedType(),
             this.(MemberRefExpr).getReceiverType(),
+            this.(ConstructorCall).getConstructedType(),
+        ]
+    }
+
+    /**
+     * Gets the qualifier of this expression on which the callable is used, if any.
+     */
+    Expr getQualifier() {
+        result = [
+            this.(MethodAccess).getQualifier(),
+            this.(MemberRefExpr).getQualifier(),
+            this.(ClassInstanceExpr).getQualifier(),
         ]
     }
 }

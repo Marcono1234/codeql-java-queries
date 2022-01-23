@@ -15,6 +15,8 @@ import java
 import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.dataflow.FlowSteps
 
+import lib.Expressions
+
 predicate isOwnFieldAccess(FieldAccess fieldAccess) {
     fieldAccess.getField().isStatic()
     or fieldAccess.isOwnFieldAccess()
@@ -90,9 +92,9 @@ class SetFlowConfig extends DataFlow::Configuration {
     override
     predicate isSink(DataFlow::Node sink) {
         // Iterates (implicitly) over the elements
-        exists(MethodAccess methodCall |
-            methodCall.getQualifier() = sink.asExpr()
-            and methodCall.getMethod().hasName([
+        exists(CallableReferencingExpr callableReferencingExpr |
+            callableReferencingExpr.getQualifier() = sink.asExpr()
+            and callableReferencingExpr.getReferencedCallable().(Method).hasName([
                 "forEach",
                 "iterator",
                 "parallelStream",
@@ -111,6 +113,8 @@ class SetFlowConfig extends DataFlow::Configuration {
             )
             and newCollectionExpr.getAnArgument() = sink.asExpr()
         )
+        // Or used in enhanced `for` statement which implicitly calls `iterator()`
+        or exists(EnhancedForStmt forStmt | forStmt.getExpr() = sink.asExpr())
     }
 }
 
@@ -166,9 +170,9 @@ class MapFlowConfig extends DataFlow::Configuration {
     override
     predicate isSink(DataFlow::Node sink) {
         // Iterates (implicitly) over the entries
-        exists(MethodAccess methodCall |
-            methodCall.getQualifier() = sink.asExpr()
-            and methodCall.getMethod().hasName([
+        exists(CallableReferencingExpr callableReferencingExpr |
+            callableReferencingExpr.getQualifier() = sink.asExpr()
+            and callableReferencingExpr.getReferencedCallable().(Method).hasName([
                 "entrySet",
                 "forEach",
                 "keySet",
