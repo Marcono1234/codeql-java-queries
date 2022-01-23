@@ -8,6 +8,7 @@
  */
 
 import java
+import lib.Expressions
 
 class ApiAnnotation extends Annotation {
     ApiAnnotation() {
@@ -84,8 +85,7 @@ where
     compilationUnit = expr.getCompilationUnit()
     // TODO: Ignore if usage happens due to supertype, e.g. type of parameter of overriden method
     and annotatable = getDeclaringType*([
-        expr.(Call).getCallee(),
-        expr.(MemberRefExpr).getReferencedCallable(),
+        expr.(CallableReferencingExpr).getReferencedCallable(),
         expr.(FieldAccess).getField(),
         expr.(TypeAccess).getType().(Annotatable)
     ])

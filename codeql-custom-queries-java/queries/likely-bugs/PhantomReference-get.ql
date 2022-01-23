@@ -8,6 +8,7 @@
  */
 
 import java
+import lib.Expressions
 
 class PhantomReferenceType extends Class {
     PhantomReferenceType() {
@@ -24,8 +25,7 @@ class PhantomReferenceGetMethod extends Method {
 
 class PhantomRefGetExpr extends Expr {
     PhantomRefGetExpr() {
-        this.(MethodAccess).getMethod() instanceof PhantomReferenceGetMethod
-        or this.(MemberRefExpr).getReferencedCallable() instanceof PhantomReferenceGetMethod
+        this.(CallableReferencingExpr).getReferencedCallable() instanceof PhantomReferenceGetMethod
     }
 }
 

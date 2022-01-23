@@ -6,6 +6,7 @@
  */
 
 import java
+import lib.Expressions
 import lib.Tests
 import lib.AssertLib
 import lib.JUnit4
@@ -30,8 +31,7 @@ where
     and not method.getDeclaringType() instanceof JUnit38TestClass
     and not method instanceof InitializerMethod
     // And method is not used as utility method by another other method
-    and not exists(method.getAReference())
-    and not exists(MemberRefExpr methodRef | methodRef.getReferencedCallable() = method)
+    and not exists(CallableReferencingExpr referencingExpr | referencingExpr.getReferencedCallable() = method)
     // And does not override a supertype method
     and not exists(Method overridden | method.getSourceDeclaration().overrides(overridden))
 select method, "Is missing JUnit test annotation"

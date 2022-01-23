@@ -118,3 +118,27 @@ class TextBlock extends StringLiteral {
         and lineIndex != -1
     }
 }
+
+/**
+ * Expression which references a callable.
+ */
+class CallableReferencingExpr extends Expr {
+    Callable callable;
+
+    CallableReferencingExpr() {
+        callable = this.(Call).getCallee()
+        or callable = this.(MemberRefExpr).getReferencedCallable()
+    }
+
+    Callable getReferencedCallable() {
+        result = callable
+    }
+
+    RefType getReceiverType() {
+        result = [
+            this.(MethodAccess).getReceiverType(),
+            this.(ConstructorCall).getConstructedType(),
+            this.(MemberRefExpr).getReceiverType(),
+        ]
+    }
+}

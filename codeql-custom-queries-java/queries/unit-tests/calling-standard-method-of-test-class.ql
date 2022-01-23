@@ -20,19 +20,16 @@
 // TODO: This issue might actually be pretty rare; so maybe this query is not needed
 
 import java
+import lib.Expressions
 
 class MethodUsage extends Expr {
     Method m;
     RefType receiverType;
     
     MethodUsage() {
-        exists(MethodAccess call | call = this |
-            m = call.getMethod()
-            and receiverType = call.getReceiverType()
-        )
-        or exists(MemberRefExpr methodRef | methodRef = this |
-            m = methodRef.getReferencedCallable()
-            and receiverType = getReceiverType(methodRef)
+        exists(CallableReferencingExpr referencingExpr | referencingExpr = this |
+            m = referencingExpr.getReferencedCallable()
+            and receiverType = referencingExpr.getReceiverType()
         )
     }
     
@@ -43,23 +40,6 @@ class MethodUsage extends Expr {
     RefType getReceiverType() {
         result = receiverType
     }
-}
-
-// See https://github.com/github/codeql/pull/6900
-RefType getReceiverType(MemberRefExpr e) {
-    exists(Stmt stmt, Expr resultExpr |
-        stmt = e.asMethod().getBody().(SingletonBlock).getStmt() and
-        (
-            resultExpr = stmt.(ReturnStmt).getResult()
-            or
-            // Note: Currently never an ExprStmt, but might change once https://github.com/github/codeql/issues/3605 is fixed
-            resultExpr = stmt.(ExprStmt).getExpr()
-        )
-    |
-        result = resultExpr.(MethodAccess).getReceiverType() or
-        result = resultExpr.(ClassInstanceExpr).getConstructedType() or
-        result = resultExpr.(ArrayCreationExpr).getType()
-    )
 }
 
 from MethodUsage standardMethodUsage, Method standardMethod

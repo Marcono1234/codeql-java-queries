@@ -8,6 +8,7 @@
  */
 
 import java
+import lib.Expressions
 import lib.Tests
 import lib.TestsQLInterop
 
@@ -40,8 +41,7 @@ where
     )
     and not method instanceof InitializerMethod
     // And method is not used as utility method by another other method
-    and not exists(method.getAReference())
-    and not exists(MemberRefExpr methodRef | methodRef.getReferencedCallable() = method)
+    and not exists(CallableReferencingExpr referencingExpr | referencingExpr.getReferencedCallable() = method)
     // And does not override a supertype method
     and not exists(Method overridden | method.getSourceDeclaration().overrides(overridden))
 select method, "Test method has wrong signature: " + combinedReason
