@@ -85,10 +85,11 @@ where
     and not exists(LoopStmt loopStmt |
         loopStmt.getBody() = usageBlock.getEnclosingStmt*()
         and loopStmt.getEnclosingStmt+() = scopeBlock
+        // TODO: Refactor with Loops lib
         // Only consider loop if there is a var access after which the loop does not terminate
         // (Ignore cases where variable is used to create return value or exception message)
         and exists(VarAccess varAccess | varAccess = var.getAnAccess() |
-            varAccess.getControlFlowNode().getASuccessor+() = getLoopEntry(loopStmt).getControlFlowNode()
+            varAccess.getControlFlowNode().getASuccessor+() = getLoopEntryNode(loopStmt)
         )
     )
 select var, "Variable is only used in $@ block and should therefore be declared there", usageBlock, "this"

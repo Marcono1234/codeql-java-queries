@@ -9,21 +9,12 @@
  */
 
 import java
-
-predicate incrOrDecr(Variable var, Expr expr) {
-    exists (VarAccess varAccess | varAccess = var.getAnAccess() |
-        expr.(AssignAddExpr).getDest() = varAccess
-        or expr.(AssignSubExpr).getDest() = varAccess
-        or expr.(PreIncExpr).getExpr() = varAccess
-        or expr.(PostIncExpr).getExpr() = varAccess
-        or expr.(PreDecExpr).getExpr() = varAccess
-        or expr.(PostDecExpr).getExpr() = varAccess
-    )
-}
+import lib.Expressions
 
 predicate containsIncrOrDecr(Stmt enclosing, Variable var) {
-    exists (Expr incrOrDecrExpr | incrOrDecr(var, incrOrDecrExpr) |
-        incrOrDecrExpr.getEnclosingStmt().getEnclosingStmt*() = enclosing
+    exists (IncrOrDecrExpr incrOrDecrExpr |
+        incrOrDecrExpr.getVarAccess().getVariable() = var
+        and incrOrDecrExpr.getEnclosingStmt().getEnclosingStmt*() = enclosing
     )
 }
 
@@ -43,4 +34,4 @@ where
     // Often an index search method (e.g. String.indexOf) is called within the loop
     // and then an increment expr is used to continue searching at a different index
     and not eqTest.getAnOperand().(CompileTimeConstantExpr).getIntValue() = -1
-select eqTest
+select eqTest, "Performs equality test on loop counter variable"

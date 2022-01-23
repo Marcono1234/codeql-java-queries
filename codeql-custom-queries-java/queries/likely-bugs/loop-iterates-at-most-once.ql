@@ -16,21 +16,16 @@ import lib.Loops
 
 // Partially based on CodeQL's java/constant-loop-condition
 private predicate iteratesAtMostOnce(LoopStmt loop) {
-    exists (Expr loopReentry |
-        loopReentry = getLoopEntry(loop)
+    exists (ControlFlowNode loopEntry |
+        loopEntry = getLoopEntryNode(loop)
     |
         // Verify that loop has node in body, otherwise might match loop without body
         // or with empty body
         // Note: Might not be needed because apparently even empty body has node
-        exists(ControlFlowNode node | node.getEnclosingStmt().getEnclosingStmt*() = loop.getBody())
-        // None of the nodes in the loop body have the loopReentry as successor
-        /*
-         * TODO: This can have false negatives for nested loops where the loop entry of the inner loop
-         * is reached due to the subsequent iteration of the outer loop
-         */
-        and not exists(ControlFlowNode loopNode |
-            loopNode.getEnclosingStmt().getEnclosingStmt*() = loop.getBody()
-            and loopNode.getASuccessor+() = loopReentry.getControlFlowNode()
+        exists(getALoopIterationNode(loop))
+        // None of the nodes in the loop body have the loopEntry as successor
+        and not exists(ControlFlowNode node | node = getALoopIterationNode(loop) |
+            node.getASuccessor() = loopEntry
         )
     )
 }

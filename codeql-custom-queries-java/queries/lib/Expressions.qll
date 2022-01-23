@@ -120,6 +120,44 @@ class TextBlock extends StringLiteral {
 }
 
 /**
+ * An expression which increments or decrements a variable by a fixed value.
+ */
+class IncrOrDecrExpr extends Expr {
+    VarAccess varAccess;
+    boolean isIncrementing;
+    
+    IncrOrDecrExpr() {
+        isIncrementing = true
+        and varAccess = [
+            this.(PreIncExpr).getExpr(),
+            this.(PostIncExpr).getExpr()
+        ]
+        or
+        isIncrementing = false
+        and varAccess = [
+            this.(PreDecExpr).getExpr(),
+            this.(PostDecExpr).getExpr()
+        ]
+        or exists(AssignOp assignOp |
+            assignOp = this
+            and assignOp.getDest() = varAccess
+            and assignOp.getRhs() instanceof Literal
+        |
+            assignOp instanceof AssignAddExpr and isIncrementing = true
+            or assignOp instanceof AssignSubExpr and isIncrementing = false
+        )
+    }
+    
+    VarAccess getVarAccess() {
+        result = varAccess
+    }
+
+    predicate isIncrementing() {
+        isIncrementing = true
+    }
+}
+
+/**
  * Expression which references a callable.
  */
 class CallableReferencingExpr extends Expr {
