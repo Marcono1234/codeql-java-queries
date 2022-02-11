@@ -19,6 +19,8 @@
 import java
 import semmle.code.java.dataflow.DataFlow
 
+import lib.Types
+
 class TypeSecurityManager extends Class {
     TypeSecurityManager() {
         hasQualifiedName("java.lang", "SecurityManager")
@@ -61,18 +63,6 @@ private predicate isPubliclyVisible(RefType t) {
     and (exists(t.getEnclosingType()) implies isPubliclyVisible(t.getEnclosingType()))
 }
 
-private predicate canBeSubclassed(RefType t) {
-    not t.isFinal()
-    and isPubliclyVisible(t)
-    // If `protected` enclosing must be subclassable to subclass this type
-    and (t.isProtected() implies canBeSubclassed(t.getEnclosingType()))
-    // And if type is a class constructor must be accessible as well
-    and (t instanceof Class implies exists(Constructor constructor |
-        constructor.getDeclaringType() = t
-        and (constructor.isProtected() or constructor.isPublic())
-    ))
-}
-
 private predicate canBeAccessed(Member m) {
     exists(RefType t, Member memberToCheck |
         // Check declaring type and subtypes; declaring type might not be accessible,
@@ -94,7 +84,7 @@ private predicate canBeAccessed(Member m) {
         and (
             memberToCheck.isPublic()
             // If `protected` declaring must be subclassable to access member
-            or memberToCheck.isProtected() and canBeSubclassed(t)
+            or memberToCheck.isProtected() and isPubliclySubclassable(t)
         )
         // And when checking subclasses of declaring type, make sure they do not
         // override method and make it `final`
@@ -128,7 +118,7 @@ private predicate isUnsafeMethodCall(MethodAccess call) {
         not m.isFinal()
         and canBeAccessed(m)
         // Declaring type must be subclassable to override method
-        and canBeSubclassed(m.getDeclaringType())
+        and isPubliclySubclassable(m.getDeclaringType())
     )
 }
 

@@ -1,6 +1,6 @@
 /**
  * Finds `assert` statements which appear to perform argument validation.
- * It is not recommended to do this since it was the following disadvantages:
+ * It is not recommended to do this since it has the following disadvantages:
  *   - Assertions might be disabled at runtime and therefore invalid arguments
  *     might not be detected
  *   - The `assert` statement throws an `AssertionError` (extends `Error`) which
@@ -14,6 +14,7 @@
  */
 
 import java
+import lib.Types
 
 predicate canTypeBeSeen(RefType refType) {
     if refType.isTopLevel() then (
@@ -27,20 +28,6 @@ predicate canTypeBeSeen(RefType refType) {
     )
 }
 
-predicate canBeSubclassed(RefType refType) {
-    not refType.isFinal()
-    and exists (Constructor constructor |
-        constructor.getDeclaringType() = refType
-        and (
-            constructor.isPublic()
-            or constructor.isProtected()
-        )
-    )
-    // Constructor might be package-private, but a subclass could exist
-    // which can be subclassed
-    or canBeSubclassed(refType.getASubtype+())
-}
-
 from AssertStmt assertStmt, Callable callable, RValue paramRead
 where
     assertStmt.getEnclosingCallable() = callable
@@ -52,8 +39,9 @@ where
             callable.isProtected()
             // Ignore if class cannot be subclassed publicly because then protected
             // method cannot be called from outside either
-            and canBeSubclassed(callable.getDeclaringType())
+            and not isPubliclySubclassable(callable.getDeclaringType())
         )
     )
+    // TODO: Should consider whether callable can be seen for subtypes of declaring type?
     and canTypeBeSeen(callable.getDeclaringType())
-select assertStmt, paramRead
+select assertStmt, "Validates parameter value $@", paramRead, "here"

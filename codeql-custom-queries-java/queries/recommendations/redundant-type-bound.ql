@@ -26,7 +26,7 @@ predicate cannotBeSubtyped(RefType type) {
             )
             // If all constructors are private and class is nested class, then
             // another nested class could still extend it
-            and not exists (type.getASubtype())
+            and not any (RefType t).getASourceSupertype+() = type
         )
     )
     // For ParameterizedType also make sure all type arguments cannot be subtyped
