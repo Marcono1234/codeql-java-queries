@@ -30,7 +30,22 @@ jobs:
         run: unzip -q -d codeql-cli codeql-linux64.zip
 
       - name: Print CodeQL CLI version
-        run: ./codeql-cli/codeql/codeql version --format=terse
+        id: codeql-version
+        run: |
+          ./codeql-cli/codeql/codeql version --format=terse
+          echo "::set-output name=version::$(./codeql-cli/codeql/codeql version --format=terse)"
+
+      # TODO: Once available, change this to update the cache, see https://github.com/actions/cache/issues/342
+      #       For now include the CodeQL CLI version in the cache key to invalidate the cache, see https://github.com/github/vscode-codeql/issues/730#issuecomment-764855019
+      - name: Cache CodeQL compilation cache
+        uses: actions/cache@v2
+        with:
+          path: |
+            codeql-custom-queries-java/queries/.cache
+            codeql-custom-queries-java/tests/.cache
+          key: ${{ runner.os }}-codeql-compilation-cache-${{ steps.codeql-version.outputs.version }}-${{ github.ref }}
+          restore-keys: |
+            ${{ runner.os }}-codeql-compilation-cache-${{ steps.codeql-version.outputs.version }}-
 
       - name: Run query tests
         # Increase available RAM and use as many threads as there are cores
@@ -40,4 +55,5 @@ jobs:
       # Perform this last because it will likely consume in total more time than the tests
       - name: Compile queries
         # Increase available RAM and use as many threads as there are cores
-        run: ./codeql-cli/codeql/codeql query compile --check-only --search-path=codeql --ram 4096 --threads=0 --keep-going ./codeql-custom-queries-java/queries
+        # Don't use --check-only but perform actual compilation; with cache action above this is a lot faster
+        run: ./codeql-cli/codeql/codeql query compile --fast-compilation --search-path=codeql --ram 4096 --threads=0 --keep-going ./codeql-custom-queries-java/queries
