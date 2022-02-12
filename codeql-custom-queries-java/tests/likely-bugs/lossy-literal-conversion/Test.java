@@ -1,7 +1,7 @@
 class Test {
     void testCast() {
         Object r;
-        r = (byte) '\u0100'; // TODO: Not detected yet
+        r = (byte) '\u0100';
         r = (byte) -129;
         r = (byte) 256;
         r = (byte) -129L;
@@ -100,7 +100,7 @@ class Test {
 
     void testAssign() {
         byte b = 0;
-        b += '\u0100'; // TODO: Not detected yet
+        b += '\u0100';
         b += -129;
         b += 256;
         b += -129L;
