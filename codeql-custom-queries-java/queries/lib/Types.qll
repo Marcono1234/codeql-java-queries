@@ -10,7 +10,7 @@ private RefType getASubtypeOrSelf(RefType t) {
  * Holds if the type is a sealed type (Java 17 feature).
  */
 predicate isSealedType(ClassOrInterface t) {
-    permits(t, any(ClassOrInterface subType))
+    permits(t, _)
 }
 
 /**
