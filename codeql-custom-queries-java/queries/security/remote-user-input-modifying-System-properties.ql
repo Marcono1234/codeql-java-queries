@@ -11,6 +11,7 @@
 import java
 import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.dataflow.FlowSources
+import DataFlow::PathGraph
 
 /**
  * Method call for which some of the arguments modify the System properties.
@@ -113,8 +114,8 @@ class SystemPropertiesFlowReplacingCall extends SystemPropertiesChangingCall, Pr
 // TODO: Model call flow from user triggered method (e.g. HTTP POST) to Properties modifying method,
 //       e.g. `Properties.clear()`; see https://github.com/github/codeql/discussions/5353#discussioncomment-439461
 
-class SystemPropertyDataFlowConfiguration extends DataFlow::Configuration {
-    SystemPropertyDataFlowConfiguration() { this = "SystemPropertyDataFlowConfiguration" }
+class SystemPropertyTaintConfiguration extends TaintTracking::Configuration {
+    SystemPropertyTaintConfiguration() { this = "SystemPropertyTaintConfiguration" }
 
     override
     predicate isSource(DataFlow::Node source) {
@@ -127,6 +128,6 @@ class SystemPropertyDataFlowConfiguration extends DataFlow::Configuration {
     }
 }
 
-from SystemPropertyDataFlowConfiguration config, DataFlow::PathNode source, DataFlow::PathNode sink
+from SystemPropertyTaintConfiguration config, DataFlow::PathNode source, DataFlow::PathNode sink
 where config.hasFlowPath(source, sink)
 select sink.getNode(), source, sink, "Modifies System properties"
