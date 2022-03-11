@@ -1,4 +1,3 @@
-
 /**
  * Finds fields of classes implementing `Serializable`, whose type is not serializable
  * and for which there also exist no subtypes of that type which are serializable.
