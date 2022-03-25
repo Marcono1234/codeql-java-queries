@@ -83,7 +83,7 @@ class JavadocInlineTag extends JavadocTag_, JavadocText {
     string getTagName() {
         result = tagName
     }
-     
+    
     override
     predicate isAllowedOnElement() {
         // Ignore if javadoc does not belong to any element (should be caught by separate query)
@@ -93,6 +93,8 @@ class JavadocInlineTag extends JavadocTag_, JavadocText {
             and d = getDocumentedElement()
         |
             if t = "{@inheritDoc" then isElem(d, "tm")
+            // {@return } is only allowed in main documantation text, but not in text of block tag (e.g. @param or @throws)
+            else if t = "{@return" then isElem(d, "m") and getParent() instanceof Javadoc
             // All other tags are allowed everywhere, don't need to check them
             // Allow unknown tags on any element
             else any()
