@@ -5,20 +5,36 @@ import java.util.function.Supplier;
 class StmtExpr {
     void test() {
         toString();
-        // LocalVariableDeclarationStatement with init
+
+        // LocalVariableDeclarationStatement with init is not a StatementExpression
         String s = toString();
+
         int i;
         i = 0;
         i++;
+        ++i;
+        i--;
+        --i;
+
         new Object();
         // ArrayCreationExpression cannot be a StatementExpression, but a method access
         // on it can be
         new int[] {}.clone();
 
-        // StatementExpressions
-        for (int i1 = 0; i1 < 10; i1++) { }
+        // for statement init can be StatementExpression
+        for (System.out.println("init");;) {
+            break;
+        }
+
+        // for statement update is StatementExpression
+        for (;; System.out.println("update")) {
+            break;
+        }
+
+        // variable declaration and condition are not StatementExpressions
+        for (int i1 = 0; i1 < 10;) { }
+        for (int i1, i2 = 0; i2 < 10;) { }
         for (;;) {
-            doSomething();
             break;
         }
 
@@ -46,9 +62,7 @@ class StmtExpr {
 
         // Method reference with non-void return type has no StatementExpression
         Supplier<Object> supplier3 = StmtExpr::new;
-        // Implicit method of method reference contains StatementExpression
+        // Method reference with void return type has StatementExpression in implicit method body
         Runnable r3 = this::toString;
     }
-
-    void doSomething() { }
 }

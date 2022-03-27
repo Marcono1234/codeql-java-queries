@@ -55,25 +55,29 @@ class BitwiseExpr_ extends Expr {
 class StmtExpr extends Expr {
     StmtExpr() {
         this = any(ExprStmt s).getExpr()
-        or exists(ForStmt forStmt |
-            this = forStmt.getAnInit()
-            or this = forStmt.getAnUpdate()
-        )
-        // Only applies to SwitchStmt, but not to SwitchExpr
-        or this = any(SwitchStmt s).getACase().getRuleExpression()
+        or
+        this = any(ForStmt s).getAnInit() and not this instanceof LocalVariableDeclExpr
+        or
+        this = any(ForStmt s).getAnUpdate()
+        or
+        // Only applies to SwitchStmt, but not to SwitchExpr, see JLS 17 section 14.11.2
+        // TODO: Possibly redundant depending on how https://github.com/github/codeql/issues/8570 is resolved
+        this = any(SwitchStmt s).getACase().getRuleExpression()
+        or
         // TODO: Workarounds for https://github.com/github/codeql/issues/3605
-        or exists(LambdaExpr lambda |
-            this = lambda.getExprBody()
-            and lambda.asMethod().getReturnType() instanceof VoidType
+        exists(LambdaExpr lambda |
+            this = lambda.getExprBody() and
+            lambda.asMethod().getReturnType() instanceof VoidType
         )
-        or exists(MemberRefExpr memberRef, Method implicitMethod, Method overridden |
+        or
+        exists(MemberRefExpr memberRef, Method implicitMethod, Method overridden |
             implicitMethod = memberRef.asMethod()
         |
-            this.getParent().(ReturnStmt).getEnclosingCallable() = implicitMethod
+            this.getParent().(ReturnStmt).getEnclosingCallable() = implicitMethod and
             // asMethod() has bogus method with wrong return type as result, e.g. `run(): String` (overriding `Runnable.run(): void`)
             // Therefore need to check the overridden method
-            and implicitMethod.getSourceDeclaration().overridesOrInstantiates*(overridden)
-            and overridden.getReturnType() instanceof VoidType
+            implicitMethod.getSourceDeclaration().overridesOrInstantiates*(overridden) and
+            overridden.getReturnType() instanceof VoidType
         )
     }
 }
