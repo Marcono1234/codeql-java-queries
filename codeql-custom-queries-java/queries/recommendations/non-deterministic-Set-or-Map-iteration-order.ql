@@ -15,12 +15,8 @@ import java
 import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.dataflow.FlowSteps
 
-import lib.Expressions
-
-predicate isOwnFieldAccess(FieldAccess fieldAccess) {
-    fieldAccess.getField().isStatic()
-    or fieldAccess.isOwnFieldAccess()
-}
+import lib.Collections
+import lib.DataFlowSteps
 
 /**
  * Additional value step which considers flow from assignment to own
@@ -29,42 +25,7 @@ predicate isOwnFieldAccess(FieldAccess fieldAccess) {
 class OwnFieldStep extends AdditionalValueStep {
     override
     predicate step(DataFlow::Node node1, DataFlow::Node node2) {
-        exists(FieldWrite fieldWrite, FieldRead fieldRead |
-            fieldWrite.getField() = fieldRead.getField()
-            and isOwnFieldAccess(fieldWrite)
-            and isOwnFieldAccess(fieldRead)
-            and fieldWrite.getRHS() = node1.asExpr()
-            and fieldRead = node2.asExpr()
-        )
-    }
-}
-
-class TypeSet extends Interface {
-    TypeSet() {
-        hasQualifiedName("java.util", "Set")
-    }
-}
-
-/**
- * `Set` subtype which preserves the insertion order.
- */
-class InsertionOrderSetType extends RefType {
-    InsertionOrderSetType() {
-        hasQualifiedName("java.util", "LinkedHashSet")
-        or hasQualifiedName("java.util.concurrent", "CopyOnWriteArraySet")
-    }
-}
-
-/**
- * `Set` subtype which orders its elements in some consistent way.
- */
-class OrderedSetType extends RefType {
-    OrderedSetType() {
-        this instanceof InsertionOrderSetType
-        or hasQualifiedName("java.util", [
-            "EnumSet",
-            "SortedSet",
-        ])
+        isOwnFieldStep(node1, node2)
     }
 }
 
@@ -91,58 +52,7 @@ class SetFlowConfig extends DataFlow::Configuration {
 
     override
     predicate isSink(DataFlow::Node sink) {
-        // Iterates (implicitly) over the elements
-        exists(CallableReferencingExpr callableReferencingExpr |
-            callableReferencingExpr.getQualifier() = sink.asExpr()
-            and callableReferencingExpr.getReferencedCallable().(Method).hasName([
-                "forEach",
-                "iterator",
-                "parallelStream",
-                "spliterator",
-                "stream",
-                "toArray",
-            ])
-        )
-        // Or creates a new Collection which preserves the order of the elements
-        or exists(ClassInstanceExpr newCollectionExpr, RefType constructedType |
-            constructedType = newCollectionExpr.getConstructedType().getSourceDeclaration()
-            and (
-                constructedType.getASourceSupertype*() instanceof InsertionOrderSetType
-                // Any List or Queue implementation preserves order
-                or constructedType.getASourceSupertype*().hasQualifiedName("java.util", ["List", "Queue"])
-            )
-            and newCollectionExpr.getAnArgument() = sink.asExpr()
-        )
-        // Or used in enhanced `for` statement which implicitly calls `iterator()`
-        or exists(EnhancedForStmt forStmt | forStmt.getExpr() = sink.asExpr())
-    }
-}
-
-class TypeMap extends Interface {
-    TypeMap() {
-        hasQualifiedName("java.util", "Map")
-    }
-}
-
-/**
- * `Map` subtype which preserves the insertion order.
- */
-class InsertionOrderMapType extends RefType {
-    InsertionOrderMapType() {
-        hasQualifiedName("java.util", "LinkedHashMap")
-    }
-}
-
-/**
- * `Map` subtype which orders its entries in some consistent way.
- */
-class OrderedMapType extends RefType {
-    OrderedMapType() {
-        this instanceof InsertionOrderMapType
-        or hasQualifiedName("java.util", [
-            "EnumMap",
-            "SortedMap",
-        ])
+        isOrderPreservingCollectionIteration(sink.asExpr(), true)
     }
 }
 
@@ -168,22 +78,15 @@ class MapFlowConfig extends DataFlow::Configuration {
     }
 
     override
+    predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
+        isMapCollectionStep(node1, node2)
+    }
+
+    override
     predicate isSink(DataFlow::Node sink) {
-        // Iterates (implicitly) over the entries
-        exists(CallableReferencingExpr callableReferencingExpr |
-            callableReferencingExpr.getQualifier() = sink.asExpr()
-            and callableReferencingExpr.getReferencedCallable().(Method).hasName([
-                "entrySet",
-                "forEach",
-                "keySet",
-                "values",
-            ])
-        )
-        // Or creates a new map which preserves the entry insertion order
-        or exists(ClassInstanceExpr newCollectionExpr |
-            newCollectionExpr.getConstructedType().getSourceDeclaration().getASourceSupertype*() instanceof InsertionOrderMapType
-            and newCollectionExpr.getAnArgument() = sink.asExpr()
-        )
+        isOrderPreservingMapIteration(sink.asExpr(), true)
+        // Or iteration on key, value or entry collection
+        or isOrderPreservingCollectionIteration(sink.asExpr(), true)
     }
 }
 
