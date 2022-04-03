@@ -13,7 +13,8 @@ import lib.JavaSerialization
 from Class c, WriteReplaceSerializableMethod writeReplaceMethod
 where
     c.fromSource()
-    and writeReplaceMethod.getDeclaringType() = c
+    // writeReplace is declared or inherited
+    and c.inherits(writeReplaceMethod)
     // Does not return `this`; e.g. when writeReplace is only used to serialize empty
     // singleton instances
     and not exists(ReturnStmt returnStmt, ThisAccess thisAccess |

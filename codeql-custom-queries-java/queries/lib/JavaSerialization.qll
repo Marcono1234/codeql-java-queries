@@ -10,6 +10,16 @@ class TypeExternalizable extends Interface {
 }
 
 /**
+ * The method `Externalizable.writeExternal(ObjectOutput)`.
+ */
+class ExternalizableWriteExternalMethod extends Method {
+    ExternalizableWriteExternalMethod() {
+        getDeclaringType() instanceof TypeExternalizable
+        and hasStringSignature("writeExternal(ObjectOutput)")
+    }
+}
+
+/**
  * A field which is likely serialized.
  */
 class SerializedField extends Field {
