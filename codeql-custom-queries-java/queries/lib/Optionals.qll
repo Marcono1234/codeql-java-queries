@@ -18,6 +18,9 @@ abstract class Optional extends Class {
     abstract string getSupplierAlternativeName();
 }
 
+/**
+ * Class representing an optional generic `Object` value.
+ */
 abstract class OptionalObject extends Optional {
     /**
      * For display purposes only:
@@ -45,6 +48,24 @@ abstract class NewNullableOptionalCallable extends Callable {
      */
     int getValueParamIndex() {
         result = 0
+    }
+}
+
+/**
+ * Method which returns a non-empty optional.
+ */
+class NewNonEmptyOptionalMethod extends Method {
+    NewNonEmptyOptionalMethod() {
+        exists(RefType declaringType |
+            declaringType = getDeclaringType().getSourceDeclaration()
+        |
+            (
+                declaringType instanceof JavaPrimitiveOptional
+                or declaringType instanceof JavaObjectOptional
+                or declaringType instanceof GuavaOptional
+            )
+            and hasName("of")
+        )
     }
 }
 
@@ -229,5 +250,47 @@ class GuavaOptionalOrNullCall extends OptionalObjectOrNullCall {
             getDeclaringSourceOrASupertype(m) instanceof GuavaOptional
             and m.hasStringSignature("orNull()")
         )
+    }
+}
+
+/**
+ * Call of a method declared on an optional type, which when invoked on a non-empty
+ * optional will have a non-empty optional as result.
+ */
+class PresentStatePreservingOptionalCall extends MethodAccess {
+    Expr inputOptional;
+
+    PresentStatePreservingOptionalCall() {
+        exists(Method m | m = getMethod() |
+            // Instance methods
+            inputOptional = getQualifier()
+            and (
+                getDeclaringSourceOrASupertype(m) instanceof GuavaOptional
+                and (
+                    // or(Optional)
+                    m.hasName("or") and m.getParameterType(0).(RefType).getSourceDeclaration() instanceof GuavaOptional
+                    // transform(Function); unlike JDK's Optional this requires that function result is non-null
+                    or m.hasName("transform")
+                    or m.hasStringSignature("toJavaUtil()")
+                )
+                or
+                getDeclaringSourceOrASupertype(m) instanceof JavaObjectOptional
+                // or(Supplier)
+                and m.hasName("or") and m.getParameterType(0).(RefType).getSourceDeclaration().hasName("Supplier")
+            )
+            // Static methods
+            or
+            inputOptional = getArgument(0)
+            and m.isStatic()
+            and m.getDeclaringType() instanceof GuavaOptional
+            and m.hasName("toJavaUtil")
+        )
+    }
+
+    /**
+     * Gets the expression representing the optional which is transformed.
+     */
+    Expr getInputOptional() {
+        result = inputOptional
     }
 }
