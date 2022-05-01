@@ -24,7 +24,7 @@ Expr getAnAssignedValue(RValue varRead) {
             // Or is access of own field (to reduce false positives)
             exists(FieldWrite varAssign |
                 varAssign.getField() = var
-                and result = varAssign.getRHS()
+                and result = varAssign.getRhs()
                 and varAssign.isOwnFieldAccess()
             )
             and varRead.(FieldRead).isOwnFieldAccess()

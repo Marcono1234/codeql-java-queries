@@ -52,7 +52,7 @@ where
         )
         and assertThrowsMethod.allowsExceptionSubtypes()
         // And in case caught exception is returned, it is ignored
-        and (assertThrowsMethod.returnsException() implies (assertThrowsCall instanceof StmtExpr))
+        and (assertThrowsMethod.returnsException() implies (assertThrowsCall instanceof ValueDiscardingExpr))
         and catchingTop = assertThrowsCall
     )
 select catchingTop, "Catches unspecific exception type " + caughtException.getName()

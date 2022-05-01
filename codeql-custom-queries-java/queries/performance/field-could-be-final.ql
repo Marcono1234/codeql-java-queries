@@ -57,7 +57,7 @@ where
         )
     )
     and forall (LValue fieldWrite | fieldWrite.getVariable() = f |
-        fieldWrite.getRHS() = f.getInitializer()
+        fieldWrite.getRhs() = f.getInitializer()
         or fieldWrite.getEnclosingCallable().(Constructor).getDeclaringType() = f.getDeclaringType()
     )
 select f, "Field could be final."

@@ -25,7 +25,7 @@ from MethodAccess skipCall
 where
     skipCall.getMethod() instanceof SkipMethod
     and (
-        skipCall instanceof StmtExpr // Ignores return value
+        skipCall instanceof ValueDiscardingExpr // Ignores return value
         or skipCall.getParent() instanceof ComparisonExpr
         or skipCall.getParent() instanceof EqualityTest
     )

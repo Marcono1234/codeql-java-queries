@@ -15,7 +15,7 @@ predicate isOwnFieldStep(DataFlow::Node node1, DataFlow::Node node2) {
         fieldWrite.getField() = fieldRead.getField()
         and isOwnFieldAccess(fieldWrite)
         and isOwnFieldAccess(fieldRead)
-        and fieldWrite.getRHS() = node1.asExpr()
+        and fieldWrite.getRhs() = node1.asExpr()
         and fieldRead = node2.asExpr()
     )
 }

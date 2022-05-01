@@ -27,7 +27,7 @@ class NullCheckExpr extends Expr {
         or exists (MethodAccess checkCall |
             this = checkCall.getAnArgument()
             // Verify that result of method is actually used
-            and not checkCall instanceof StmtExpr
+            and not checkCall instanceof ValueDiscardingExpr
         )
     }
 }

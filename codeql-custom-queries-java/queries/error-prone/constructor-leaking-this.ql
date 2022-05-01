@@ -42,7 +42,7 @@ private ThisAccess getThisStoredExternally(Constructor c, Expr leakingExpr) {
     )
     // Leaks by assigning to external field
     or (
-        result = leakingExpr.(FieldWrite).getRHS()
+        result = leakingExpr.(FieldWrite).getRhs()
         and (
             isStaticMemberAccess(leakingExpr)
             or isParameterMemberAccess(c, leakingExpr.(FieldWrite).getQualifier())

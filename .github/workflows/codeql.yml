@@ -47,13 +47,12 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-codeql-compilation-cache-${{ steps.codeql-version.outputs.version }}-
 
-      - name: Run query tests
-        # Increase available RAM and use as many threads as there are cores
-        run: ./codeql-cli/codeql/codeql test run "--search-path=codeql:./codeql-custom-queries-java/queries" --ram 4096 --threads=0 ./codeql-custom-queries-java/tests
-
       # Compile all queries to detect errors in queries even without corresponding tests
-      # Perform this last because it will likely consume in total more time than the tests
       - name: Compile queries
         # Increase available RAM and use as many threads as there are cores
         # Don't use --check-only but perform actual compilation; with cache action above this is a lot faster
         run: ./codeql-cli/codeql/codeql query compile --fast-compilation --search-path=codeql --ram 4096 --threads=0 --keep-going ./codeql-custom-queries-java/queries
+
+      - name: Run query tests
+        # Increase available RAM and use as many threads as there are cores
+        run: ./codeql-cli/codeql/codeql test run "--search-path=codeql:./codeql-custom-queries-java/queries" --ram 4096 --threads=0 ./codeql-custom-queries-java/tests

@@ -32,7 +32,7 @@ from MethodAccess call, Expr argument
 where
     argument = call.getAnArgument()
     // Make sure that return value of call is ignored
-    and call instanceof StmtExpr
+    and call instanceof ValueDiscardingExpr
     and (
         // Calling remove(Object) with Integer
         (
@@ -42,7 +42,7 @@ where
         // Calling List<Integer>.remove(int)
         or (
             call.getMethod().getAnOverride*() instanceof RemoveAtIndexMethod
-            and call.getReceiverType().getASupertype().hasQualifiedName("java.util", "List<Integer>")
+            and call.getReceiverType().getASupertype*().hasQualifiedName("java.util", "List<Integer>")
             and argument.getType().hasName("int")
         )
     )

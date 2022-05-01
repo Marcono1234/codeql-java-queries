@@ -59,7 +59,7 @@ predicate isTrustedRepository(string url) {
 
 from Repository repo, string url
 where
-    url = repo.getUrl()
+    url = repo.getRepositoryUrl()
     and not isTrustedRepository(url)
     and (
         // Check if there is no preceding trusted repository serving the same kind of artifacts (releases or snapshots)
@@ -69,7 +69,7 @@ where
                 trustedRepo.getParent() = repo.getParent()
                 and trustedRepo.getIndex() < repo.getIndex()
                 and trustedRepo.servesReleases()
-                and isTrustedRepository(trustedRepo.getUrl())
+                and isTrustedRepository(trustedRepo.getRepositoryUrl())
             )
         )
         or (
@@ -78,7 +78,7 @@ where
                 trustedRepo.getParent() = repo.getParent()
                 and trustedRepo.getIndex() < repo.getIndex()
                 and trustedRepo.servesSnapshots()
-                and isTrustedRepository(trustedRepo.getUrl())
+                and isTrustedRepository(trustedRepo.getRepositoryUrl())
             )
         )
     )

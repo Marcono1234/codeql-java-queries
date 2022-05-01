@@ -81,7 +81,7 @@ class ReturningMethod extends Method {
 from MethodAccess call, ReturningMethod returningMethod
 where
     returningMethod.getSourceDeclaration().overridesOrInstantiates*(call.getMethod())
-    and call instanceof StmtExpr // Result is unused
+    and call instanceof ValueDiscardingExpr // Result is unused
     // Ignore if call happens in try stmt which appears to catch exception of call
     // Call might be used for validation purposes then
     and not exists (TryStmt tryStmt |

@@ -31,7 +31,7 @@ class SplitMethod extends Method {
 class VarAssignment extends Expr {
     VarAssignment() {
         // Ignore assignments whose result is used, e.g. test(a = s.split(","))
-        this.(Assignment) instanceof StmtExpr
+        this.(Assignment) instanceof ValueDiscardingExpr
         or this instanceof LocalVariableDeclExpr
     }
     

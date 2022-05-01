@@ -17,7 +17,7 @@ class LeakingExpr extends Expr {
         or exists (Call call | this = call.getAnArgument())
         or exists (LValue write |
             write.getVariable() instanceof Field
-            and this = write.getRHS()
+            and this = write.getRhs()
         )
         or exists (Assignment assignment |
             assignment.getDest() instanceof ArrayAccess

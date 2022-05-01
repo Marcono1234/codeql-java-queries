@@ -82,7 +82,7 @@ where
                 nullGuardNode = nullGuard.getParent().(Expr).getControlFlowNode()
                 and strictlyDominates(nullGuardNode, varRead.getControlFlowNode())
                 and (
-                    nonNullGuaranteeExpr = nullGuard.(LValue).getRHS().(NonNullExpr)
+                    nonNullGuaranteeExpr = nullGuard.(LValue).getRhs().(NonNullExpr)
                     and reason = "being assigned a non-null value $@" + getReasonSuffix(nonNullGuaranteeExpr, nonNullGuaranteeReasonExpr)
                     and nonNullGuaranteeExprDescription = "here"
                 )

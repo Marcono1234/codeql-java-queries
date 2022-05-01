@@ -42,7 +42,7 @@ where
     and
     (
         // Result is discarded
-        interruptedCall instanceof StmtExpr
+        interruptedCall instanceof ValueDiscardingExpr
         // Or interrupt status is not restored
         or
         not exists(ExprParent interruptRestoringElement |

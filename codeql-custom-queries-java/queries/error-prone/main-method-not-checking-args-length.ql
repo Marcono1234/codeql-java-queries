@@ -26,7 +26,7 @@ private predicate isArrayLengthChecked(Expr argsExpr) {
             and isArrayLengthChecked(c)
         )
         // Or args are stored in field; maybe length is checked later
-        or any(FieldWrite f).getRHS() = sink
+        or any(FieldWrite f).getRhs() = sink
         // Or args are passed to method; maybe length is checked there
         or any(MethodAccess c).getAnArgument() = sink
         // Or args are stored in array; maybe length is checked later

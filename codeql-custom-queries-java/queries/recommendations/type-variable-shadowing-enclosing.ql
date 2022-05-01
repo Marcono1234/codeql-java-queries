@@ -35,7 +35,7 @@ TypeVariable getShadowedTypeVar(TypeVariable var, Modifiable enclosing) {
     and (
         result.getGenericCallable() = enclosing
         or result.getGenericType() = enclosing
-        or result = getShadowedTypeVar(var, enclosing.(LocalClass).getLocalClassDeclStmt().getEnclosingCallable())
+        or result = getShadowedTypeVar(var, enclosing.(LocalClass).getLocalTypeDeclStmt().getEnclosingCallable())
         // Only consider enclosing of `enclosing` if not static because otherwise type
         // variables defined by it are not effective here
         or not enclosing.isStatic() and (

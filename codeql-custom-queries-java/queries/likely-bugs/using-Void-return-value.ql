@@ -28,7 +28,7 @@ where
     // For generic methods this matches the actual type argument of the receiver
     call.getMethod().getReturnType().(RefType).hasQualifiedName("java.lang", "Void")
     // And result is not discarded
-    and not call instanceof StmtExpr
+    and not call instanceof ValueDiscardingExpr
     // Ignore if result is returned (only applies to methods with Object or Void as return
     // type), e.g. when call delegates to other method
     and not any(ReturnStmt r).getResult() = call

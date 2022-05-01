@@ -21,7 +21,7 @@ import lib.Expressions
 from Assignment assign
 where
     // Result is not discarded
-    not assign instanceof StmtExpr
+    not assign instanceof ValueDiscardingExpr
     // Ignore if assignment appears in loop condition, e.g. `while ((r = read()) != -1)`
     and not any(LoopStmt l).getCondition() = assign.getParent+()
     // Ignore chained assignments in the form `a = b = 1`

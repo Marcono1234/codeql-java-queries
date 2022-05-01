@@ -28,7 +28,7 @@ class LeakingExpr extends Expr {
         // Leaks by passing it as argument to call
         any(Call c).getAnArgument() = this
         // Leaks by assigning to field
-        or any(FieldWrite w).getRHS() = this
+        or any(FieldWrite w).getRhs() = this
         // Leaks by storing in array
         or exists(AssignExpr assign |
             assign.getRhs() = this

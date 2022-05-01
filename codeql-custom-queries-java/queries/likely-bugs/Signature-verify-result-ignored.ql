@@ -19,7 +19,7 @@ where
     and verifyMethod.hasName("verify")
     // And result is ignored
     and (
-        verifyCall instanceof StmtExpr
+        verifyCall instanceof ValueDiscardingExpr
         or not exists(Expr sink |
             TaintTracking::localExprTaint(verifyCall, sink)
         |
