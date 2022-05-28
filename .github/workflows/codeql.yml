@@ -51,7 +51,7 @@ jobs:
       - name: Compile queries
         # Increase available RAM and use as many threads as there are cores
         # Don't use --check-only but perform actual compilation; with cache action above this is a lot faster
-        run: ./codeql-cli/codeql/codeql query compile --fast-compilation --search-path=codeql --ram 4096 --threads=0 --keep-going ./codeql-custom-queries-java/queries
+        run: ./codeql-cli/codeql/codeql query compile --search-path=codeql --ram 4096 --threads=0 --keep-going ./codeql-custom-queries-java/queries
 
       - name: Run query tests
         # Increase available RAM and use as many threads as there are cores
