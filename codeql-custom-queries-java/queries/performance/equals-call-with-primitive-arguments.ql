@@ -1,7 +1,10 @@
 /**
  * Finds calls to `equals(Object)` or `Objects.equals(Object, Object)` where the
  * arguments are of primitive type. These calls should be replaced with usage of
- * the `==` operator to avoid boxing the primitive value.
+ * the `==` operator to avoid boxing the primitive values. Note that for floating
+ * point types the static `compare` methods of the boxed types can be used to
+ * get behavior identical to an `equals` call; for `==` the behavior for `NaN`
+ * and `-0.0` would differ.
  */
 
 // Similar to CodeQL's java/implicit-auto-boxing
