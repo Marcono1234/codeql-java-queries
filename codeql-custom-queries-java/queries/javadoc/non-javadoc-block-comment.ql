@@ -9,25 +9,18 @@
  */
 
 import java
+import lib.JavadocLib
 
 bindingset[javadoc]
 predicate containsJavadocTag(string javadoc) {
+    // To reduce false positives, only consider known tag names
     exists (string tag |
-        tag in [
-            "author",
-            "version",
-            "param",
-            "return",
-            "exception",
-            "throws",
-            "see",
-            "since",
-            "serial",
-            "serialField",
-            "serialData",
-            "deprecated"
-        ]
+        isBlockTagName(tag, _)
         and exists (javadoc.indexOf("@" + tag))
+    )
+    or exists(string tag |
+        isInlineTagName(tag)
+        and exists(javadoc.indexOf("{@" + tag))
     )
 }
 

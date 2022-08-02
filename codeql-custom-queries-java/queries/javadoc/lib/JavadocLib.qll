@@ -119,3 +119,43 @@ int getStartIndexInCompleteJavadocText(JavadocParent parent, JavadocText javadoc
         and result = getCompleteJavadocTextUpTo(parent, index).length() + offset
     )
 }
+
+// https://docs.oracle.com/en/java/javase/18/docs/specs/javadoc/doc-comment-spec.html
+predicate isBlockTagName(string s, boolean isAlsoInlineTag) {
+    isAlsoInlineTag = false and s = [
+        "author",
+        "deprecated",
+        "exception",
+        "hidden",
+        "param",
+        "provides",
+        "see",
+        "serial",
+        "serialData",
+        "serialField",
+        "since",
+        "throws",
+        "uses",
+        "version",
+    ]
+    or isAlsoInlineTag = true and s = [
+        "return",
+    ]
+}
+
+predicate isInlineTagName(string s) {
+    s = [
+        "code",
+        "docRoot",
+        "index",
+        "inheritDoc",
+        "link",
+        "linkplain",
+        "literal",
+        "return", // can be used as block and inline tag
+        "snippet",
+        "summary",
+        "systemProperty",
+        "value",
+    ]
+}
