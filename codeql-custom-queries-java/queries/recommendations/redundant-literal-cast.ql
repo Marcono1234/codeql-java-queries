@@ -20,7 +20,7 @@ PrimitiveType getLiteralType(Literal literal) {
     literal instanceof BooleanLiteral and result.hasName("boolean")
     or literal instanceof CharacterLiteral and result.hasName("char")
     or literal instanceof DoubleLiteral and result.hasName("double")
-    or literal instanceof FloatingPointLiteral and result.hasName("float")
+    or literal instanceof FloatLiteral and result.hasName("float")
     or literal instanceof IntegerLiteral and result.hasName("int")
     or literal instanceof LongLiteral and result.hasName("long")
 }

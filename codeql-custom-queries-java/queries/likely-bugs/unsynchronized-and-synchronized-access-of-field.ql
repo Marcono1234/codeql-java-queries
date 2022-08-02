@@ -24,6 +24,8 @@
 import java
 import semmle.code.java.dataflow.DataFlow
 
+import lib.Literals
+
 abstract class Synchronization extends Top {
     abstract predicate includesStmt(Stmt stmt);
     
@@ -195,18 +197,6 @@ predicate isAccessGuardedBy(FieldAccess access, Synchronization synchronization)
     or not canBeCalledUnsafely(access.getEnclosingCallable(), synchronization)
 }
 
-class DefaultValue extends Literal {
-    DefaultValue() {
-        this.(IntegerLiteral).getIntValue() = 0
-        or this.(DoubleLiteral).getValue() = "0.0"
-        or this.(FloatingPointLiteral).getValue() = "0.0"
-        or this.(LongLiteral).getValue() = "0"
-        or this.(BooleanLiteral).getBooleanValue() = false
-        or this.(CharacterLiteral).getValue().regexpMatch("\\u0000")
-        or this instanceof NullLiteral
-    }
-}
-
 predicate happensDuringInstanceConstruction(FieldAccess fieldAccess, RefType fieldDeclaringType) {
     exists (Callable initializingCallable |
         (
@@ -270,7 +260,7 @@ where
             f.getType().hasName(["double", "long"])
             // Class instances requiring safe publication must not be stored in non-volatile field
             or requiresSafePublication(f.getType())
-            or not exists (EqualityTest defaultValueCheck, DefaultValue defaultValue |
+            or not exists (EqualityTest defaultValueCheck, DefaultValueLiteral defaultValue |
                 unsynchronizedAccess.isRValue()
                 and DataFlow::localFlow(DataFlow::exprNode(unsynchronizedAccess), DataFlow::exprNode(defaultValueCheck.getAnOperand()))
                 and defaultValueCheck.getAnOperand() = defaultValue

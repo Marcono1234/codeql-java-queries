@@ -14,6 +14,7 @@
  */
 
 import java
+import semmle.code.java.controlflow.Guards
 import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.dataflow.Nullness
 import semmle.code.java.dataflow.NullGuards
@@ -28,25 +29,14 @@ class NullableConsoleCall extends MethodAccess {
     }
 }
 
-class NullCheckBarrierGuard extends DataFlow::BarrierGuard {
-    Expr checked;
-    boolean isNullBranch;
-
-    NullCheckBarrierGuard() {
-        exists(boolean branch, boolean isNull |
-            // Guard represents a null check, determine which value `isNullBranch`
-            // must have to indicate that the checked expression is null
-            this = basicOrCustomNullGuard(checked, branch, isNull)
-            and if isNull = true then isNullBranch = branch
-            else isNullBranch = branch.booleanNot()
-        )
-    }
-
-    override
-    predicate checks(Expr e, boolean branch) {
-        // Guard discards any dataflow to non-null branch
-        e = checked and branch = isNullBranch.booleanNot()
-    }
+private predicate nullCheckBarrierGuard(Guard guard, Expr checked, boolean branch) {
+    exists(boolean nullCheckBranch, boolean isNull |
+        // Guard represents a null check, determine which value `branch`
+        // must have to indicate that the checked expression is non-null
+        guard = basicOrCustomNullGuard(checked, nullCheckBranch, isNull)
+        and if isNull = true then nullCheckBranch = branch.booleanNot()
+        else nullCheckBranch = branch
+    )
 }
 
 class ConsoleDataFlowConfiguration extends DataFlow::Configuration {
@@ -64,8 +54,8 @@ class ConsoleDataFlowConfiguration extends DataFlow::Configuration {
     }
 
     override
-    predicate isBarrierGuard(DataFlow::BarrierGuard guard) {
-        guard instanceof NullCheckBarrierGuard
+    predicate isBarrier(DataFlow::Node node) {
+        node = DataFlow::BarrierGuard<nullCheckBarrierGuard/3>::getABarrierNode()
     }
 }
 

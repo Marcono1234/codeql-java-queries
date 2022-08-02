@@ -33,7 +33,7 @@ class LongType extends Type {
 int getAlternativeIntValue(ComparisonOrEqualityTest comparingExpr, Literal literalOperand) {
     exists(float floatValue |
         floatValue = [
-            literalOperand.(FloatingPointLiteral).getFloatValue(),
+            literalOperand.(FloatLiteral).getFloatValue(),
             literalOperand.(DoubleLiteral).getDoubleValue()
         ]
     |

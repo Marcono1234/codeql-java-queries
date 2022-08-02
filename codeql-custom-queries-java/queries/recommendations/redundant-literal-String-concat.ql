@@ -20,6 +20,7 @@
  */
 
 import java
+import lib.Literals
 
 class PlusOrMinusExpr extends UnaryExpr {
     PlusOrMinusExpr() {
@@ -37,11 +38,8 @@ class StringifiableLiteral extends Literal {
             // Binary, octal or hexadecimal notation, or containing underscore
             and this.getLiteral().regexpMatch(".*[xXbB_].*|^0.+")
         )
-        and not (
-            // Hexadecimal notation, using exponent or containing underscore
-            (this instanceof FloatingPointLiteral or this instanceof DoubleLiteral)
-            and this.getLiteral().regexpMatch(".*[xXeE_].*")
-        )
+        // Hexadecimal notation, using exponent or containing underscore
+        and not this.(FloatingPointLiteral_).getLiteral().regexpMatch(".*[xXeE_].*")
     }
 }
 
@@ -49,7 +47,7 @@ class NumericLiteral extends Literal {
     NumericLiteral() {
         this instanceof IntegerLiteral
         or this instanceof LongLiteral
-        or this instanceof FloatingPointLiteral
+        or this instanceof FloatLiteral
         or this instanceof DoubleLiteral
     }
 }

@@ -38,7 +38,7 @@ where
             value.(CharacterLiteral).getCodePointValue().toString() = returnValue
             and type = TIntegral()
             or
-            value.(FloatingPointLiteral).getValue() = returnValue
+            value.(FloatLiteral).getValue() = returnValue
             and type = TFloatingPoint()
             or
             value.(DoubleLiteral).getValue() = returnValue

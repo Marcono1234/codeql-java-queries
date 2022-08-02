@@ -29,18 +29,7 @@
  */
 
 import java
-
-class DefaultValue extends Literal {
-    DefaultValue() {
-        this.(IntegerLiteral).getIntValue() = 0
-        or this.(DoubleLiteral).getValue() = "0.0"
-        or this.(FloatingPointLiteral).getValue() = "0.0"
-        or this.(LongLiteral).getValue() = "0"
-        or this.(BooleanLiteral).getBooleanValue() = false
-        or this.(CharacterLiteral).getValue().regexpMatch("\\u0000")
-        or this instanceof NullLiteral
-    }
-}
+import lib.Literals
 
 class TypeLock extends Interface {
     TypeLock() {
@@ -98,7 +87,7 @@ boolean defaultValueCheck(FieldAccess fieldAccess, EqualityTest conditionExpr) {
     // Ignore assert statements because they are not a proper check
     not conditionExpr.getEnclosingStmt() instanceof AssertStmt
     and accessSameField(conditionExpr.getAnOperand(), fieldAccess)
-    and conditionExpr.getAnOperand() instanceof DefaultValue
+    and conditionExpr.getAnOperand() instanceof DefaultValueLiteral
     and result = conditionExpr.polarity()
 }
 

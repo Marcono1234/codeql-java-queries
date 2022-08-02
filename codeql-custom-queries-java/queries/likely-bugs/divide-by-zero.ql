@@ -12,7 +12,7 @@ class ZeroExpr extends Expr {
     ZeroExpr() {
         this.(CompileTimeConstantExpr).getIntValue() = 0
         or this.(LongLiteral).getValue() = "0"
-        or this.(FloatingPointLiteral).getValue() = "0.0"
+        or this.(FloatLiteral).getValue() = "0.0"
         or this.(DoubleLiteral).getValue() = "0.0"
         // Or read of final variable with 0 as value
         or exists(Variable v |

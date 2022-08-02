@@ -21,18 +21,12 @@
 import java
 import semmle.code.java.Reflection
 
+import lib.Literals
+
 class IntegralLiteral extends Literal {
     IntegralLiteral() {
         this instanceof IntegerLiteral
         or this instanceof LongLiteral
-    }
-}
-
-// FloatingPointLiteral would fit better, but QL already chose that for `float`
-class FloatLiteral extends Literal {
-    FloatLiteral() {
-        this instanceof FloatingPointLiteral
-        or this instanceof DoubleLiteral
     }
 }
 
@@ -46,9 +40,9 @@ predicate isSameValue(Expr e1, Expr e2) {
         or c1.getType() = c2.getType() and c1.(Literal).getValue() = c2.(Literal).getValue()
         // Consider widening conversion for types whose value cannot be obtained from CompileTimeConstantExpr
         or c1.(IntegralLiteral).getValue() = c2.(IntegralLiteral).getValue()
-        or c1.(FloatLiteral).getValue() = c2.(FloatLiteral).getValue()
-        or c1.(FloatLiteral).getValue().toFloat() = c2.(IntegralLiteral).getValue().toInt()
-        or c1.(IntegralLiteral).getValue().toInt() = c2.(FloatLiteral).getValue().toFloat()
+        or c1.(FloatingPointLiteral_).getValue() = c2.(FloatingPointLiteral_).getValue()
+        or c1.(FloatingPointLiteral_).getValue().toFloat() = c2.(IntegralLiteral).getValue().toInt()
+        or c1.(IntegralLiteral).getValue().toInt() = c2.(FloatingPointLiteral_).getValue().toFloat()
     )
 }
 
@@ -202,7 +196,7 @@ predicate hasFieldSameValueAssigns(Field f) {
                 defaultValue.(CharacterLiteral).getCodePointValue() = 0
                 or defaultValue.(IntegerLiteral).getIntValue() = 0
                 or defaultValue.(LongLiteral).getValue() = "0"
-                or defaultValue.(FloatingPointLiteral).getFloatValue() = 0
+                or defaultValue.(FloatLiteral).getFloatValue() = 0
                 or defaultValue.(DoubleLiteral).getDoubleValue() = 0
             )
             or f.getType() instanceof RefType and defaultValue instanceof NullLiteral

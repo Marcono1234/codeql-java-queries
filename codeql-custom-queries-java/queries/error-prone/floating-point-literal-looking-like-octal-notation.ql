@@ -5,11 +5,11 @@
  */
 
 import java
+import lib.Literals
 
-from Literal literal, string literalString
+from FloatingPointLiteral_ literal, string literalString
 where
     literalString = literal.getLiteral()
-    and (literal instanceof FloatingPointLiteral or literal instanceof DoubleLiteral)
     and literalString.regexpMatch([
         // Leading 0
         "0[0-9]+.*",

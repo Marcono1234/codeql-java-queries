@@ -53,7 +53,7 @@ private BinaryExpr getSimplifiableAssignOperation(AssignExpr assignExpr, Expr ot
 private predicate hasValue1(Literal literal) {
     literal.(IntegerLiteral).getIntValue() = 1
     or literal.(LongLiteral).getValue().toInt() = 1
-    or literal.(FloatingPointLiteral).getValue().toFloat() = 1
+    or literal.(FloatLiteral).getValue().toFloat() = 1
     or literal.(DoubleLiteral).getValue().toFloat() = 1
 }
 

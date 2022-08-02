@@ -10,14 +10,11 @@
  */
 
 import java
+import lib.Literals
 
-class ZeroFloatingPointLiteral extends Literal {
+class ZeroFloatingPointLiteral extends FloatingPointLiteral_ {
     ZeroFloatingPointLiteral() {
-        (
-            this instanceof FloatingPointLiteral
-            or this instanceof DoubleLiteral
-        )
-        and getValue().toFloat() = 0
+        getValue().toFloat() = 0
     }
 }
 

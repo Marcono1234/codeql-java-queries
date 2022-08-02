@@ -1,13 +1,25 @@
 import java
 
 /**
+ * Literal of type `float` or `double`.
+ */
+// Trailing underscore for name because CodeQL already has (deprecated) FloatingPointLiteral which
+// represents float literal
+class FloatingPointLiteral_ extends Literal {
+    FloatingPointLiteral_() {
+        this instanceof FloatLiteral
+        or this instanceof DoubleLiteral
+    }
+}
+
+/**
  * Numeric literal with value 0.
  */
 class LiteralZero extends Literal {
     LiteralZero() {
         this.(IntegerLiteral).getIntValue() = 0
         or this.(LongLiteral).getValue() = "0"
-        or this.(FloatingPointLiteral).getFloatValue() = 0
+        or this.(FloatLiteral).getFloatValue() = 0
         or this.(DoubleLiteral).getDoubleValue() = 0
     }
 }
@@ -29,7 +41,7 @@ class LiteralOne extends Literal {
     LiteralOne() {
         this.(IntegerLiteral).getIntValue() = 1
         or this.(LongLiteral).getValue() = "1"
-        or this.(FloatingPointLiteral).getFloatValue() = 1
+        or this.(FloatLiteral).getFloatValue() = 1
         or this.(DoubleLiteral).getDoubleValue() = 1
     }
 }
@@ -44,7 +56,19 @@ float getNumericValue(Literal l) {
         l.(IntegerLiteral).getIntValue(),
         // Has no predicate for getting long value; therefore parse as CodeQL float
         l.(LongLiteral).getValue().toFloat(),
-        l.(FloatingPointLiteral).getValue().toFloat(),
+        l.(FloatLiteral).getValue().toFloat(),
         l.(DoubleLiteral).getValue().toFloat()
     ]
+}
+
+class DefaultValueLiteral extends Literal {
+    DefaultValueLiteral() {
+        this.(IntegerLiteral).getIntValue() = 0
+        or this.(DoubleLiteral).getValue() = "0.0"
+        or this.(FloatLiteral).getValue() = "0.0"
+        or this.(LongLiteral).getValue() = "0"
+        or this.(BooleanLiteral).getBooleanValue() = false
+        or this.(CharacterLiteral).getCodePointValue() = 0
+        or this instanceof NullLiteral
+    }
 }

@@ -66,7 +66,7 @@ class BigDecimalFromDoubleCall extends Call {
 
 class FloatOrDoubleLiteral extends Literal {
     FloatOrDoubleLiteral() {
-        this instanceof FloatingPointLiteral
+        this instanceof FloatLiteral
         or this instanceof DoubleLiteral
     }
 }

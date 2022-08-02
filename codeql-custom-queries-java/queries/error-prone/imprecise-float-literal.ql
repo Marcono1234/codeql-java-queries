@@ -6,7 +6,7 @@
 
 import java
 
-from FloatingPointLiteral literal, string sourceValue, float parsedSourceValue, string rounded
+from FloatLiteral literal, string sourceValue, float parsedSourceValue, string rounded
 where
     /*
      * Parse toString() as CodeQL 64-bit float which has higher precision,
