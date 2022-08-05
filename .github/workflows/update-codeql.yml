@@ -1,3 +1,5 @@
+name: Check for CodeQL update
+
 on:
   schedule:
     # Every Monday 8:30
@@ -44,7 +46,7 @@ jobs:
 
       - name: Create or update pull request
         uses: peter-evans/create-pull-request@v4
-        needs: prepare-update
+        if: steps.prepare-update.outcome == 'success'
         with:
           branch: codeql-update
           commit-message: Update CodeQL submodule to ${{ steps.codeql-submodule-version.outputs.latest-version }}
