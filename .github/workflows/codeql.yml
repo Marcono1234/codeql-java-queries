@@ -3,7 +3,8 @@
 
 name: CodeQL checks
 
-on: [push, pull_request]
+# workflow_dispatch to support manually triggering workflow
+on: [push, pull_request, workflow_dispatch]
 
 jobs:
   codeql-cli:

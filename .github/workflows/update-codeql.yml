@@ -1,0 +1,60 @@
+name: Check for CodeQL update
+
+on:
+  schedule:
+    # Every Monday 8:30
+    - cron: '30 8 * * 1'
+  # Support manually triggering workflow
+  workflow_dispatch:
+
+jobs:
+  check-update-codeql:
+    name: Check for CodeQL update
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          # Fetch the codeql submodule
+          submodules: recursive
+      - name: Get CodeQL submodule version
+        id: codeql-submodule-version
+        run: |
+          # Switch to submodule and get Git tag
+          cd codeql
+          # Fetch tags (and only tags), see https://stackoverflow.com/a/20608181
+          git fetch origin 'refs/tags/*:refs/tags/*' --quiet 
+          tag=$(git describe --exact-match --exclude "codeql-cli/latest")
+          version="${tag#codeql-cli/}"
+          echo "::set-output name=version::${version}"
+          echo "Submodule version: ${version}"
+
+          latest_version_tag=$(git tag --sort=-version:refname | grep "codeql-cli/" | head --lines=1)
+          echo "::set-output name=latest-version-tag::${latest_version_tag}"
+
+          latest_version="${latest_version_tag#codeql-cli/}"
+          echo "::set-output name=latest-version::${latest_version}"
+          echo "Latest version: ${latest_version}"
+
+      - name: Prepare CodeQL version update
+        id: prepare-update
+        # Only run if latest version differs
+        if: steps.codeql-submodule-version.outputs.version != steps.codeql-submodule-version.outputs.latest-version
+        run: |
+          cd codeql
+          git checkout ${{ steps.codeql-submodule-version.outputs.latest-version-tag }}
+
+      # Note: Unfortunately this cannot trigger the regular workflow for the PR automatically, see
+      # https://github.com/peter-evans/create-pull-request/blob/main/docs/concepts-guidelines.md#triggering-further-workflow-runs
+      - name: Create or update pull request
+        uses: peter-evans/create-pull-request@v4
+        if: steps.prepare-update.outcome == 'success'
+        with:
+          branch: codeql-update
+          commit-message: Update CodeQL submodule to ${{ steps.codeql-submodule-version.outputs.latest-version }}
+          title: Update CodeQL submodule to ${{ steps.codeql-submodule-version.outputs.latest-version }}
+          body: |
+            Updates the CodeQL submodule.
+
+            To run the regular CI workflow for this pull request, either close and reopen it, or manually trigger the workflow from the "Actions" tab.
+          labels: codeql-update
