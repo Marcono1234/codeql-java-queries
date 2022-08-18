@@ -189,3 +189,39 @@ private class LeakingExpr extends Expr {
 predicate isLeaked(Expr leaked) {
     DataFlow::localFlow(DataFlow::exprNode(leaked), DataFlow::exprNode(any(LeakingExpr e)))
 }
+
+/**
+ * Holds if the comparison expression compares `operand` with a constant which:
+ * - if `equalOrGreater = true`: makes sure that `operand >= value`
+ * - if `equalOrGreater = false`: makes sure that `operand < value`
+ */
+predicate comparesWithConstant(ComparisonExpr compExpr, Expr operand, int value, boolean equalOrGreater) {
+    // operand > value - 1
+    (
+        compExpr.isStrict()
+        and compExpr.getGreaterOperand() = operand
+        and compExpr.getLesserOperand().(CompileTimeConstantExpr).getIntValue() = value - 1
+        and equalOrGreater = true
+    )
+    // operand >= value
+    or (
+        not compExpr.isStrict()
+        and compExpr.getGreaterOperand() = operand
+        and compExpr.getLesserOperand().(CompileTimeConstantExpr).getIntValue() = value
+        and equalOrGreater = true
+    )
+    // operand < value
+    or (
+        compExpr.isStrict()
+        and compExpr.getLesserOperand() = operand
+        and compExpr.getGreaterOperand().(CompileTimeConstantExpr).getIntValue() = value
+        and equalOrGreater = false
+    )
+    // operand <= value - 1
+    or (
+        not compExpr.isStrict()
+        and compExpr.getLesserOperand() = operand
+        and compExpr.getGreaterOperand().(CompileTimeConstantExpr).getIntValue() = value - 1
+        and equalOrGreater = false
+    )
+}

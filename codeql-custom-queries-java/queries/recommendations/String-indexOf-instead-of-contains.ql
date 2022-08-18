@@ -6,6 +6,8 @@
 
 import java
 
+import lib.Expressions
+
 class IndexMethod extends Method {
     IndexMethod() {
         getDeclaringType() instanceof TypeString
@@ -15,18 +17,6 @@ class IndexMethod extends Method {
             "indexOf(String)",
             "lastIndexOf(String)"
         ]
-    }
-}
-
-class MinusOne extends MinusExpr {
-    MinusOne() {
-        getExpr().(IntegerLiteral).getIntValue() = 1
-    }
-}
-
-class Zero extends IntegerLiteral {
-    Zero() {
-        getIntValue() = 0
     }
 }
 
@@ -40,44 +30,10 @@ where
             and isContainedPolarity = eqTest.polarity().booleanNot()
         |
             eqTest.getAnOperand() = indexCall
-            and eqTest.getAnOperand() instanceof MinusOne
+            and eqTest.getAnOperand().(CompileTimeConstantExpr).getIntValue() = -1
         )
-        // Checking > -1
-        or exists(ComparisonExpr compExpr |
-            compExpr = checkExpr
-            and compExpr.isStrict()
-            and isContainedPolarity = true
-        |
-            compExpr.getGreaterOperand() = indexCall
-            and compExpr.getLesserOperand() instanceof MinusOne
-        )
-        // Checking <= -1
-        or exists(ComparisonExpr compExpr |
-            compExpr = checkExpr
-            and not compExpr.isStrict()
-            and isContainedPolarity = false
-        |
-            compExpr.getLesserOperand() = indexCall
-            and compExpr.getGreaterOperand() instanceof MinusOne
-        )
-        // Checking >= 0
-        or exists(ComparisonExpr compExpr |
-            compExpr = checkExpr
-            and not compExpr.isStrict()
-            and isContainedPolarity = true
-        |
-            compExpr.getGreaterOperand() = indexCall
-            and compExpr.getLesserOperand() instanceof Zero
-        )
-        // Checking < 0
-        or exists(ComparisonExpr compExpr |
-            compExpr = checkExpr
-            and compExpr.isStrict()
-            and isContainedPolarity = false
-        |
-            compExpr.getLesserOperand() = indexCall
-            and compExpr.getGreaterOperand() instanceof Zero
-        )
+        // Performs some check similar to >= 0
+        or comparesWithConstant(checkExpr, indexCall, 0, isContainedPolarity)
     )
     and if isContainedPolarity = true then negationPrefix = ""
     else negationPrefix = "!"
