@@ -58,6 +58,7 @@ private ThisAccess getThisStoredExternally(Constructor c, Expr leakingExpr) {
         )
     )
     // TODO: Might also have to consider `this` being used in ArrayInit
+    // TODO: Can this use lib.Expressions.isLeaked(...)?
 }
 
 from Constructor c, Expr leakingExpr, ThisAccess thisAccess

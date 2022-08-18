@@ -7,24 +7,7 @@
 import java
 import semmle.code.java.dataflow.DataFlow
 
-/**
- * Expression where a reference might become accessible to other
- * methods.
- */
-class LeakingExpr extends Expr {
-    LeakingExpr() {
-        exists (ReturnStmt returnStmt | this = returnStmt.getResult())
-        or exists (Call call | this = call.getAnArgument())
-        or exists (LValue write |
-            write.getVariable() instanceof Field
-            and this = write.getRhs()
-        )
-        or exists (Assignment assignment |
-            assignment.getDest() instanceof ArrayAccess
-            and this = assignment.getSource()
-        )
-    }
-}
+import lib.Expressions
 
 from ClassInstanceExpr newExpr
 where
@@ -35,7 +18,5 @@ where
         and DataFlow::localFlow(DataFlow::exprNode(newExpr), DataFlow::exprNode(expr))
     )
     // No reference becomes available to other method
-    and not exists (LeakingExpr expr |
-        DataFlow::localFlow(DataFlow::exprNode(newExpr), DataFlow::exprNode(expr))
-    )
+    and not isLeaked(newExpr)
 select newExpr

@@ -1,4 +1,5 @@
 import java
+import semmle.code.java.dataflow.DataFlow
 
 /** An `int` or a `long` literal. */
 class IntegralLiteral extends Literal {
@@ -156,4 +157,35 @@ class CallableReferencingExpr extends Expr {
             this.(ClassInstanceExpr).getQualifier(),
         ]
     }
+}
+
+private class LeakingExpr extends Expr {
+    LeakingExpr() {
+        // Leaks by passing it as argument to call
+        any(Call c).getAnArgument() = this
+        // Leaks by assigning to field
+        or any(FieldWrite w).getRhs() = this
+        // Leaks by storing in array
+        or exists(AssignExpr assign |
+            assign.getRhs() = this
+            and assign.getDest() instanceof ArrayAccess
+        )
+        // Leaks by putting in new array
+        or any(ArrayInit a).getAnInit() = this
+        // Leaks by returning
+        or any(ReturnStmt r).getResult() = this
+        // Leaks by being captured, e.g. in lambda, inner class, ...
+        or exists(LocalScopeVariable var |
+            this = var.getAnAssignedValue()
+            and var.getAnAccess().getEnclosingCallable() != getEnclosingCallable()
+        )
+    }
+}
+
+/**
+ * Holds if there is dataflow from the expression to another expression which might
+ * make the value available outside the current callable.
+ */
+predicate isLeaked(Expr leaked) {
+    DataFlow::localFlow(DataFlow::exprNode(leaked), DataFlow::exprNode(any(LeakingExpr e)))
 }
