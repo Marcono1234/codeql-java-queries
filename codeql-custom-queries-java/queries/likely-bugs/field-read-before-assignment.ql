@@ -2,6 +2,8 @@
  * Finds field reads which happen before any assignment to that field.
  */
 
+// TODO: Merge with likely-bugs/reading-uninitialized-field.ql
+
 import java
 
 predicate doesConstructorInitialize(Constructor c, Field f) {
