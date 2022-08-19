@@ -26,49 +26,14 @@
  * field.
  *
  * See https://en.wikipedia.org/wiki/Double-checked_locking#Usage_in_Java
+ * 
+ * @kind problem
  */
 
 import java
+
+import lib.ConcurrencyLib
 import lib.Literals
-
-class TypeLock extends Interface {
-    TypeLock() {
-        hasQualifiedName("java.util.concurrent.locks", "Lock")
-    }
-}
-
-class LockMethod extends Method {
-    LockMethod() {
-        getAnOverride*().getDeclaringType() instanceof TypeLock
-        and hasName(["lock", "lockInterruptibly", "tryLock"])
-    }
-}
-
-class UnlockMethod extends Method {
-    UnlockMethod() {
-        getAnOverride*().getDeclaringType() instanceof TypeLock
-        and hasName("unlock")
-    }
-}
-
-class SynchronizingStmt extends Stmt {
-    private boolean isLockMethod;
-    
-    SynchronizingStmt() {
-        isLockMethod = false and this instanceof SynchronizedStmt
-        or isLockMethod = true and this.(ExprStmt).getExpr().(MethodAccess).getMethod() instanceof LockMethod
-    }
-    
-    predicate includes(Stmt stmt) {
-        // SynchronizedStmt
-        stmt.getEnclosingStmt().getEnclosingStmt*() = this
-        // unlock call
-        or isLockMethod = true and exists (MethodAccess unlockCall | unlockCall.getMethod() instanceof UnlockMethod |
-            this.getControlFlowNode().getASuccessor+() = stmt
-            and stmt.getControlFlowNode().getASuccessor+() = unlockCall
-        )
-    }
-}
 
 predicate accessSameField(FieldAccess a, FieldAccess b) {
     a.getField() = b.getField()
@@ -91,10 +56,9 @@ boolean defaultValueCheck(FieldAccess fieldAccess, EqualityTest conditionExpr) {
     and result = conditionExpr.polarity()
 }
 
-from Field f, FieldAccess fieldAccess, ConditionNode firstCheck, SynchronizingStmt synchronizingStmt, Assignment assignment
+from FieldAccess fieldAccess, ConditionNode firstCheck, SynchronizationStatement synchronizingStmt, Assignment assignment
 where
     fieldAccess = assignment.getDest()
-    and fieldAccess.getField() = f
     // Ignore if assignment value is constant since then re-assignment is likely not problematic
     and not (
         assignment.getSource() instanceof CompileTimeConstantExpr
@@ -104,9 +68,9 @@ where
     and not firstCheck.getEnclosingStmt().getEnclosingStmt*() instanceof LoopStmt
     and not assignment.getEnclosingStmt().getEnclosingStmt*() instanceof LoopStmt
     and firstCheck.getABranchSuccessor(defaultValueCheck(fieldAccess, firstCheck.getCondition())).getANormalSuccessor+() = synchronizingStmt
-    and synchronizingStmt.includes(assignment.getEnclosingStmt())
+    and synchronizingStmt.includes(assignment)
     and not exists (ConditionNode secondCheck |
         synchronizingStmt.getControlFlowNode().getANormalSuccessor+() = secondCheck
         and secondCheck.getABranchSuccessor(defaultValueCheck(fieldAccess, secondCheck.getCondition())).getANormalSuccessor*() = assignment
     )
-select f, assignment
+select assignment, "Assigns value without checking if field has been initialized in the meantime already"
