@@ -14,7 +14,16 @@ from Class c, WriteReplaceSerializableMethod writeReplaceMethod
 where
     c.fromSource()
     // writeReplace is declared or inherited
-    and c.inherits(writeReplaceMethod)
+    and exists(WriteReplaceSerializableMethod m |
+        c.inherits(m)
+        and writeReplaceMethod = m.getSourceDeclaration()
+    )
+    // Does not return a normalized or compact version of `this`
+    and not exists(ReturnStmt returnStmt, Expr normalizingExpr |
+        returnStmt.getEnclosingCallable() = writeReplaceMethod
+        and normalizingExpr.getType().(RefType).getSourceDeclaration() = writeReplaceMethod.getDeclaringType()
+        and DataFlow::localExprFlow(normalizingExpr, returnStmt.getResult())
+    )
     // Does not return `this`; e.g. when writeReplace is only used to serialize empty
     // singleton instances
     and not exists(ReturnStmt returnStmt, ThisAccess thisAccess |
@@ -29,4 +38,5 @@ where
     )
     // And class does not define readObject method
     and not any(ReadObjectSerializableMethod m).getDeclaringType() = c
+    and not c instanceof TestClass
 select c, "Writes serialization proxy $@, but does not prevent direct deserialization", writeReplaceMethod, "here"
