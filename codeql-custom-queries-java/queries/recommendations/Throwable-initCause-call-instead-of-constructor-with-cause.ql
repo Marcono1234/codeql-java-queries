@@ -3,19 +3,21 @@
  * appears to have a constructor with a parameter for a cause exception which
  * could be used instead.
  * E.g.:
- * ```
+ * ```java
  * try {
  *     ...
  * }
  * catch (IOException cause) {
- *     // Should use UncheckedIOException(String, IOException)
- *     UncheckedIOException e = new UncheckedIOException("Action failed");
+ *     // Should use IOException(String, IOException)
+ *     IOException e = new IOException("...");
  *     e.initCause(cause);
  *     throw e;
  * }
  * ```
  * To improve readability the alternative constructor with cause parameter
  * should be used instead of manually setting the cause through `initCause`.
+ * 
+ * @kind problem
  */
 
 import java
