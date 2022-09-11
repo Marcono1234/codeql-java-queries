@@ -3,7 +3,14 @@ import java
 private newtype TVisibility =
     TPrivate()
     or TPackagePrivate()
-    or TProtected(RefType declaringType)
+    or TProtected(ClassOrInterface declaringType) {
+        // Restrict this here already to all possible values to avoid too large result sets
+        // when visibilities are compared
+        exists(Member m |
+            m.isProtected()
+            and m.getDeclaringType() = declaringType
+        )
+    }
     or TPublic()
 
 /**
@@ -47,8 +54,8 @@ abstract class Visibility extends TVisibility {
      */
     Visibility getLower(Visibility other) {
         // Other has lower visibility
-        if not canSee(other) then result = other
-        // Will also have `this` as result when neither `other.canSee(this)`, e.g.
+        if other.canSee(this) then result = other
+        // Will also have `this` as result when neither can see each other, e.g.
         // when both are `protected` but with different declaring type
         else result = this
     }
@@ -93,6 +100,12 @@ class PackagePrivateVisibility extends Visibility, TPackagePrivate {
  * Element is `protected`.
  */
 class ProtectedVisibility extends Visibility, TProtected {
+    ClassOrInterface declaringType;
+
+    ProtectedVisibility() {
+        this = TProtected(declaringType)
+    }
+
     override
     int getVisibilityRank() {
         // When changing this value, `isProtectedOrHigher()` must be adjusted as well
@@ -113,8 +126,8 @@ class ProtectedVisibility extends Visibility, TProtected {
     /**
      * Gets the type which declares this element, i.e. the enclosing type.
      */
-    RefType getDeclaringType() {
-        this = TProtected(result)
+    ClassOrInterface getDeclaringType() {
+        result = declaringType
     }
 
     override

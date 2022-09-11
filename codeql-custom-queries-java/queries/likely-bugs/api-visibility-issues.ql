@@ -84,6 +84,19 @@ private Element getATypeExposingCallableElement(Callable c, string locationMessa
     )
 }
 
+private Element getAnElementExposedByField(ClassOrInterface exposingContext, Field f, string locationMessage, RefType exposed) {
+    exists(RefType declaringType | declaringType = f.getDeclaringType() |
+        // Field itself (or rather its type) is exposed
+        result = f
+        and (
+            declaringType = exposingContext and locationMessage = "type of field '" + f.getName() + "'"
+            or declaringType = exposingContext.getASourceSupertype+() and locationMessage = "type of inherited field " + declaringType.getName() + "." + f.getName()
+        )
+        and exposed = f.getType()
+    )
+}
+
+// Note: Cannot use SrcMethod as result type because inherited parameterized methods are relevant as well
 private Method getAnInheritedMethod(ClassOrInterface t) {
     // Don't include method declared by `t`
     result.getDeclaringType() = t.getASourceSupertype+()
@@ -94,34 +107,31 @@ private Method getAnInheritedMethod(ClassOrInterface t) {
     )
 }
 
-private Element getAnElementExposedByMember(ClassOrInterface exposingContext, Member m, string locationMessage, RefType exposed) {
-    exists(Field f, RefType declaringType |
-        f = m
-        and declaringType = f.getDeclaringType()
-    |
-        result = f
-        and (
-            declaringType = exposingContext and locationMessage = "type of field '" + f.getName() + "'"
-            or declaringType = exposingContext.getASourceSupertype+() and locationMessage = "type of inherited field " + declaringType.getName() + "." + f.getName()
-        )
-        and exposed = f.getType()
-    )
-    or exists(Method method, RefType declaringType, string locationMessagePrefix, string locationMessageSuffix |
-        method = m
-        and declaringType = method.getDeclaringType()
+private Element getAnElementExposedByMethod(ClassOrInterface exposingContext, Method m, string locationMessage, RefType exposed) {
+    exists(RefType declaringType, string locationMessagePrefix, string locationMessageSuffix |
+        declaringType = m.getDeclaringType()
     |
         (
-            declaringType = exposingContext and locationMessageSuffix = " of method " + method.getStringSignature()
-            or method = getAnInheritedMethod(exposingContext) and locationMessageSuffix = " of inherited method " + declaringType.getName() + "." + method.getStringSignature()
+            declaringType = exposingContext and locationMessageSuffix = " of method " + m.getStringSignature()
+            or m = getAnInheritedMethod(exposingContext) and locationMessageSuffix = " of inherited method " + declaringType.getName() + "." + m.getStringSignature()
         )
-        and result = getATypeExposingCallableElement(method, locationMessagePrefix, exposed)
+        and result = getATypeExposingCallableElement(m, locationMessagePrefix, exposed)
         and locationMessage = locationMessagePrefix + locationMessageSuffix
     )
-    or exists(Constructor c, string locationMessagePrefix | c = m |
+}
+
+private Element getAnElementExposedByConstructor(ClassOrInterface exposingContext, Constructor c, string locationMessage, RefType exposed) {
+    exists(string locationMessagePrefix |
         c.getDeclaringType() = exposingContext
         and result = getATypeExposingCallableElement(c, locationMessagePrefix, exposed)
         and locationMessage = locationMessagePrefix + " of constructor " + c.getStringSignature()
     )
+}
+
+private Element getAnElementExposedByMember(ClassOrInterface exposingContext, Member m, string locationMessage, RefType exposed) {
+    result = getAnElementExposedByField(exposingContext, m, locationMessage, exposed)
+    or result = getAnElementExposedByMethod(exposingContext, m, locationMessage, exposed)
+    or result = getAnElementExposedByConstructor(exposingContext, m, locationMessage, exposed)
     /*
      * TODO: Missing inherited member type whose member exposes a type, e.g.:
      * ```java
