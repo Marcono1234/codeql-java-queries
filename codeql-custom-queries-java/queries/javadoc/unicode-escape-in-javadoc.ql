@@ -1,10 +1,10 @@
 /**
  * Finds unicode escapes in javadoc comments, e.g.:
- * ```
+ * ```java
  * /**
  *  * Returns the unicode escape for the given char, e.g.
  *  * for {@code 'a'} it returns {@code "\u0061"}.
- *  *&#x005C;
+ *  * /
  * public String escape(char c) {
  *     ...
  * }
