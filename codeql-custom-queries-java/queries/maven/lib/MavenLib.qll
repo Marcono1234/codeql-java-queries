@@ -103,7 +103,7 @@ class TestPluginConfigElement extends PomElement {
      * Gets a configuration element which restricts which test classes should be executed,
      * e.g. by defining exclusions or defining that only certain tests should be executed.
      */
-    XMLElement getARestrictingElement() {
+    XmlElement getARestrictingElement() {
         // Surefire and Failsafe plugin
         // Ignore `includes` since that is most likely used to correctly specify test file patterns
         result = getAChild([

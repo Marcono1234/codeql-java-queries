@@ -4,7 +4,6 @@
  */
 
 import java
-import lib.Annotations
 
 from AnnotationType annType, AnnotationType containedAnnType
 where

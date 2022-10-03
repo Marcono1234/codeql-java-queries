@@ -35,7 +35,6 @@
  */
 
 import java
-import lib.Annotations
 
 from Annotation containingAnn
 where
@@ -50,7 +49,7 @@ where
         and otherElem.getName() != "value"
     )
     // Verify that contained annotations is not empty
-    and exists (containingAnn.getAValue("value"))
+    and exists (containingAnn.getAnArrayValue("value"))
     /*
      * Note: In theory there could be a difference in behavior when only a single annotation
      * is contained and the containing annotation type has different settings than the type of

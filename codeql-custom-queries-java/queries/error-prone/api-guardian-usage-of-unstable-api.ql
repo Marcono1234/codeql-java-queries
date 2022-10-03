@@ -39,7 +39,7 @@ string getMessageForUsage(Annotatable annotatable, CompilationUnit accessingComp
         annotation = annotatable.getAnAnnotation().(ApiAnnotation)
         and accessingPackage = accessingCompilationUnit.getPackage().getName()
         and not exists (string consumerPackage |
-            consumerPackage = annotation.getAValue("consumers").(CompileTimeConstantExpr).getStringValue()
+            consumerPackage = annotation.getAStringArrayValue("consumers")
             and (
                 consumerPackage = "*"
                 // TODO: Might not match correctly, see https://github.com/apiguardian-team/apiguardian/issues/16

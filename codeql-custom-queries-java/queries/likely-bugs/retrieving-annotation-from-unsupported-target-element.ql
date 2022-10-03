@@ -18,6 +18,7 @@
 
 import java
 import semmle.code.java.dataflow.SSA
+
 import lib.Annotations
 
 abstract class AnnotationRetrievingCall extends MethodAccess {
@@ -544,7 +545,7 @@ where
     // Annotation type is not applicable to any of the targets
     and not exists(string target |
         target = retrievingCall.getACheckedTarget()
-        and isApplicableToTargetType(annType, target)
+        and annType.isATargetType(target)
     )
     // Note: Don't need to handle repeatable annotation types in a special way because the JLS does not
     // permit more target types for the containing annotation type than for the repeated annotation type

@@ -9,8 +9,8 @@
 import java
 import semmle.code.xml.MavenPom
 
-// Note: Cannot use PomElement because that actually matches any XMLElement
-from XMLElement pomElement, string textValue
+// Note: Cannot use PomElement because that actually matches any XmlElement
+from XmlElement pomElement, string textValue
 where
     pomElement.getParent+() instanceof Pom
     // Note: getTextValue() only seems to consider text if there are non-whitespace

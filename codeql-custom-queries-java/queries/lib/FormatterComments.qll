@@ -4,7 +4,7 @@ import semmle.code.xml.XML
 // XML CodeQL classes don't extend Top, must use algebraic datatype as workaround
 // See also https://github.com/github/codeql/issues/5646
 
-private newtype TFormatterComment = TJavaComment(JavadocText t) or TXmlComment(XMLComment c)
+private newtype TFormatterComment = TJavaComment(JavadocText t) or TXmlComment(XmlComment c)
 
 /**
  * A comment which enables or disables the IDE formatter or a formatter plugin for a
@@ -126,7 +126,7 @@ private class SpotlessJavaFormatterComment extends FormatterComment, TJavaCommen
  * Spotless does not detect mismatching comments yet, see https://github.com/diffplug/spotless/issues/1165
  */
 private class SpotlessXmlFormatterComment extends FormatterComment, TXmlComment {
-    XMLComment comment;
+    XmlComment comment;
     boolean isOn;
 
     SpotlessXmlFormatterComment() {
