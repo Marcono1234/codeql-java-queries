@@ -8,7 +8,6 @@
  */
 
 import java
-import lib.Annotations
 
 from AnnotationType annType, RepeatableAnnotation repeatableAnn
 where

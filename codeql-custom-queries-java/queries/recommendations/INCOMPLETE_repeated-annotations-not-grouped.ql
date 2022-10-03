@@ -12,21 +12,20 @@
  */
 
 import java
-import lib.Annotations
 
 from Annotatable annotated, AnnotationType annType, Annotation containerAnn, Annotation a1, Annotation a2, Annotation other
 where
     annotated.fromSource()
-    and getADeclaredAnnotation(annotated) = containerAnn
+    and annotated.getADeclaredAnnotation() = containerAnn
     and a1.getType() = annType
     and a2.getType() = annType
     // Verify that annotations are Repeatable (ignore containers for non-Repeatable)
     and annType.getAnAnnotation().(RepeatableAnnotation).getContainingType() = containerAnn.getType()
     // Container is created implicitly, does not exist in source
     and not containerAnn.getCompilationUnit().fromSource()
-    and a1 = containerAnn.getAValue("value")
-    and a2 = containerAnn.getAValue("value")
-    and getADeclaredAnnotation(annotated) = other
+    and a1 = containerAnn.getAnArrayValue("value")
+    and a2 = containerAnn.getAnArrayValue("value")
+    and annotated.getADeclaredAnnotation() = other
     and annType != other.getType()
     // Make sure not to match the implicit container as "other"
     and containerAnn != other

@@ -22,7 +22,7 @@ class Test {
 
     @Marker @Other @Marker
     String notGroupedSameLine;
-    
+
 
     @Marker
     @Marker

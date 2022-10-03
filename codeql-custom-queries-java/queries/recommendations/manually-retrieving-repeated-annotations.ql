@@ -8,7 +8,6 @@
 
 import java
 import semmle.code.java.dataflow.SSA
-import lib.Annotations
 
 class AnnotationRetrievingCall extends MethodAccess {
     private boolean supportsRepeatable;

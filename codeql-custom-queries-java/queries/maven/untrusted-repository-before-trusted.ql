@@ -20,7 +20,7 @@ import semmle.code.xml.MavenPom
 class Repository extends DeclaredRepository {
     Repository() {
         // Ignore repository declaration for `distributionManagement`
-        not getParent().(XMLElement).hasName("distributionManagement")
+        not getParent().(XmlElement).hasName("distributionManagement")
     }
 
     /** Holds if this declared repository is used for downloading release artifacts. */

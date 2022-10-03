@@ -31,7 +31,6 @@
  */
 
 import java
-import lib.Annotations
 
 /*
  * Note: The annotation container and the separate annotation are stored in this form in

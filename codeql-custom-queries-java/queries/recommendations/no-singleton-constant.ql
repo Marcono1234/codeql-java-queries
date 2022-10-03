@@ -40,7 +40,7 @@ where
     // Class is not referenced by annotation (annotation might require
     // that no-arg constructor exists and does not use singleton constant)
     and not exists (Annotation annotation |
-        annotation.getAValue().(TypeLiteral).getType() = c
-        or annotation.getAValue().(ArrayInit).getAnInit().(TypeLiteral).getType() = c
+        annotation.getTypeValue(_) = c
+        or annotation.getATypeArrayValue(_) = c
     )
 select c
