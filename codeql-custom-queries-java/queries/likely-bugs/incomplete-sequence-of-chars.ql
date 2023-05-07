@@ -4,6 +4,8 @@
  * // Is missing the 4
  * String digits = "123567890";
  * ```
+ * 
+ * @kind problem
  */
 
 import java
@@ -74,22 +76,14 @@ string getSubsequentChar(string first) {
     if (first.isLowercase()) then (
         areConsecutiveCharsLower(first, result)
     ) else exists (string secondLower |
-            areConsecutiveCharsLower(first.toLowerCase(), secondLower)
-            and result = secondLower.toUpperCase()
+        areConsecutiveCharsLower(first.toLowerCase(), secondLower)
+        and result = secondLower.toUpperCase()
     )
 }
 
-predicate isAllowedLastChar(string last) {
-    last = [
-        "f", // Last hex digit
-        "z",
-        "0",
-        "9"
-    ]
-}
-
 predicate hasSequenceStart(IncompleteSequenceExpr expr) {
-    // Check first 3 chars, otherwise causes too much negatives, e.g. for "delete", "no", ...
+    // Check first 3 chars, otherwise causes a lot of false positives in the middle
+    // of arbitrary strings
     exists (string first, string second, string third |
         first = expr.charAt(0)
         and second = expr.charAt(1)
@@ -98,55 +92,34 @@ predicate hasSequenceStart(IncompleteSequenceExpr expr) {
         areConsecutiveChars(first, second)
         and areConsecutiveChars(second, third)
     )
-    // Exclude words containing three or more consecutive chars
-    and not expr.getString().toLowerCase().matches([
-        "default%",
-        "stub%"
-    ])
 }
 
 abstract class IncompleteSequenceExpr extends Expr {
     abstract string getString();
     abstract string charAt(int index);
-    abstract int length();
     
     string getMissingChar(int index) {
-        exists (string previousCorrect, string lastCorrect |
+        exists (string previousCorrect, string lastCorrect, string incorrect |
             previousCorrect = charAt(index - 2)
             and lastCorrect = charAt(index - 1)
+            and incorrect = charAt(index)
             // Make sure that there is a consecutive char in front, otherwise
             // sequence which then later has other chars causes false positives
-            // e.g. "abc-15-15" would find matches for "15" (-> "12")
+            // e.g. "abc-15" would find matches for "15" (-> "12")
             and areConsecutiveChars(previousCorrect, lastCorrect)
             and result = getSubsequentChar(lastCorrect)
         |
-            exists (string incorrect |
-                incorrect = charAt(index)
-            |
-                // Verify that both chars are of the same type; ignore somthing like "12.0", "ABC-123"
-                areSameType(lastCorrect, incorrect)
-                and not areConsecutiveChars(lastCorrect, incorrect)
-                and (
-                    index = length() - 1
-                    // Char was skipped, e.g. "abcd_f"
-                    or areConsecutiveChars(result, incorrect)
-                    // Duplicate char
-                    or (
-                        index <= length() - 1 // At least one more char
-                        and lastCorrect = incorrect
-                        and areConsecutiveChars(lastCorrect, charAt(index + 1))
-                    )
+            // Verify that both chars are of the same type; ignore something like "12.0", "ABC-123"
+            areSameType(lastCorrect, incorrect)
+            and not areConsecutiveChars(lastCorrect, incorrect)
+            and (
+                // Char was skipped, e.g. "abcd_f"
+                areConsecutiveChars(result, incorrect)
+                // Duplicate char
+                or (
+                    lastCorrect = incorrect
+                    and areConsecutiveChars(lastCorrect, charAt(index + 1))
                 )
-            )
-            or (
-                (
-                    // Last char
-                    index = length()
-                    // Or next char has different type
-                    or not areSameType(lastCorrect, charAt(index))
-                )
-                // Verify that sequence is not allowed to end with `lastCorrect`
-                and not isAllowedLastChar(lastCorrect.toLowerCase())
             )
         )
     }
@@ -162,11 +135,6 @@ class IncompleteStringLiteralExpr extends IncompleteSequenceExpr, StringLiteral 
     string charAt(int index) {
         result = getString().charAt(index)
     }
-    
-    override
-    int length() {
-        result = getString().length()
-    }
 }
 
 class IncompleteCharArrayExpr extends IncompleteSequenceExpr, ArrayInit {
@@ -179,16 +147,11 @@ class IncompleteCharArrayExpr extends IncompleteSequenceExpr, ArrayInit {
     string charAt(int index) {
         result = getInit(index).(CharacterLiteral).getValue()
     }
-    
-    override
-    int length() {
-        // Count elements of initializer
-        result = count(getAnInit())
-    }
 }
 
-from IncompleteSequenceExpr incompleteSeq, int index
+from IncompleteSequenceExpr incompleteSeq, int index, string missingChar
 where
     hasSequenceStart(incompleteSeq)
+    and missingChar = incompleteSeq.getMissingChar(index)
     and not incompleteSeq.getEnclosingCallable().getDeclaringType() instanceof TestClass
-select incompleteSeq, "Sequence of chars is incomplete, is missing '" + incompleteSeq.getMissingChar(index) + "' at index " + index
+select incompleteSeq, "Sequence of chars is incomplete, is missing '" + missingChar + "' at index " + index
