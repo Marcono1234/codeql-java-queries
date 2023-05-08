@@ -2,12 +2,14 @@
  * Finds assignments with a plus or minus expression on the right side
  * where it appears the intentation was to use a compound assignment
  * instead, e.g.:
- * ```
+ * ```java
  * // Developer made a typo and wrote `=+` instead of `+=`
  * for (int i = 0; i < x; i =+ 2) {
  *   ...
  * }
  * ```
+ * 
+ * @kind problem
  */
 
 import java
@@ -32,12 +34,15 @@ where
     and destLoc.getEndLine() = plusOrMinusLoc.getStartLine()
     // Check if there is no space on one side of `=`, e.g. `a =- 1`
     // Could cause false positives if there is no space between dest
-    // and `=` (e.g. `a= -1`), but there is not way to detect that
+    // and `=` (e.g. `a= -1`), but there is no way to detect that
     and if plusOrMinusExpr.isParenthesized() then (
-        plusOrMinusLoc.getStartColumn() - destLoc.getEndColumn() < 5
+        plusOrMinusLoc.getStartColumn() - destLoc.getEndColumn() <= 4
     ) else (
-        plusOrMinusLoc.getStartColumn() - destLoc.getEndColumn() < 4
+        plusOrMinusLoc.getStartColumn() - destLoc.getEndColumn() <= 3
     )
+    // Ignore false positives when destination is special construct such as local variable declaration
+    // where apparently end column is behind start column of right operand
+    and plusOrMinusLoc.getStartColumn() > destLoc.getEndColumn()
     and plusOrMinusLoc = plusOrMinusExpr.getLocation()
     // There is a space between plus/minus and its expr, e.g. `- 1`
     and exists (Expr rhs, Location rhsLoc | rhs = plusOrMinusExpr.getExpr() and rhsLoc = rhs.getLocation() |
@@ -48,4 +53,4 @@ where
             rhsLoc.getStartColumn() - plusOrMinusLoc.getStartColumn() > 1
         )
     )
-select assignExpr, plusOrMinusExpr
+select assignExpr, "Accidental switched compound operator; $@ is treated as separate unary expression", plusOrMinusExpr, "this"
