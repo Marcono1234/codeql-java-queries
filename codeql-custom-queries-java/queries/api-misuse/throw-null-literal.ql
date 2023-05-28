@@ -5,6 +5,10 @@
  * For clarity it would be better to explicitly create a `NullPointerException`
  * and possibly provide a meaningful message to its constructor.
  * 
+ * The "helpful `NullPointerException`" feature ([JEP-358](https://openjdk.org/jeps/358))
+ * makes it even clearer that `throw null` is not the intended usage:
+ * > NullPointerException: Cannot throw exception because "null" is null
+ * 
  * See also Error Prone pattern [ThrowNull](https://errorprone.info/bugpattern/ThrowNull).
  * 
  * @kind problem
