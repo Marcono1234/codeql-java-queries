@@ -149,6 +149,19 @@ class IncompleteCharArrayExpr extends IncompleteSequenceExpr, ArrayInit {
     }
 }
 
+class IncompleteStringArrayExpr extends IncompleteSequenceExpr, ArrayInit {
+    override
+    string getString() {
+        result = concat(string char | char = charAt(_))
+    }
+
+    override
+    string charAt(int index) {
+        result = getInit(index).(StringLiteral).getValue()
+        and result.length() = 1
+    }
+}
+
 from IncompleteSequenceExpr incompleteSeq, int index, string missingChar
 where
     hasSequenceStart(incompleteSeq)
