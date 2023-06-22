@@ -18,7 +18,7 @@ where
             loop.getCondition() = notZeroCheck
             and (
                 notZeroCheck.getAnOperand() = var.getAnAccess()
-                or notZeroCheck.getAnOperand().(AssignRShiftExpr) = shift
+                or notZeroCheck.getAnOperand().(AssignRightShiftExpr) = shift
             )
             and notZeroCheck.getAnOperand().(Literal).getValue() = "0"
         )
@@ -33,7 +33,7 @@ where
             )
             and (
                 bitAnd.getAnOperand() = var.getAnAccess()
-                or bitAnd.getAnOperand().(AssignRShiftExpr) = shift
+                or bitAnd.getAnOperand().(AssignRightShiftExpr) = shift
             )
         )
     )
@@ -43,10 +43,10 @@ where
         exists(AssignExpr assign |
             assign.getDest() = var.getAnAccess()
             and assign.getRhs() = shift
-            and shift.(RShiftExpr).getLeftOperand() = var.getAnAccess()
+            and shift.(RightShiftExpr).getLeftOperand() = var.getAnAccess()
             and assign.getAnEnclosingStmt() = loop
         )
         // Or `x >>= ...`
-        or shift.(AssignRShiftExpr).getDest() = var.getAnAccess()
+        or shift.(AssignRightShiftExpr).getDest() = var.getAnAccess()
     )
 select check, "Might result in endless loop due to $@", shift, "this signed right shift"

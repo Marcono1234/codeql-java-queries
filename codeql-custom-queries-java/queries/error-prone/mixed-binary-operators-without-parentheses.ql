@@ -41,9 +41,9 @@ class ArithmeticKind extends BinaryExprKind {
 
 class ShiftKind extends BinaryExprKind {
     ShiftKind() {
-        this instanceof LShiftExpr
-        or this instanceof RShiftExpr
-        or this instanceof URShiftExpr
+        this instanceof LeftShiftExpr
+        or this instanceof RightShiftExpr
+        or this instanceof UnsignedRightShiftExpr
     }
     
     override predicate shouldBeParenthesized(BinaryExprKind op) {

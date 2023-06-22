@@ -12,7 +12,7 @@ from AndBitwiseExpr andExpr, BinaryExpr shiftExpr, int bitmask, int firstBitmask
 where
     shiftExpr.getLeftOperand() = andExpr
     and bitmask = andExpr.getAnOperand().(CompileTimeConstantExpr).getIntValue()
-    and (shiftExpr instanceof RShiftExpr or shiftExpr instanceof URShiftExpr)
+    and (shiftExpr instanceof RightShiftExpr or shiftExpr instanceof UnsignedRightShiftExpr)
     and shiftDistance = shiftExpr.getRightOperand().(CompileTimeConstantExpr).getIntValue()
     and firstBitmaskBitIndex = [0..31]
     and bitmask.bitAnd(1.bitShiftLeft(firstBitmaskBitIndex)) != 0

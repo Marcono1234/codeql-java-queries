@@ -21,14 +21,14 @@ class ShiftExpr extends Expr {
         exists(IntegralLiteral i | shiftDistance = i.getIntValue() |
             isLeftShift = true
             and i = [
-                this.(LShiftExpr).getRightOperand(),
-                this.(AssignLShiftExpr).getRhs()
+                this.(LeftShiftExpr).getRightOperand(),
+                this.(AssignLeftShiftExpr).getRhs()
             ]
             or
             isLeftShift = false
             and i = [
-                this.(RShiftExpr).getRightOperand(),
-                this.(AssignRShiftExpr).getRhs()
+                this.(RightShiftExpr).getRightOperand(),
+                this.(AssignRightShiftExpr).getRhs()
                 // Don't consider unsigned right shift because it is not equivalent to division
             ]
         )

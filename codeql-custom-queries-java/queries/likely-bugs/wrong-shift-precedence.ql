@@ -16,9 +16,9 @@ import java
 
 class ShiftExpr extends BinaryExpr {
     ShiftExpr() {
-        this instanceof LShiftExpr
-        or this instanceof RShiftExpr
-        or this instanceof URShiftExpr
+        this instanceof LeftShiftExpr
+        or this instanceof RightShiftExpr
+        or this instanceof UnsignedRightShiftExpr
     }
 }
 

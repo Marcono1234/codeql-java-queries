@@ -133,14 +133,14 @@ class LeftShift extends Shift {
 
     LeftShift() {
         rightOperand = [
-            this.(LShiftExpr).getRightOperand(),
-            this.(AssignLShiftExpr).getRhs()
+            this.(LeftShiftExpr).getRightOperand(),
+            this.(AssignLeftShiftExpr).getRhs()
         ]
     }
 
     override
     Expr getLeftOperand() {
-        result = this.(LShiftExpr).getLeftOperand()
+        result = this.(LeftShiftExpr).getLeftOperand()
     }
 
     override
@@ -154,14 +154,14 @@ class RightShift extends Shift {
 
     RightShift() {
         rightOperand = [
-            this.(RShiftExpr).getRightOperand(),
-            this.(AssignRShiftExpr).getRhs()
+            this.(RightShiftExpr).getRightOperand(),
+            this.(AssignRightShiftExpr).getRhs()
         ]
     }
 
     override
     Expr getLeftOperand() {
-        result = this.(RShiftExpr).getLeftOperand()
+        result = this.(RightShiftExpr).getLeftOperand()
     }
 
     override
@@ -175,14 +175,14 @@ class URightShift extends Shift {
 
     URightShift() {
         rightOperand = [
-            this.(URShiftExpr).getRightOperand(),
-            this.(AssignURShiftExpr).getRhs()
+            this.(UnsignedRightShiftExpr).getRightOperand(),
+            this.(AssignUnsignedRightShiftExpr).getRhs()
         ]
     }
 
     override
     Expr getLeftOperand() {
-        result = this.(URShiftExpr).getLeftOperand()
+        result = this.(UnsignedRightShiftExpr).getLeftOperand()
     }
 
     override

@@ -37,12 +37,12 @@ class ShiftExpr extends Expr {
     
     ShiftExpr() {
         shiftDistance = [
-            this.(LShiftExpr).getRightOperand(),
-            this.(AssignLShiftExpr).getRhs(),
-            this.(RShiftExpr).getRightOperand(),
-            this.(AssignRShiftExpr).getRhs(),
-            this.(URShiftExpr).getRightOperand(),
-            this.(AssignURShiftExpr).getRhs()
+            this.(LeftShiftExpr).getRightOperand(),
+            this.(AssignLeftShiftExpr).getRhs(),
+            this.(RightShiftExpr).getRightOperand(),
+            this.(AssignRightShiftExpr).getRhs(),
+            this.(UnsignedRightShiftExpr).getRightOperand(),
+            this.(AssignUnsignedRightShiftExpr).getRhs()
         ]
     }
     
