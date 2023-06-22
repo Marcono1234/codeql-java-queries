@@ -18,7 +18,7 @@ from AndBitwiseExpr andExpr, BinaryExpr shiftExpr
 where
     shiftExpr.getLeftOperand() = andExpr
     and andExpr.getAnOperand() instanceof CompileTimeConstantExpr
-    and (shiftExpr instanceof RShiftExpr or shiftExpr instanceof URShiftExpr)
+    and (shiftExpr instanceof RightShiftExpr or shiftExpr instanceof UnsignedRightShiftExpr)
     // Only consider if shift distance is constant
     and shiftExpr.getRightOperand() instanceof CompileTimeConstantExpr
 select andExpr, "Should first perform shift and then apply bitmask"

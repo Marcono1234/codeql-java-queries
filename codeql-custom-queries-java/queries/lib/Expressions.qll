@@ -36,12 +36,12 @@ class BitwiseExpr_ extends Expr {
         or this instanceof AssignAndExpr
         or this instanceof AssignOrExpr
         or this instanceof AssignXorExpr
-        or this instanceof LShiftExpr
-        or this instanceof AssignLShiftExpr
-        or this instanceof RShiftExpr
-        or this instanceof AssignRShiftExpr
-        or this instanceof URShiftExpr
-        or this instanceof AssignURShiftExpr
+        or this instanceof LeftShiftExpr
+        or this instanceof AssignLeftShiftExpr
+        or this instanceof RightShiftExpr
+        or this instanceof AssignRightShiftExpr
+        or this instanceof UnsignedRightShiftExpr
+        or this instanceof AssignUnsignedRightShiftExpr
     }
 }
 

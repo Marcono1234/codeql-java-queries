@@ -25,8 +25,8 @@ class IntOrLongLiteral extends Literal {
     }
 }
 
-// Only consider URShiftExpr; (signed) RShiftExpr is sometimes used to 'extend' sign bit
-from LShiftExpr leftShift, Expr leftShiftDistExpr, URShiftExpr rightShift, Expr rightShiftDistExpr
+// Only consider UnsignedRightShiftExpr; (signed) RightShiftExpr is sometimes used to 'extend' sign bit
+from LeftShiftExpr leftShift, Expr leftShiftDistExpr, UnsignedRightShiftExpr rightShift, Expr rightShiftDistExpr
 where
     leftShift = rightShift.getLeftOperand()
     and leftShiftDistExpr = leftShift.getRightOperand()
