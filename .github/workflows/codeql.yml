@@ -54,8 +54,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: |
-            codeql-custom-queries-java/queries/.cache
-            codeql-custom-queries-java/tests/.cache
+            ~/.codeql
           key: ${{ runner.os }}-codeql-compilation-cache-${{ steps.codeql-version.outputs.version }}-${{ github.ref }}
           restore-keys: |
             ${{ runner.os }}-codeql-compilation-cache-${{ steps.codeql-version.outputs.version }}-
