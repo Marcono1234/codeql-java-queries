@@ -47,7 +47,7 @@ jobs:
       # Note: Unfortunately this cannot trigger the regular workflow for the PR automatically, see
       # https://github.com/peter-evans/create-pull-request/blob/main/docs/concepts-guidelines.md#triggering-further-workflow-runs
       - name: Create or update pull request
-        uses: peter-evans/create-pull-request@v4
+        uses: peter-evans/create-pull-request@v5
         if: steps.prepare-update.outcome == 'success'
         with:
           branch: codeql-update
