@@ -23,17 +23,18 @@ jobs:
           # Switch to submodule and get Git tag
           cd codeql
           # Fetch tags (and only tags), see https://stackoverflow.com/a/20608181
-          git fetch origin 'refs/tags/*:refs/tags/*' --quiet 
+          git fetch origin 'refs/tags/*:refs/tags/*' --quiet
           tag=$(git describe --exact-match --exclude "codeql-cli/latest")
+          # Remove 'codeql-cli/' prefix
           version="${tag#codeql-cli/}"
-          echo "::set-output name=version::${version}"
+          echo "version=${version}" >> $GITHUB_OUTPUT
           echo "Submodule version: ${version}"
 
           latest_version_tag=$(git tag --sort=-version:refname | grep "codeql-cli/" | head --lines=1)
-          echo "::set-output name=latest-version-tag::${latest_version_tag}"
+          echo "latest-version-tag=${latest_version_tag}" >> $GITHUB_OUTPUT
 
           latest_version="${latest_version_tag#codeql-cli/}"
-          echo "::set-output name=latest-version::${latest_version}"
+          echo "latest-version=${latest_version}" >> $GITHUB_OUTPUT
           echo "Latest version: ${latest_version}"
 
       - name: Prepare CodeQL version update
