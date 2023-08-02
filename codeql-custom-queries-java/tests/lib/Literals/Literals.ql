@@ -2,12 +2,10 @@ import java
 import TestUtilities.InlineExpectationsTest
 import lib.Literals
 
-class LiteralsTest extends InlineExpectationsTest {
-  LiteralsTest() { this = "LiteralsTest" }
+module LiteralsTest implements TestSig {
+  string getARelevantTag() { result = "numeric" }
 
-  override string getARelevantTag() { result = "numeric" }
-
-  override predicate hasActualResult(Location location, string element, string tag, string value) {
+  predicate hasActualResult(Location location, string element, string tag, string value) {
     location.getFile().isSourceFile() and
     tag = "numeric" and
     exists(Literal literal |
@@ -17,3 +15,5 @@ class LiteralsTest extends InlineExpectationsTest {
     )
   }
 }
+
+import MakeTest<LiteralsTest>

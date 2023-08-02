@@ -2,12 +2,10 @@ import java
 import TestUtilities.InlineExpectationsTest
 import lib.VarAccess
 
-class SameVarAccessTest extends InlineExpectationsTest {
-  SameVarAccessTest() { this = "SameVarAccessTest" }
+module SameVarAccessTest implements TestSig {
+  string getARelevantTag() { result = "sameVarAccess" }
 
-  override string getARelevantTag() { result = "sameVarAccess" }
-
-  override predicate hasActualResult(Location location, string element, string tag, string value) {
+  predicate hasActualResult(Location location, string element, string tag, string value) {
     tag = "sameVarAccess" and
     exists(MethodAccess call |
       call.getMethod().hasStringSignature("checkSameVarAccess(Object, Object)") and
@@ -24,3 +22,5 @@ class SameVarAccessTest extends InlineExpectationsTest {
     )
   }
 }
+
+import MakeTest<SameVarAccessTest>
