@@ -81,12 +81,6 @@ class NonLocalVarModifyingExpr extends ModifyingExpr {
     }
 }
 
-class NonModifyingExpr extends Expr {
-    NonModifyingExpr() {
-        not this instanceof ModifyingExpr
-    }
-}
-
 class CheapMethodCall extends MethodAccess {
     CheapMethodCall() {
         exists (Method m, BlockStmt body | m = getMethod() and body = m.getBody() |

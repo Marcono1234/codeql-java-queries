@@ -8,6 +8,7 @@
  * Note that the precision of this query is rather low, in many cases the iteration order
  * is irrelevant.
  *
+ * @kind problem
  * @precision low
  */
 

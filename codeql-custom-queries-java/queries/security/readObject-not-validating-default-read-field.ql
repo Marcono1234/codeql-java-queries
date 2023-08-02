@@ -3,6 +3,7 @@
  * `defaultReadObject()` and then validates some field values, but which does
  * not validate the value of one of the other deserialized fields.
  * 
+ * @kind problem
  * @precision low
  */
 

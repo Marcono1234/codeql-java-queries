@@ -37,4 +37,4 @@ where
     and typeVariable = getAReferencedTypeVariable(parameterizedTypeToken)
     // Ignore Kotlin reified type variable because that is actually safe
     and not typeVariable.isReified()
-select typeTokenCreation, "Capturing type variable $@ is not type safe", typeVariable.getName(), typeVariable
+select typeTokenCreation, "Capturing type variable $@ is not type safe", typeVariable, typeVariable.getName()
