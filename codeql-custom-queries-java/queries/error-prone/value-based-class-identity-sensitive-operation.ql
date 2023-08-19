@@ -5,6 +5,8 @@
  * must only be compared using `equals(Object)` and `hashCode()`.
  *
  * See also https://bugs.openjdk.java.net/browse/JDK-8249100
+ * 
+ * @kind problem
  */
 
 import java
@@ -95,6 +97,11 @@ class ValueBasedForbiddenExpr extends Expr {
         )
         or exists(IdentityHashCodeCall hashCodeCall |
             hashCodeCall.getArgument(0) = this
+        )
+        or exists(TypeAccess identityHashMapType |
+            identityHashMapType.getType().(RefType).getSourceDeclaration().hasQualifiedName("java.util", "IdentityHashMap")
+            // `this` is the key type of the map, on which reference equality checks are performed
+            and this = identityHashMapType.getTypeArgument(0)
         )
     }
 }
