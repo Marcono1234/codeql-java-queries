@@ -153,7 +153,7 @@ class CallableReferencingExpr extends Expr {
     Expr getQualifier() {
         result = [
             this.(MethodAccess).getQualifier(),
-            this.(MemberRefExpr).getQualifier(),
+            this.(MemberRefExpr).getReceiverExpr(),
             this.(ClassInstanceExpr).getQualifier(),
         ]
     }

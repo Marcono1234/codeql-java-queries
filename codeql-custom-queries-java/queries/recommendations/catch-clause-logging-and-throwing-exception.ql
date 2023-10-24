@@ -579,7 +579,7 @@ private predicate referencesVariable(Expr expr, Variable var) {
         (
             m = expr.(MethodAccess).getMethod() and referencesVariable(expr.(MethodAccess).getQualifier(), var)
             or m = expr.(FieldAccess).getField() and referencesVariable(expr.(FieldAccess).getQualifier(), var)
-            or m = expr.(MemberRefExpr).getReferencedCallable() and referencesVariable(expr.(MemberRefExpr).getQualifier(), var)
+            or m = expr.(MemberRefExpr).getReferencedCallable() and referencesVariable(expr.(MemberRefExpr).getReceiverExpr(), var)
         )
         // Ignore if instance is used for static member access (which itself is bad code style)
         and not m.isStatic()
