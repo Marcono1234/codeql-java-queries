@@ -35,7 +35,8 @@ where
   package = getPackage(importStmt) and
   exists(string packageName, int index |
     packageName = package.getName() and
-    exists(packageName.regexpFind("(^|\\.)(shaded|repackaged)($|\\.)", 0, index)) and
+    // `shadow` is the default prefix of the Shadow Gradle plugin (https://github.com/johnrengelman/shadow)
+    exists(packageName.regexpFind("((^|\\.)(shaded|repackaged)($|\\.))|(^shadow\\.)", 0, index)) and
     shadedPackagePrefix = packageName.prefix(index)
   ) and
   // And shaded classes are not somehow part of the sources
