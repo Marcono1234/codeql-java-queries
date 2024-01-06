@@ -4,6 +4,8 @@
 
 import java
 
+// TODO: Consider using `semmle.code.java.regex.RegexTreeView` library, see existing queries
+
 // TODO: These are already declared in `regex-wrong-alphabetic-range.ql`, reduce code duplication
 abstract class RegexMethod extends Method {
     abstract int regexParamIndex();

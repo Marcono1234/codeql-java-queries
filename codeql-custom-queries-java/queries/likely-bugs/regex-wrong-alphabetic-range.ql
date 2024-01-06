@@ -6,6 +6,10 @@
 
 import java
 
+// TODO: Consider using `semmle.code.java.regex.RegexTreeView` library, see existing queries;
+//       though this implementation here is simpler and more efficient?
+// TODO: Might overlap with standard CodeQL `java/overly-large-range` query (https://github.com/github/codeql/blob/codeql-cli/v2.15.5/java/ql/src/Security/CWE/CWE-020/OverlyLargeRange.ql)
+
 abstract class RegexMethod extends Method {
     abstract int regexParamIndex();
 }
