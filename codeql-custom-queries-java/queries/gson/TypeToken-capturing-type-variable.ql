@@ -17,6 +17,11 @@
  * Alternatively when using Kotlin the type variable can be made `reified`; this makes sure
  * the actual type is captured by the `TypeToken`.
  * 
+ * Newer Gson versions disallow capturing type variables by default, see the
+ * [Troubleshooting Guide](https://github.com/google/gson/blob/main/Troubleshooting.md#typetoken-type-variable)
+ * for more information and alternatives.
+ * 
+ * @id todo
  * @kind problem
  */
 
@@ -24,8 +29,11 @@ import java
 
 private TypeVariable getAReferencedTypeVariable(Type t) {
     result = t
-    or result = t.(ParameterizedType).getATypeArgument()
-    or result = t.(Array).getComponentType()
+    // Look for type variable recursively, e.g. for `List<List<T>>`
+    or result = getAReferencedTypeVariable([
+        t.(ParameterizedType).getATypeArgument(),
+        t.(Array).getComponentType()
+    ])
     // Don't have to consider other types (e.g. intersection type) for now because they cannot appear when creating TypeToken subclass
 }
 
@@ -37,4 +45,4 @@ where
     and typeVariable = getAReferencedTypeVariable(parameterizedTypeToken)
     // Ignore Kotlin reified type variable because that is actually safe
     and not typeVariable.isReified()
-select typeTokenCreation, "Capturing type variable $@ is not type safe", typeVariable, typeVariable.getName()
+select typeTokenCreation, "Capturing type variable '$@' is not type safe", typeVariable, typeVariable.getName()
