@@ -9,6 +9,8 @@
  * @kind path-problem
  */
 
+// Note: Might have some overlap with standard CodeQL query `java/tainted-format-string`
+
 import java
 import semmle.code.java.StringFormat
 import semmle.code.java.dataflow.FlowSources
