@@ -14,6 +14,10 @@ import java
 import lib.Literals
 import lib.Operations
 
+// TODO: Also cover assign-op, e.g. `x += 0`
+// TODO: Also cover bitwise operations, e.g. `| 0`, `| -1`, `& 0` `& -1`
+//   (don't have to check if literal is `int` or `long`; e.g. `-1` is implicitly converted to `-1L`)
+
 abstract class PointlessOperation extends Expr {
     abstract string getDescription();
 }
