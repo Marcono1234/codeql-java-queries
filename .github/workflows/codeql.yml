@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           # Fetch the codeql submodule
           submodules: recursive
@@ -52,7 +52,7 @@ jobs:
       # TODO: Once available, change this to update the cache, see https://github.com/actions/cache/issues/342
       #       For now include the CodeQL CLI version in the cache key to invalidate the cache, see https://github.com/github/vscode-codeql/issues/730#issuecomment-764855019
       - name: Cache CodeQL compilation cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: |
             ~/.codeql
