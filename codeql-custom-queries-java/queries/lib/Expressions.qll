@@ -202,6 +202,8 @@ predicate comparesWithConstant(ComparisonExpr compExpr, Expr operand, int value,
         and compExpr.getGreaterOperand() = operand
         and compExpr.getLesserOperand().(CompileTimeConstantExpr).getIntValue() = value - 1
         and equalOrGreater = true
+        // ignore floating point types because `1.5 >= 2` is not the same as `1.5 > 1`
+        and not operand.getType() instanceof FloatingPointType
     )
     // operand >= value
     or (
@@ -223,5 +225,7 @@ predicate comparesWithConstant(ComparisonExpr compExpr, Expr operand, int value,
         and compExpr.getLesserOperand() = operand
         and compExpr.getGreaterOperand().(CompileTimeConstantExpr).getIntValue() = value - 1
         and equalOrGreater = false
+        // ignore floating point types because `1.5 < 2` is not the same as `1.5 <= 1`
+        and not operand.getType() instanceof FloatingPointType
     )
 }

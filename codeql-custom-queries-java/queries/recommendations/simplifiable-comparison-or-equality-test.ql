@@ -5,6 +5,7 @@
  * 
  * The following shows some examples which can be simplified:
  * - `-x == -y` → `x == y`
+ * - `x - y > 0` → `x > y`
  * - `x + 1 < 4` → `x < 3`
  * - `x - 1 > 0` → `x > 1`
  * - `x * 2 > 4` → `x > 2`
@@ -13,9 +14,13 @@
  * However, there can be cases where the verbose expression reported by
  * this query is desired to make the intention clearer, for example
  * `index + 1` to indicate an increment of `index` in the subsequent lines.
+ * 
+ * @id todo
+ * @kind problem
  */
 
 import java
+import lib.Expressions
 import lib.Literals
 
 class ComparisonOrEqualityTest extends BinaryExpr {
@@ -38,6 +43,36 @@ where
         simplifiableExpr.getLeftOperand() instanceof Negated
         and simplifiableExpr.getRightOperand() instanceof Negated
         and action = "Remove negation from both operands"
+    )
+    or exists(SubExpr subExpr, int compared, boolean equalOrGreater, string recommendedCmpOp |
+        comparesWithConstant(simplifiableExpr, subExpr, compared, equalOrGreater)
+        and (
+            recommendedCmpOp = ">="
+            // compares `>= 0`
+            and compared = 0
+            and equalOrGreater = true
+            or
+            recommendedCmpOp = ">"
+            // compares `>= 1`
+            and compared = 1
+            and equalOrGreater = true
+            // ignore floating point values because it can have results between 0 and 1
+            and subExpr.getType() instanceof IntegralType
+            or
+            recommendedCmpOp = "<"
+            // compares `< 0`
+            and compared = 0
+            and equalOrGreater = false
+            or
+            recommendedCmpOp = "<="
+            // compares `< 1`
+            and compared = 1
+            and equalOrGreater = false
+            // ignore floating point values because it can have results between 0 and 1
+            and subExpr.getType() instanceof IntegralType
+        )
+    |
+        action = "Remove subtraction and directly compare values: `a " + recommendedCmpOp + " b`"
     )
     or exists(Literal literalOperand, BinaryExpr simplifiableOperand, Literal removableLiteral |
         literalOperand = simplifiableExpr.getAnOperand()
