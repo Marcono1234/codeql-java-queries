@@ -1,8 +1,8 @@
 /**
  * Finds static arrays which appear to be used as template for an argument, e.g.:
- * ```
+ * ```java
  * class EchoPrinter {
- *     static final String[] COMMAND = {"echo", NULL};
+ *     static final String[] COMMAND = {"echo", null};
  *
  *     public static void echo(String text) {
  *         // Modifies static array without synchronization; concurrent use would
