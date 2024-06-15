@@ -92,6 +92,15 @@ abstract class OptionalGetValueMethod extends Method {
 }
 
 /**
+ * Instance method which uses an alternative value in case the optional is empty.
+ * 
+ * Does not include methods which throw an exception if the optional is empty
+ * (e.g. `orElseThrow`).
+ */
+abstract class OptionalOrMethod extends Method {
+}
+
+/**
  * JDK class representing an optional value. This includes the `Object` reference
  * storing `java.util.Optional` as well as the primitive value variants, such as
  * `OptionalInt`.
@@ -143,9 +152,20 @@ class JavaObjectOptionalOfNullableMethod extends NewNullableOptionalCallable, Me
 class JavaObjectOptionalGetMethod extends OptionalGetValueMethod {
     JavaObjectOptionalGetMethod() {
         getDeclaringSourceOrASupertype(this) instanceof JavaObjectOptional
-        and hasStringSignature([
-            "get()",
-            "orElseThrow()" // Equivalent to get()
+        and (
+            hasStringSignature("get()")
+            or hasName("orElseThrow") // Equivalent to get()
+        )
+    }
+}
+
+class JavaObjectOptionalOrMethod extends OptionalOrMethod {
+    JavaObjectOptionalOrMethod() {
+        getDeclaringSourceOrASupertype(this) instanceof JavaObjectOptional
+        and hasName([
+            "or", // TODO: Maybe exclude this because it takes a `Supplier<Optional>` and returns an `Optional`
+            "orElse",
+            "orElseGet",
         ])
     }
 }
@@ -196,11 +216,23 @@ class JavaOptionalPresenceCheckMethod extends OptionalPresenceCheckMethod {
 class JavaPrimitiveOptionalGetMethod extends OptionalGetValueMethod {
     JavaPrimitiveOptionalGetMethod() {
         getDeclaringType() instanceof JavaPrimitiveOptional
-        and hasStringSignature([
-            "orElseThrow()", // Exists for all Optional types and is equivalent to their specific methods
-            "getAsDouble()", // OptionalDouble
-            "getAsInt()", // OptionalInt
-            "getAsLong()" // OptionalLong
+        and (
+            hasStringSignature([
+                "getAsDouble()", // OptionalDouble
+                "getAsInt()", // OptionalInt
+                "getAsLong()", // OptionalLong
+            ])
+            or hasName("orElseThrow") // Exists for all Optional types and is equivalent to their specific `get...` methods
+        )
+    }
+}
+
+class JavaPrimitiveOptionalOrMethod extends OptionalOrMethod {
+    JavaPrimitiveOptionalOrMethod() {
+        getDeclaringType() instanceof JavaPrimitiveOptional
+        and hasName([
+            "orElse",
+            "orElseGet",
         ])
     }
 }
@@ -242,6 +274,23 @@ class GuavaOptionalIsPresentMethod extends OptionalPresenceCheckMethod {
 
     override
     boolean polarity() { result = true }
+}
+
+class GuavaOptionalGetMethod extends OptionalGetValueMethod {
+    GuavaOptionalGetMethod() {
+        getDeclaringSourceOrASupertype(this) instanceof GuavaOptional
+        and hasStringSignature("get()")
+    }
+}
+
+class GuavaOptionalOrMethod extends OptionalOrMethod {
+    GuavaOptionalOrMethod() {
+        getDeclaringSourceOrASupertype(this) instanceof GuavaOptional
+        and hasName([
+            "or", // TODO: Maybe exclude overload `or(Optional)`, which returns an `Optional`?
+            "orNull",
+        ])
+    }
 }
 
 class GuavaOptionalOrNullCall extends OptionalObjectOrNullCall {
