@@ -138,7 +138,8 @@ predicate isTimeUnitParam(
   exists(string s |
     s =
       [
-        "java.util.concurrent.TimeUnit,convert,0,1", "java.lang.Process,waitFor,0,1",
+        "java.util.concurrent.TimeUnit,convert,0,1",
+        "java.lang.Process,waitFor,0,1",
         "java.nio.channels.AsynchronousChannelGroup,awaitTermination,0,1",
         "java.nio.channels.AsynchronousSocketChannel,read,1,2",
         "java.nio.channels.AsynchronousSocketChannel,read,3,4",
@@ -204,6 +205,8 @@ predicate simplifiableDurationUsage(IntegerLiteral durationValueExpr, DurationUn
     m.getDeclaringType().hasQualifiedName("java.time", "Duration")
   |
     m.getName() = unitIn.getDurationMethodName() and
+    // Ignore `ofSeconds(seconds, nanos)` overload and any other future overloads
+    m.getNumberOfParameters() = 1 and
     durationValueExpr = call.getArgument(0)
   )
 }
