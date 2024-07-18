@@ -16,6 +16,6 @@ from MethodAccess assertCall, AssertMethod assertMethod
 where
     assertMethod = assertCall.getMethod()
     and forex(int inputParamIndex | inputParamIndex = assertMethod.getAnInputParamIndex() |
-        assertCall.getArgument(inputParamIndex) instanceof CompileTimeConstantOrLiteral
+        assertCall.getArgument(inputParamIndex) instanceof ConstantExpr
     )
 select assertCall, "Assertion will always have the same outcome"

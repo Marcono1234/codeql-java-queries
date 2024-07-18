@@ -200,13 +200,26 @@ abstract class AssertThrowsMethod extends AssertMethod {
 }
 
 /**
- * A compile time constant expression or any literal.
+ * An expression with constant value.
  */
-class CompileTimeConstantOrLiteral extends Expr {
-  CompileTimeConstantOrLiteral() {
+class ConstantExpr extends Expr {
+  ConstantExpr() {
     // CompileTimeConstantExpr does not include NullLiteral and TypeLiteral
     this instanceof CompileTimeConstantExpr
-    or this instanceof NullLiteral
-    or this instanceof TypeLiteral
+    or
+    this instanceof NullLiteral
+    or
+    this instanceof TypeLiteral
+    or
+    this.(FieldRead).getField() instanceof EnumConstant
+    or
+    exists(Field f |
+      f = this.(FieldRead).getField() and
+      f.isStatic() and
+      f.isFinal() and
+      // And field is declared in third-party library or JDK, otherwise test might intentionally
+      // use constant as 'actual' argument to check its value
+      not f.fromSource()
+    )
   }
 }
