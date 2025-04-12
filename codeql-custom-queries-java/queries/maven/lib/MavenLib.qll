@@ -87,7 +87,7 @@ class TestPluginConfigElement extends PomElement {
             "skipITs", // Failsafe plugin
             "skipTests"
         ])
-        and getValue() = "true"
+        and result.getValue() = "true"
     }
 
     /**
